@@ -1,0 +1,114 @@
+/* Header.css */
+
+/* إعدادات عامة */
+:root {
+    --main-color: #1f3a93;
+    --accent-color: #f39c12;
+    --text-color: #fff;
+    --text-muted: #c5c5c5;
+    --bg-color: #34495e;
+    --header-height: 60px;
+  }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* إعدادات الهيدر */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #34495e;
+    color: #fff;
+    padding: 0 20px;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .header-logo h1 {
+    font-size: 1.5rem;
+    color: #f39c12;
+  }
+  
+  .header-nav {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #f39c12;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: #c5c5c5;
+  }
+  
+  .search-icon {
+    font-size: 1rem;
+    color: #c5c5c5;
+  }
+  
+  .search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    margin-left: 8px;
+  }
+  
+  .icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .icon:hover {
+    color: #f39c12;
+  }
+  
+  /* إعدادات العرض المتجاوب */
+  @media (max-width: 768px) {
+    .header-nav {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      padding: 0 10px;
+    }
+  
+    .header-logo h1 {
+      font-size: 1.2rem;
+    }
+  
+    .icon, .search-bar {
+      display: none;
+    }
+  }
+  

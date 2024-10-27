@@ -1,0 +1,95 @@
+/* Files.css */
+
+.files-container {
+    padding: 20px;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .files-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .files-table th, .files-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .files-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  .files-table td {
+    cursor: pointer;
+  }
+  
+  .files-table .status {
+    font-weight: bold;
+  }
+  
+  .files-table .status.حر {
+    color: green;
+  }
+  
+  .files-table .status.محجوز {
+    color: orange;
+  }
+  
+  .files-table .status.في {
+    color: red;
+  }
+  
+  button {
+    padding: 8px 16px;
+    margin: 5px;
+    border: none;
+    color: #fff;
+    background-color: #4CAF50;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .actions {
+    margin-top: 15px;
+    text-align: right;
+  }
+  
+  .file-preview {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 300px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+  }
+  
+  .file-preview h3 {
+    margin-top: 0;
+  }
+  
+  .file-preview p {
+    margin: 5px 0;
+  }
+  
+  .file-preview button {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+  }
+  

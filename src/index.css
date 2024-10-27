@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* إعدادات عامة
+:root {
+  --main-color: #1f3a93;
+  --accent-color: #f39c12;
+  --text-color: #fff;
+  --text-muted: #c5c5c5;
+  --bg-color: #34495e;
+  --header-height: 60px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+} */
