@@ -11,7 +11,6 @@ const UserProfileMenu = () => {
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  // إغلاق القائمة عند النقر خارجها
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!e.target.closest('.user-profile-menu') && menuOpen) {
