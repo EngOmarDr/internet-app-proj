@@ -7,7 +7,7 @@ import './UserProfileMenu.css';
 
 const UserProfileMenu = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate(); // استخدام useNavigate لإعادة التوجيه
+  const navigate = useNavigate(); 
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -23,9 +23,8 @@ const UserProfileMenu = () => {
   }, [menuOpen]);
 
   const handleLogout = () => {
-    // تنظيف بيانات المستخدم (على سبيل المثال: مسح authToken)
-    localStorage.removeItem('authToken'); // إزالة رمز المصادقة من التخزين المحلي
-    navigate('/login'); // إعادة توجيه المستخدم إلى صفحة تسجيل الدخول
+    localStorage.removeItem('authToken'); 
+    navigate('/login');
   };
 
   return (
