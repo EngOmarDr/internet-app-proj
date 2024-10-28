@@ -10,6 +10,9 @@ import Files from './components/files/Files';
 import Reports from './components/reports/Reports';
 import BackupRestore from './components/backupRestore/BackupRestore';
 import Notifications from './components/notifications/Notifications';
+import AccountSettingsPage from './components/user/setting/AccountSettingsPage';
+import LoginPage from './components/user/AuthPages/LoginPage';
+import RegisterPage from './components/user/AuthPages/RegisterPage';
 
 const App = () => {
   return (
@@ -24,6 +27,9 @@ const App = () => {
             <Route path="/reports" element={<Reports />} />
             <Route path="/backup" element={<BackupRestore />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/account-settings" element={<AccountSettingsPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
             <Route path="/" element={<Dashboard />} /> {/* توجيه الصفحة الرئيسية إلى Dashboard */}
           </Routes>
         </div>

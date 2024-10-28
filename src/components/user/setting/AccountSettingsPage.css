@@ -1,0 +1,109 @@
+/* AccountSettingsPage.css */
+
+.settings-page {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f6f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #2c3e50;
+  }
+  
+  .settings-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #3498db;
+  }
+  
+  .settings-section {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+  
+  .settings-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2980b9;
+    display: flex;
+    align-items: center;
+  }
+  
+  .settings-section h3 svg {
+    margin-right: 8px;
+    color: #3498db;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+  }
+  
+  .form-group label {
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .form-group input {
+    padding: 10px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border 0.3s ease;
+  }
+  
+  .form-group input:focus {
+    border-color: #3498db;
+  }
+  
+  .btn-view-groups {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 15px;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-view-groups:hover {
+    background-color: #2980b9;
+  }
+  
+  .notification-setting {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    color: #555;
+  }
+  
+  .notification-setting input {
+    margin-right: 10px;
+  }
+  
+  .btn-save {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #27ae60;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-save:hover {
+    background-color: #219150;
+  }
+  

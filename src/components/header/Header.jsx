@@ -1,9 +1,9 @@
 // Header.js
 
-import React from 'react';
 import { Link } from 'react-router-dom'; // استيراد Link
 import './Header.css';
-import { FaBell, FaSearch, FaUserCircle } from 'react-icons/fa';
+import { FaBell, FaSearch } from 'react-icons/fa';
+import UserProfileMenu from '../user/UserProfileMenu';
 
 const Header = () => {
   return (
@@ -26,8 +26,9 @@ const Header = () => {
         <Link to="/notifications" className="nav-link"> {/* أضف Link هنا */}
           <FaBell className="icon notification-icon" title="Notifications" />
         </Link>
+        <UserProfileMenu/>
+        {/* <FaUserCircle className="icon profile-icon" title="Profile" /> */}
         
-        <FaUserCircle className="icon profile-icon" title="Profile" />
       </div>
     </header>
   );

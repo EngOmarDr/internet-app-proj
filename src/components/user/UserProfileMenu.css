@@ -1,0 +1,80 @@
+/* UserProfileMenu.css */
+
+/* تصميم مكون الملف الشخصي */
+.user-profile-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .profile-icon {
+    font-size: 2.5rem;
+    color: #fff;
+    transition: color 0.3s ease;
+  }
+  
+  .profile-icon:hover {
+    color: #f39c12;
+  }
+  
+  /* تصميم القائمة المنسدلة */
+  .dropdown-menu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background-color: #34495e;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 1000;
+    width: 220px;
+    transform: translateY(-20px);
+    opacity: 0;
+    animation: slideDown 0.3s forwards ease-out;
+  }
+  
+  @keyframes slideDown {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  /* تصميم العناصر داخل القائمة */
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .menu-item:hover {
+    background-color: #2c3e50;
+    transform: translateX(4px);
+  }
+  
+  .menu-icon {
+    margin-right: 10px;
+    font-size: 1.3rem;
+  }
+  
+  /* لون خاص لزر تسجيل الخروج */
+  .logout {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e74c3c;
+  }
+  
+  /* تصميم متجاوب */
+  @media (max-width: 768px) {
+    .dropdown-menu {
+      width: 180px;
+    }
+    
+    .profile-icon {
+      font-size: 2rem;
+    }
+  }
