@@ -1,6 +1,5 @@
 // Dashboard.js
 
-import React from 'react';
 import './Dashboard.css';
 import { FaFileAlt, FaUsers, FaClipboardList, FaDatabase } from 'react-icons/fa';
 

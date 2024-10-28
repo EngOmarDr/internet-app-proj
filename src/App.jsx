@@ -1,6 +1,5 @@
 // App.js
 
-import React from 'react';
 import './App.css'; // ملف CSS لتصميم التطبيق
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // استيراد المكتبات اللازمة
 
