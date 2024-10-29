@@ -9,8 +9,8 @@ import Files from './components/files/Files';
 import Reports from './components/reports/Reports';
 import BackupRestore from './components/backupRestore/BackupRestore';
 import Notifications from './components/notifications/Notifications';
-import Login from './components/login/login';
-import Register from './components/register/register';
+import Login from './components/user/AuthPages/LoginPage.jsx';
+import Register from './components/user/AuthPages/RegisterPage.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
