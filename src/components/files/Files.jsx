@@ -1,6 +1,6 @@
 // Files.js
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Files.css';
 import '../groups/groups.css'
 import { FaTimes, FaUserPlus } from 'react-icons/fa';
