@@ -1,7 +1,7 @@
-// Dashboard.js
-
+import React from 'react';
 import './Dashboard.css';
 import { FaFileAlt, FaUsers, FaClipboardList, FaDatabase } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   return (
@@ -16,28 +16,38 @@ const Dashboard = () => {
           <FaFileAlt className="card-icon" />
           <h3>Manage Files</h3>
           <p>Upload, edit, and organize files with ease</p>
-          <button className="card-button">Go to Files</button>
+          <Link to='/files'>
+            <button className="card-button">Go to Files</button>
+          </Link>
         </div>
-        
+
         <div className="dashboard-card card-groups">
           <FaUsers className="card-icon" />
           <h3>Manage Groups</h3>
           <p>Create, invite, and collaborate with teams</p>
-          <button className="card-button">Go to Groups</button>
+          <Link to='/groups'>
+
+            <button className="card-button">Go to Groups</button>
+          </Link>
+
         </div>
-        
+
         <div className="dashboard-card card-reports">
           <FaClipboardList className="card-icon" />
           <h3>Reports</h3>
           <p>View activity logs and generate insights</p>
-          <button className="card-button">View Reports</button>
+          <Link to='/reports'>
+            <button className="card-button">View Reports</button>
+          </Link>
         </div>
-        
+
         <div className="dashboard-card card-backup">
           <FaDatabase className="card-icon" />
           <h3>Backup & Restore</h3>
           <p>Keep your files safe with backup solutions</p>
-          <button className="card-button">Manage Backups</button>
+          <Link to='/backup'>
+            <button className="card-button">Manage Backups</button>
+          </Link>
         </div>
       </div>
     </div>

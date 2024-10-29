@@ -1,18 +1,29 @@
 // Files.js
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import './Files.css';
+import '../groups/groups.css'
+import { FaTimes, FaUserPlus } from 'react-icons/fa';
 
-const filesData = [
+const _filesData = [
   { id: 1, name: 'Document1.pdf', size: '2MB', date: '2024-10-15', status: 'حر' },
   { id: 2, name: 'Image1.jpg', size: '1MB', date: '2024-10-10', status: 'محجوز' },
   { id: 3, name: 'Presentation.pptx', size: '5MB', date: '2024-10-05', status: 'في حالة الاستخدام' },
-  // Add more files as needed
 ];
-
 const Files = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewFile, setPreviewFile] = useState(null);
+  const [showUploadFile, setShowUploadFile] = useState(false);
+  const [newFile, setNewFile] = useState();
+  const [filesData, setFilesData] = useState(_filesData);
+  
+let file;
+  const handleUploadFile = () => {
+  console.log(newFile);
+  
+    setFilesData([...filesData,{id: filesData.length +1,name: file.name,status:'حر',size: file.size +'KB',date:Date.now()}]);
+    setShowUploadFile(false);
+  };
 
   const handleSelectFile = (file) => {
     setPreviewFile(file);
@@ -73,6 +84,7 @@ const Files = () => {
 
       <div className="actions">
         <button onClick={() => alert('إجراء In-Check لجميع الملفات المحددة')}>In-Check متعدد</button>
+        <button onClick={()=>setShowUploadFile(true)}>Upload File</button>
       </div>
 
       {previewFile && (
@@ -86,6 +98,27 @@ const Files = () => {
             <button onClick={() => handleInCheck(previewFile)}>حجز الملف</button>
           )}
           <button onClick={() => setPreviewFile(null)}>إغلاق المعاينة</button>
+        </div>
+      )}
+      {showUploadFile && (
+        <div className="create-group-modal">
+          <div className="modal-content">
+            <FaTimes className="close-modal" onClick={()=>setShowUploadFile(false)} />
+            <h3>Upload New File</h3>
+            <input
+              type="file"
+              value={newFile}
+              onSubmit={(e)=>setNewFile(e.target.files[0])}
+              onChange={(e) => {
+                console.log(e.target.files[0]);
+                
+                file = e.target.files[0]}}
+              className="input-field"
+            />
+            <button className="action-button" onClick={handleUploadFile}>
+              <FaUserPlus /> Add File
+            </button>
+          </div>
         </div>
       )}
     </div>
