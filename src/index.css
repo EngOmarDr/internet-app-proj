@@ -1,14 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* إعدادات عامة
+
 :root {
+
+  /* Header */
   --main-color: #1f3a93;
   --accent-color: #f39c12;
   --text-color: #fff;
   --text-muted: #c5c5c5;
   --bg-color: #34495e;
-  --header-height: 60px;
+
+/* Admin */
+  --main-bg-color: #f0f4f8;
+  --card-bg-color: #ffffff;
+  --accent-admin-color: #1f3a93;
+  --accent-hover-color: #0032fa;
+  --text-color-dark: #2c3e50;
+  --text-color-light: #7f8c8d;
+  --card-border-radius: 12px;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+
+  --text-group-color: #333;
+  --border-radius: 12px;
 }
 
 * {
@@ -19,4 +33,10 @@
 
 body {
   font-family: 'Arial', sans-serif;
-} */
+  background-color: var(--main-bg-color);
+  margin: 0;
+  padding: 0;
+}
+
+
+

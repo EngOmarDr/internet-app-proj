@@ -1,23 +1,4 @@
 /* Dashboard.css */
-
-/* إعدادات عامة */
-:root {
-    --main-bg-color: #f0f4f8;
-    --card-bg-color: #ffffff;
-    --accent-color: #1f3a93;
-    --accent-hover-color: #34495e;
-    --text-color-dark: #2c3e50;
-    --text-color-light: #7f8c8d;
-    --card-border-radius: 12px;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: var(--main-bg-color);
-    margin: 0;
-    padding: 0;
-  }
   
   .dashboard {
     max-width: 1200px;
@@ -28,7 +9,7 @@
   
   .dashboard-header h2 {
     font-size: 2rem;
-    color: var(--accent-color);
+    color: var(--accent-admin-color);
   }
   
   .dashboard-header p {
@@ -60,7 +41,7 @@
   
   .card-icon {
     font-size: 2.5rem;
-    color: var(--accent-color);
+    color: var(--accent-admin-color);
   }
   
   .dashboard-card h3 {
@@ -76,7 +57,7 @@
   }
   
   .card-button {
-    background-color: var(--accent-color);
+    background-color: var(--accent-admin-color);
     color: #ffffff;
     padding: 10px 20px;
     border: none;

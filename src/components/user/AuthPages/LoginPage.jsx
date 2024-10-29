@@ -1,22 +1,30 @@
-// LoginPage.jsx
+// src/pages/LoginPage.jsx
 
-import  { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import AuthService from '../../../services/AuthService';
 import './AuthPages.css';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // تحقق من بيانات الاعتماد
-    if (email === "test@example.com" && password === "password") {
-      localStorage.setItem("authToken", "your_token_here");
-      navigate('/dashboard'); // إعادة توجيه إلى الصفحة الرئيسية
-    } else {
+
+    try {
+      const data = await AuthService.loginUser(username, password);
+
+      if (data.status === 1 && data.data.token) {
+        localStorage.setItem('authToken', data.data.token);
+        navigate('/dashboard'); // إعادة توجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
+      } else {
+        alert("Error: " + data.message);
+      }
+    } catch (error) {
       alert("Invalid credentials");
+      console.log(error);
     }
   };
 
@@ -26,10 +34,10 @@ const LoginPage = () => {
         <h2>تسجيل الدخول</h2>
         <form onSubmit={handleLogin}>
           <input
-            type="email"
-            placeholder="البريد الإلكتروني"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            placeholder="اسم المستخدم"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <input

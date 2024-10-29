@@ -1,6 +1,5 @@
 // BackupRestore.js
 
-import React from 'react';
 import './BackupRestore.css';
 
 const BackupRestore = () => {
