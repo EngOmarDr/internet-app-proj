@@ -1,27 +1,32 @@
 // Files.js
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Files.css';
 import '../groups/groups.css'
 import { FaTimes, FaUserPlus } from 'react-icons/fa';
+import { indexFile, storeFile } from '../../services/fileService';
+import { useParams } from 'react-router-dom';
+import { CustomInput } from '../../components/CustomInput';
 
-const _filesData = [
-  { id: 1, name: 'Document1.pdf', size: '2MB', date: '2024-10-15', status: 'حر' },
-  { id: 2, name: 'Image1.jpg', size: '1MB', date: '2024-10-10', status: 'محجوز' },
-  { id: 3, name: 'Presentation.pptx', size: '5MB', date: '2024-10-05', status: 'في حالة الاستخدام' },
-];
 const Files = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [previewFile, setPreviewFile] = useState(null);
   const [showUploadFile, setShowUploadFile] = useState(false);
   const [newFile, setNewFile] = useState();
-  const [filesData, setFilesData] = useState(_filesData);
-  
-let file;
+  const [fileName, setfileName] = useState("");
+  const [files, setFiles] = useState([]);
+  let { groupId } = useParams();
+
+  useEffect(() => {
+    indexFile(groupId).then((groups) => console.log(groups))
+  }, [])
+
+
+  let file;
   const handleUploadFile = () => {
-  console.log(newFile);
-  
-    setFilesData([...filesData,{id: filesData.length +1,name: file.name,status:'حر',size: file.size +'KB',date:Date.now()}]);
+    console.log(newFile);
+
+    setFiles([...filesData, { id: filesData.length + 1, name: file.name, status: 'حر', size: file.size + 'KB', date: Date.now() }]);
     setShowUploadFile(false);
   };
 
@@ -56,7 +61,7 @@ let file;
           </tr>
         </thead>
         <tbody>
-          {filesData.map((file) => (
+          {files.map((file) => (
             <tr key={file.id}>
               <td>
                 <input
@@ -84,7 +89,7 @@ let file;
 
       <div className="actions">
         <button onClick={() => alert('إجراء In-Check لجميع الملفات المحددة')}>In-Check متعدد</button>
-        <button onClick={()=>setShowUploadFile(true)}>Upload File</button>
+        <button onClick={() => setShowUploadFile(true)}>Upload File</button>
       </div>
 
       {previewFile && (
@@ -103,21 +108,35 @@ let file;
       {showUploadFile && (
         <div className="create-group-modal">
           <div className="modal-content">
-            <FaTimes className="close-modal" onClick={()=>setShowUploadFile(false)} />
+            <FaTimes className="close-modal" onClick={() => setShowUploadFile(false)} />
             <h3>Upload New File</h3>
-            <input
-              type="file"
-              value={newFile}
-              onSubmit={(e)=>setNewFile(e.target.files[0])}
-              onChange={(e) => {
-                console.log(e.target.files[0]);
-                
-                file = e.target.files[0]}}
-              className="input-field"
-            />
-            <button className="action-button" onClick={handleUploadFile}>
+            <form  onSubmit={async (e) => {
+              e.preventDefault()
+              let d = await storeFile(groupId,file,fileName)
+              console.log(d);
+              
+            }}>
+
+              <CustomInput
+                name='name'
+                placeholder='name'
+                type='text'
+                value={fileName}
+                onChange={setfileName}
+              />
+              <input
+                type="file"
+                value={newFile}
+                onChange={(e) => {
+                  console.log(e.target.files[0]);
+                  file = e.target.files[0]
+                }}
+                className="input-field"
+              />
+            <button className="action-button" type='submit'>
               <FaUserPlus /> Add File
             </button>
+            </form>
           </div>
         </div>
       )}

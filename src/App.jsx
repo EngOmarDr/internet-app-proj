@@ -1,9 +1,13 @@
 import './App.css';
-import { Outlet } from 'react-router-dom';
-
-import Header from './components/header/Header';
+import { Navigate, Outlet } from 'react-router-dom';
+import Header from './pages/header/Header';
 
 const App = () => {
+
+  if(!localStorage.getItem('authToken')){
+    return <Navigate to='/login'/>
+  }
+
   return (
     <div className="app">
       <Header />

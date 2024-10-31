@@ -1,23 +1,42 @@
 // Groups.js
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Groups.css';
 import { FaUserPlus, FaFolderOpen, FaCog, FaPlusCircle, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
+import { indexGroup, storeGroup } from '../../services/groupService';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Groups = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
-//   const [members, setMembers] = useState([]);
-  const groups = [
-    { id: 1, name: "Developers", creator: "John Doe", membersCount: 12 },
-    { id: 2, name: "Designers", creator: "Jane Smith", membersCount: 8 },
-    { id: 3, name: "Managers", creator: "Alice Johnson", membersCount: 5 },
-  ];
+  const [groups, setGroups] = useState([])
+  const nav = useNavigate()
+  const handleCreateGroup = async () => {
+    try {
+      let newGroup = await storeGroup(newGroupName)
 
-  const handleCreateGroup = () => {
-    // Handle group creation logic here
+      setGroups([...groups, {
+        id: newGroup.id,
+        name: newGroup.name
+      }])
+
+    } catch (error) {
+      console.log(error);
+      throw error.response ? error.response.data : new Error("Network Error");
+    }
     setShowCreateGroup(false);
   };
+
+  useEffect(() => {
+    indexGroup().then((groups) => setGroups(groups))
+  }, [])
+
+
+  function handleShowFiles(groupId){
+    nav(`${groupId}/files`)
+    // return <Navigate to={`./${groupId}/files`} />
+  }
 
   return (
     <div className="groups">
@@ -29,13 +48,21 @@ const Groups = () => {
       </header>
 
       <div className="groups-list">
+        {
+          groups.length == 0
+            ? <>
+              <p className='text-center'> you don't have group do you want to <span className='text-blue-600 cursor-pointer' onClick={() => setShowCreateGroup(true)}>add one</span> </p>
+
+            </>
+            : <></>
+        }
         {groups.map((group) => (
           <div key={group.id} className="group-card">
             <h3>{group.name}</h3>
             <p>Created by: {group.creator}</p>
             <p>Members: {group.membersCount}</p>
             <div className="group-actions">
-              <button className="action-button">
+              <button className="action-button" onClick={()=> handleShowFiles(group.id)}>
                 <FaFolderOpen /> View Files
               </button>
               <button className="action-button manage">
@@ -56,11 +83,6 @@ const Groups = () => {
               placeholder="Group Name"
               value={newGroupName}
               onChange={(e) => setNewGroupName(e.target.value)}
-              className="input-field"
-            />
-            <input
-              type="text"
-              placeholder="Add members by search"
               className="input-field"
             />
             <button className="action-button" onClick={handleCreateGroup}>

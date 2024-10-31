@@ -11,14 +11,6 @@ const Dashboard = () => {
       </header>
 
       <div className="dashboard-content">
-        <div className="dashboard-card card-files">
-          <FaFileAlt className="card-icon" />
-          <h3>Manage Files</h3>
-          <p>Upload, edit, and organize files with ease</p>
-          <Link to='/files'>
-            <button className="card-button">Go to Files</button>
-          </Link>
-        </div>
 
         <div className="dashboard-card card-groups">
           <FaUsers className="card-icon" />
