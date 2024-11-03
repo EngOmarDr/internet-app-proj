@@ -55,7 +55,7 @@
   }
   
   .group-card:hover {
-    transform: translateY(-5px);
+    transform: scale(1.05);
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
   }
   
@@ -115,7 +115,7 @@
     width: 100%;
     max-width: 400px;
     position: relative;
-    text-align: center;
+    text-align: left;
   }
   
   .close-modal {

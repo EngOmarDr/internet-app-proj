@@ -49,12 +49,12 @@ export async function indexGroup() {
     }
 }
 
-export async function updateGroup(name) {
+export async function updateGroup(name,id) {
     let token = localStorage.getItem('authToken')
 
     try {
         const response = await axios.post(
-            `${API_URL}/update_group`,
+            `${API_URL}/update_group/${id}`,
             {
                 name: name,
             },

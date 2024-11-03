@@ -1,17 +1,20 @@
-// Groups.js
-
 import React, { useEffect, useState } from 'react';
 import './Groups.css';
 import { FaUserPlus, FaFolderOpen, FaCog, FaPlusCircle, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
-import { indexGroup, storeGroup } from '../../services/groupService';
+import { indexGroup, storeGroup, updateGroup } from '../../services/groupService';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { GoPencil, GoTrash } from 'react-icons/go';
 
 const Groups = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
+  const [showUpdateGroup, setShowUpdateGroup] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
+  const [messageError, setMessageError] = useState(null);
+  const [selectedGroupId, setSelectedGroupId] = useState(-1);
   const [groups, setGroups] = useState([])
   const nav = useNavigate()
+
   const handleCreateGroup = async () => {
     try {
       let newGroup = await storeGroup(newGroupName)
@@ -28,14 +31,39 @@ const Groups = () => {
     setShowCreateGroup(false);
   };
 
+  const handleUpdateGroup = async () => {
+    try {
+      console.log(selectedGroupId);
+
+      let newGroup = await updateGroup(newGroupName, selectedGroupId)
+
+      console.log(newGroup);
+
+      setGroups((prevGroup) => {
+        return prevGroup.map(item => {
+          if (item.id === selectedGroupId) {
+            return { ...item, name: newGroup.name }; // Create a new object with the updated name
+          }
+          return item; // Return the original item if no update is needed
+        });
+      })
+      setMessageError(null)
+    } catch (error) {
+      console.log(error.message);
+      setMessageError(error.message)
+      throw error.response ? error.response.data : new Error("Network Error");
+    }
+    setShowCreateGroup(false);
+    setNewGroupName("")
+  };
+
   useEffect(() => {
     indexGroup().then((groups) => setGroups(groups))
   }, [])
 
 
-  function handleShowFiles(groupId){
+  function handleShowFiles(groupId) {
     nav(`${groupId}/files`)
-    // return <Navigate to={`./${groupId}/files`} />
   }
 
   return (
@@ -58,16 +86,28 @@ const Groups = () => {
         }
         {groups.map((group) => (
           <div key={group.id} className="group-card">
-            <h3>{group.name}</h3>
-            <p>Created by: {group.creator}</p>
-            <p>Members: {group.membersCount}</p>
-            <div className="group-actions">
-              <button className="action-button" onClick={()=> handleShowFiles(group.id)}>
+            <h3 className='text-xl'>{group.name}</h3>
+            {/* <p>Created by: {group.creator}</p>
+            <p>Members: {group.membersCount}</p> */}
+            <div className="group-actions flex items-center ">
+              <button className="action-button" onClick={() => handleShowFiles(group.id)}>
                 <FaFolderOpen /> View Files
               </button>
-              <button className="action-button manage">
+              {/* <button className="action-button manage">
                 <FaCog /> Manage Group
-              </button>
+              </button> */}
+              <GoPencil
+                color='green'
+                cursor='pointer'
+                onClick={() => {
+                  setSelectedGroupId(group.id)
+                  setNewGroupName(group.name)
+                  setShowCreateGroup(true)
+                  setShowUpdateGroup(true)
+                }}
+              />
+
+
             </div>
           </div>
         ))}
@@ -77,7 +117,7 @@ const Groups = () => {
         <div className="create-group-modal">
           <div className="modal-content">
             <FaTimes className="close-modal" onClick={() => setShowCreateGroup(false)} />
-            <h3>Create New Group</h3>
+            <h3>{showUpdateGroup ? 'Update Group Name' : 'Create New Group'}</h3>
             <input
               type="text"
               placeholder="Group Name"
@@ -85,8 +125,17 @@ const Groups = () => {
               onChange={(e) => setNewGroupName(e.target.value)}
               className="input-field"
             />
-            <button className="action-button" onClick={handleCreateGroup}>
-              <FaUserPlus /> Add Group
+            {messageError && <p className='size-2 text-red-500 inline'>{messageError}</p>}
+            <br />
+            <button className="action-button" onClick={showUpdateGroup ? handleUpdateGroup : handleCreateGroup}>
+              {(showUpdateGroup)
+                ? <GoPencil />
+                : <FaUserPlus />
+              }
+              {(showUpdateGroup)
+                ? 'Update'
+                : 'Add'
+              }
             </button>
           </div>
         </div>
@@ -96,43 +145,3 @@ const Groups = () => {
 };
 
 export default Groups;
-
-
-// // Groups.js
-
-// import React from 'react';
-// import './Groups.css';
-// import { FaPlusCircle, FaUserPlus, FaTrashAlt } from 'react-icons/fa';
-
-// const Groups = () => {
-//   return (
-//     <div className="groups">
-//       <header className="groups-header">
-//         <h2>Groups Management</h2>
-//         <p>Create, manage, and collaborate in groups efficiently</p>
-//         <button className="add-group-button">
-//           <FaPlusCircle /> Create New Group
-//         </button>
-//       </header>
-
-//       <div className="groups-list">
-//         {[1, 2, 3].map((group) => (
-//           <div key={group} className="group-card">
-//             <h3>Group {group}</h3>
-//             <p>Manage access and permissions within this group.</p>
-//             <div className="group-actions">
-//               <button className="action-button">
-//                 <FaUserPlus /> Invite Members
-//               </button>
-//               <button className="action-button delete">
-//                 <FaTrashAlt /> Delete Group
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Groups;
