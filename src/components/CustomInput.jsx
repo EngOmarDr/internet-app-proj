@@ -1,6 +1,3 @@
-
-
-// eslint-disable-next-line react/prop-types
 export function CustomInput({ name, type, value, onChange, required=true, placeholder }) {
     return (
         <input

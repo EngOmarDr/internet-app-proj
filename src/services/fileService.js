@@ -32,34 +32,57 @@ export const storeFile = async (groupId, fileName, file) => {
     data.append('name', fileName);
     data.append('path', file);
     data.append('group_id', groupId);
-  
-    try {
-      const response = await axios.post(`http://127.0.0.1:8000/api/groups/${groupId}/files`, data, {
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        }
-      });
-      return response.data; 
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      throw error;
-    }
-  };
 
-  export const downloadFile = async (groupId, fileId) => {
+    try {
+        const response = await axios.post(`http://127.0.0.1:8000/api/groups/${groupId}/files`, data, {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": 'multipart/form-data;'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error uploading file:", error);
+        throw error;
+    }
+};
+
+export const downloadFile = async (groupId, fileId, version) => {
     let token = localStorage.getItem('authToken');
     try {
-        const response = await axios.get(`${API_URL}/groups/${groupId}/files/${fileId}/download`, {
+        const response = await axios.get(`${API_URL}/groups/${groupId}/files/${fileId}/download?${version}`, {
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
             },
-            responseType: 'blob' 
+            responseType: 'blob'
         });
         return response.data;
-        } catch (error) {
+    } catch (error) {
         console.error("Error downloading file:", error);
-        throw error;    
+        throw error;
+    }
+};
+
+export async function editFile(groupId, fileId, fileName) {
+    let token = localStorage.getItem('authToken');
+    try {
+        const response = await axios.put(`${API_URL}/groups/${groupId}/files/${fileId}`,
+            {
+                'name': fileName,
+            },
+            {
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+            });
+        console.log(response.data);
+
+        return response.data;
+    } catch (error) {
+        console.error("Error downloading file:", error);
+        throw error;
     }
 };
