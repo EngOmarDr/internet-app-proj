@@ -48,30 +48,29 @@ export async function indexGroup() {
   }
 }
 
-export async function updateGroup(name) {
-  let token = localStorage.getItem("authToken");
+export async function updateGroup(name,id) {
+    let token = localStorage.getItem('authToken')
 
-  try {
-    const response = await axios.post(
-      `${API_URL}/update_group`,
-      {
-        name: name,
-      },
-      {
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    if (response.status == 200) {
-      return response.data.data;
-    } else {
-      return response.data.message;
+    try {
+        const response = await axios.post(
+            `${API_URL}/update_group/${id}`,
+            {
+                name: name,
+            },
+            {
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+            });
+        if (response.status == 200) {
+            return response.data.data;
+        } else {
+            return response.data.message
+        }
+    } catch (error) {
+        throw error.response ? error.response.data : new Error("Network Error");
     }
-  } catch (error) {
-    throw error.response ? error.response.data : new Error("Network Error");
-  }
 }
 
 export async function removeUserFromGroup(groupId, userId) {
