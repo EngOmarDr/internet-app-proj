@@ -1,4 +1,3 @@
-// src/services/AuthService.js
 
 import axios from 'axios';
 

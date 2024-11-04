@@ -1,5 +1,5 @@
 import './Dashboard.css';
-import { FaFileAlt, FaUsers, FaClipboardList, FaDatabase } from 'react-icons/fa';
+import { FaUsers, FaClipboardList, FaDatabase } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const Dashboard = () => {

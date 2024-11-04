@@ -1,75 +1,100 @@
 import axios from "axios";
 
-const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = "http://127.0.0.1:8000/api";
 
-export async function storeGroup(name) {
-    let token = localStorage.getItem('authToken')
-    try {
-        const response = await axios.post(
-            `${API_URL}/store_group`,
-            {
-                name: name,
-            },
-            {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-            });
-        if (response.status == 200) {
-            return response.data.data;
-        } else {
-            return response.data.message
-        }
-    } catch (error) {
-        throw error.response ? error.response.data : new Error("Network Error");
+export async function storeGroup(name, userIds) {
+  let token = localStorage.getItem("authToken");
+  try {
+    const response = await axios.post(
+      `${API_URL}/store_group`,
+      {
+        name: name,
+        user_ids: userIds,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return response.data.data;
+    } else {
+      throw new Error(response.data.message);
     }
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
 }
 
 export async function indexGroup() {
-    let token = localStorage.getItem('authToken')
+  let token = localStorage.getItem("authToken");
 
-    try {
-        const response = await axios.get(
-            `${API_URL}/index_group`,
-            {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
-
-                },
-            });
-        if (response.status == 200) {
-            return response.data.data;
-        } else {
-            throw response.data.message
-        }
-    } catch (error) {
-        throw error.response ? error.response.data : new Error("Network Error");
+  try {
+    const response = await axios.get(`${API_URL}/index_group`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (response.status == 200) {
+      return response.data.data;
+    } else {
+      throw response.data.message;
     }
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
 }
 
 export async function updateGroup(name) {
-    let token = localStorage.getItem('authToken')
+  let token = localStorage.getItem("authToken");
 
-    try {
-        const response = await axios.post(
-            `${API_URL}/update_group`,
-            {
-                name: name,
-            },
-            {
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${token}`
-                },
-            });
-        if (response.status == 200) {
-            return response.data.data;
-        } else {
-            return response.data.message
-        }
-    } catch (error) {
-        throw error.response ? error.response.data : new Error("Network Error");
+  try {
+    const response = await axios.post(
+      `${API_URL}/update_group`,
+      {
+        name: name,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status == 200) {
+      return response.data.data;
+    } else {
+      return response.data.message;
     }
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
+}
+
+export async function removeUserFromGroup(groupId, userId) {
+  let token = localStorage.getItem("authToken");
+
+  try {
+    const response = await axios.post(
+      `${API_URL}/removeUserFromGroup/${groupId}/${userId}`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      return response.data.data;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Network Error");
+  }
 }

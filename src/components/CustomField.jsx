@@ -1,6 +1,7 @@
-import React from 'react'
+
 import { CustomInput } from './CustomInput'
 
+// eslint-disable-next-line react/prop-types
 export function CustomField({ name, type, value, onChange, required = true, placeholder, children }) {
     return (
         <div>
