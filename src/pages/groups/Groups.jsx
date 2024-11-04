@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import './Groups.css';
 import { FaFolderOpen, FaCog, FaPlusCircle, FaTimes, FaTrashAlt } from 'react-icons/fa';
@@ -41,11 +42,13 @@ const Groups = () => {
     navigate(`${groupId}/files`);
   };
 
+
   const handleManageGroup = (group) => {
     setSelectedGroup(group);
     setShowManageGroup(true);
   };
 
+  
   const handleRemoveUser = async (groupId, userId) => {
     try {
       await removeUserFromGroup(groupId, userId);
@@ -189,4 +192,7 @@ const Groups = () => {
   );
 };
 
+
 export default Groups;
+
+
