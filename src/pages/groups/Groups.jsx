@@ -11,6 +11,7 @@ import {
   indexGroup,
   storeGroup,
   removeUserFromGroup,
+  updateGroup,
 } from "../../services/groupService";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +22,8 @@ const Groups = () => {
   const [newGroupName, setNewGroupName] = useState("");
   const [userIds, setUserIds] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [editGroupName, setEditGroupName] = useState("");
+  const [newUserIds, setNewUserIds] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +56,7 @@ const Groups = () => {
 
   const handleManageGroup = (group) => {
     setSelectedGroup(group);
+    setEditGroupName(group.name);
     setShowManageGroup(true);
   };
 
@@ -65,6 +69,25 @@ const Groups = () => {
       });
     } catch (error) {
       console.error("Error removing user:", error);
+    }
+  };
+
+  const handleUpdateGroup = async () => {
+    try {
+      const updatedGroup = await updateGroup(
+        selectedGroup.id,
+        editGroupName,
+        newUserIds
+      );
+      setGroups(
+        groups.map((group) =>
+          group.id === selectedGroup.id ? updatedGroup : group
+        )
+      );
+      setShowManageGroup(false);
+      setNewUserIds([]);
+    } catch (error) {
+      console.error("Error updating group:", error);
     }
   };
 
@@ -97,7 +120,6 @@ const Groups = () => {
           </p>
         ) : (
           groups.map((group) => {
-            // تحديد المسؤول (العضو الذي لديه role === 'admin')
             const adminUser = group.users.find((user) => user.role === "admin");
             return (
               <div
@@ -146,9 +168,31 @@ const Groups = () => {
               onClick={() => setShowManageGroup(false)}
             />
             <h3 className="text-2xl font-semibold text-blue-800 mb-4">
-              {selectedGroup.name}
+              Edit Group: {selectedGroup.name}
             </h3>
-            <table className="w-full text-left mb-4">
+            <input
+              type="text"
+              value={editGroupName}
+              onChange={(e) => setEditGroupName(e.target.value)}
+              className="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              placeholder="Edit Group Name"
+            />
+            <input
+              type="text"
+              placeholder="Add new members by IDs"
+              value={newUserIds.join(",")}
+              onChange={(e) =>
+                setNewUserIds(e.target.value.split(",").map((id) => id.trim()))
+              }
+              className="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+            />
+            <button
+              onClick={handleUpdateGroup}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition transform hover:scale-105"
+            >
+              Update Group
+            </button>
+            <table className="w-full text-left mt-4">
               <thead>
                 <tr>
                   <th className="border-b-2 p-2">Name</th>
@@ -200,7 +244,7 @@ const Groups = () => {
             />
             <input
               type="text"
-              placeholder="Add members by search (IDs)"
+              placeholder="User IDs (comma-separated)"
               value={userIds.join(",")}
               onChange={(e) =>
                 setUserIds(e.target.value.split(",").map((id) => id.trim()))
