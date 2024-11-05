@@ -2,12 +2,12 @@ import axios from "axios";
 
 const API_URL = 'http://127.0.0.1:8000/api';
 
-export async function indexFile(groupId) {
+export async function indexFile(groupId, pageId) {
     let token = localStorage.getItem('authToken')
 
     try {
         const response = await axios.get(
-            `${API_URL}/groups/${groupId}/files`,
+            `${API_URL}/groups/${groupId}/files?page=${pageId}`,
             {
                 headers: {
                     Accept: 'application/json',
@@ -16,11 +16,13 @@ export async function indexFile(groupId) {
                 },
             });
         if (response.status == 200) {
-            return response.data.data;
+            return response.data;
         } else {
             throw response.data.message
         }
     } catch (error) {
+        console.log(error);
+        
         throw error.response ? error.response.data : new Error("Network Error");
     }
 }
