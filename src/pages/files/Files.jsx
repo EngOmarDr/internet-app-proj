@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import "./Files.css";
 import "../groups/groups.css";
-import { FaPencilAlt, FaRegEdit, FaTimes, FaUserPlus } from "react-icons/fa";
+import { FaPencilAlt, FaTimes, FaUserPlus } from "react-icons/fa";
 import { indexFile, storeFile, downloadFile } from "../../services/fileService";
 import { useParams } from "react-router-dom";
-import { RiPencilLine } from "react-icons/ri";
 import { CustomInput } from "../../components/CustomInput";
 
 const Files = () => {
@@ -83,8 +82,10 @@ const Files = () => {
         }
     };
 
+    // eslint-disable-next-line no-unused-vars
     async function handleEditFile(groupId, fileId, newName) {
         try {
+            // eslint-disable-next-line no-undef
             const res = await editFile(groupId, fileId, newName);
             console.log(res);
 
@@ -121,7 +122,7 @@ const Files = () => {
                             <td>{file.size}</td>
                             <td>{file.date}</td>
                             <td className={`status ${file.active ? "active" : "inactive"}`}>
-                                {file.active ? "غير محجوز" : "محجوز"}
+                                {file.active ? "محجوز" : "غير محجوز"}
                             </td>
                             <td>
                                 {file.active && (
@@ -150,7 +151,7 @@ const Files = () => {
                     <h3>معاينة سريعة - {previewFile.name}</h3>
                     <p>حجم: {previewFile.size}</p>
                     <p>تاريخ: {previewFile.date}</p>
-                    <p>الحالة: {previewFile.active ? "غير محجوز" : "محجوز"}</p>
+                    <p>الحالة: {previewFile.active ? "محجوز" : "غير محجوز"}</p>
                     <button onClick={() => handleDownload(previewFile.id)}>
                         تحميل الملف
                     </button>
