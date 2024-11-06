@@ -33,6 +33,9 @@ const Header = () => {
         <Link to="/dashboard" className="nav-link">
           AdminDashboard
         </Link>
+        <Link to="/users" className="nav-link">
+          Users
+        </Link>
       </nav>
       <div className="header-actions">
         <div className="search-bar">

@@ -14,6 +14,7 @@ import Register from './pages/register/register.jsx';
 import AccountSettingsPage from './pages/user/setting/AccountSettingsPage.jsx';
 import HomePage from './pages/Home.jsx';
 import AboutPage from './pages/about/AboutPage.jsx';
+import UsersPage from './components/users/UsersPage.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -33,6 +34,7 @@ root.render(
           <Route path="backup" element={<BackupRestore />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="/account-settings" element={<AccountSettingsPage />} />
+          <Route path="/users" element={<UsersPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
