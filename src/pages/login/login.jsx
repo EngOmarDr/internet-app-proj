@@ -25,7 +25,7 @@ export default function Login() {
 
             if (data.status === 1 && data.data.token) {
                 localStorage.setItem('authToken', data.data.token);
-                navigate('/dashboard'); // إعادة توجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
+                navigate('/home'); // إعادة توجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
             } else {
                 alert("Error: " + data.message);
             }
@@ -36,7 +36,7 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
+        <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
             <div className="grid md:grid-cols-2 items-center max-w-6xl w-full m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-lg">
 
                 {/* image */}

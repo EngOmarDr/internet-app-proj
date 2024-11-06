@@ -92,7 +92,7 @@ const Groups = () => {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-br from-blue-100 to-blue-200 min-h-[calc(100vh-60px)]">
+    <div className="p-6 ">
       <header className="flex flex-col md:flex-row justify-between items-center mb-8">
         <h2 className="text-3xl font-extrabold text-blue-800 mb-4 md:mb-0">
           Groups

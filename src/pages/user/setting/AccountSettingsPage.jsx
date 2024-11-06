@@ -6,8 +6,8 @@ import './AccountSettingsPage.css';
 
 const AccountSettingsPage = () => {
   const [personalInfo, setPersonalInfo] = useState({
-    username: 'John Doe',
-    email: 'johndoe@example.com',
+    username: 'hamza tbj',
+    email: 'hamzaTbj@example.com',
     password: '',
   });
 

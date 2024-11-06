@@ -30,7 +30,7 @@ export default function Register() {
         try {
             const response = await AuthService.register(username, email, password, confirmPassword);
             localStorage.setItem('authToken', response.data.token); // حفظ الـ Token
-            navigate('/dashboard');
+            navigate('/home');
         } catch (err) {
             setError(err.message || "Registration failed");
         }

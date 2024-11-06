@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import "./Files.css";
 import "../groups/groups.css";
-import { FaAlignRight, FaAngleLeft, FaAngleRight, FaArrowLeft, FaPencilAlt, FaRegArrowAltCircleRight, FaRegEdit, FaTimes, FaUserPlus } from "react-icons/fa";
+import {  FaAngleLeft, FaAngleRight, FaPencilAlt, FaTimes, FaUserPlus } from "react-icons/fa";
 import { indexFile, storeFile, downloadFile } from "../../services/fileService";
 import { useParams } from "react-router-dom";
 import { CustomInput } from "../../components/CustomInput";
-import { PiMouseRightClickDuotone } from "react-icons/pi";
 
 const Files = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
