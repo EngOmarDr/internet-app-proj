@@ -14,6 +14,7 @@ import {
   updateGroup,
 } from "../../services/groupService";
 import { useNavigate } from "react-router-dom";
+import { getUsers } from "../../services/users";
 
 const Groups = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
@@ -24,6 +25,8 @@ const Groups = () => {
   const [groups, setGroups] = useState([]);
   const [editGroupName, setEditGroupName] = useState("");
   const [newUserIds, setNewUserIds] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(""); // حالة البحث
+  const [searchResults, setSearchResults] = useState([]); // نتائج البحث
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -37,6 +40,24 @@ const Groups = () => {
     }
     fetchGroups();
   }, []);
+
+  // تنفيذ البحث عن المستخدمين
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await getUsers(searchQuery);
+      setSearchResults(data.data); // تخزين نتائج البحث
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  // إضافة المستخدم إلى القائمة
+  const handleAddUser = (userId) => {
+    if (!userIds.includes(userId)) {
+      setUserIds([...userIds, userId]);
+    }
+  };
 
   const handleCreateGroup = async () => {
     try {
@@ -242,18 +263,43 @@ const Groups = () => {
               onChange={(e) => setNewGroupName(e.target.value)}
               className="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             />
-            <input
-              type="text"
-              placeholder="User IDs (comma-separated)"
-              value={userIds.join(",")}
-              onChange={(e) =>
-                setUserIds(e.target.value.split(",").map((id) => id.trim()))
-              }
-              className="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            />
+            {/* مربع البحث عن المستخدمين */}
+            <form onSubmit={handleSearch} className="flex mb-4">
+              <input
+                type="text"
+                placeholder="Search users by name..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="p-2 border border-gray-300 rounded-l-lg w-full focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 text-white rounded-r-lg"
+              >
+                Search
+              </button>
+            </form>
+            {/* عرض نتائج البحث */}
+            <div>
+              {searchResults.map((user) => (
+                <div
+                  key={user.id}
+                  className="flex justify-between items-center p-2 border-b"
+                >
+                  <span>{user.username}</span>
+                  <button
+                    onClick={() => handleAddUser(user.id)}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    Add
+                  </button>
+                </div>
+              ))}
+            </div>
+            
             <button
               onClick={handleCreateGroup}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition transform hover:scale-105"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg mt-4"
             >
               Create Group
             </button>
