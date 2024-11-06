@@ -6,6 +6,10 @@
   flex-direction: column;
 }
 
+.fix-height {
+  min-height: calc(100vh - 150px);
+}
+
 /* .content { */
   /* padding: 20px; */
   /* display: flex; */

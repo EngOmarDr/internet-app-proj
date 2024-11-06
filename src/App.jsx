@@ -1,6 +1,7 @@
 import './App.css';
 import { Navigate, Outlet } from 'react-router-dom';
 import Header from './pages/header/Header';
+import Footer from './components/Footer';
 
 const App = () => {
 
@@ -11,9 +12,10 @@ const App = () => {
   return (
     <div className="app">
       <Header />
-      <div className="content">
+      <div className="content fix-height">
         <Outlet />
       </div>
+      <Footer/>
     </div>
   );
 };
