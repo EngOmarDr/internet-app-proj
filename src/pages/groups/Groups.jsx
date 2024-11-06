@@ -54,7 +54,9 @@ const Groups = () => {
 
   // إضافة المستخدم إلى القائمة
   const handleAddUser = (userId) => {
-    if (!userIds.includes(userId)) {
+    if (userIds.includes(userId)) {
+      setUserIds(userIds.filter((id) => id !== userId));
+    } else {
       setUserIds([...userIds, userId]);
     }
   };
@@ -270,36 +272,40 @@ const Groups = () => {
                 placeholder="Search users by name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="p-2 border border-gray-300 rounded-l-lg w-full focus:outline-none"
+                className="p-2 border border-gray-300 rounded-lg flex-grow focus:outline-none focus:border-blue-500"
               />
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded-r-lg"
+                className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
               >
                 Search
               </button>
             </form>
             {/* عرض نتائج البحث */}
-            <div>
+            <ul className="max-h-60 overflow-y-auto">
               {searchResults.map((user) => (
-                <div
+                <li
                   key={user.id}
-                  className="flex justify-between items-center p-2 border-b"
+                  className="p-2 flex justify-between items-center border-b border-gray-300"
                 >
                   <span>{user.username}</span>
                   <button
                     onClick={() => handleAddUser(user.id)}
-                    className="text-blue-600 hover:text-blue-800"
+                    className={`px-4 py-2 rounded-lg transition ${
+                      userIds.includes(user.id)
+                        ? "bg-red-600 text-white"
+                        : "bg-blue-600 text-white"
+                    }`}
                   >
-                    Add
+                    {userIds.includes(user.id) ? "Remove" : "Add"}
                   </button>
-                </div>
+                </li>
               ))}
-            </div>
-            
+            </ul>
+
             <button
               onClick={handleCreateGroup}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg mt-4"
+              className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition transform hover:scale-105"
             >
               Create Group
             </button>
