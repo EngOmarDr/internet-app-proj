@@ -29,7 +29,7 @@ const Hero = () => {
 
       </div>
 
-      <div className="aspect-w-16 aspect-h-9 w-full max-w-sm mx-auto">
+      <div className="w-full max-w-sm mx-auto">
         <img src="/source-safe.jpg" alt="source safe"  className="h-full w-auto object-cover rounded-lg shadow-md" />
       </div>
     </div>

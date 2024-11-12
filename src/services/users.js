@@ -1,7 +1,6 @@
-// services/api.js
+
 import axios from 'axios';
 
-// ضبط التكوين الأساسي لـ Axios
 let token = localStorage.getItem("authToken");
 const api = axios.create({
   baseURL: 'http://127.0.0.1:8000/api',
@@ -11,7 +10,6 @@ const api = axios.create({
   },
 });
 
-// دالة للحصول على قائمة المستخدمين
 export const getUsers = async (query = '') => {
     
   try {

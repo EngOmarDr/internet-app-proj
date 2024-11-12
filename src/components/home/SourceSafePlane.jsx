@@ -2,7 +2,7 @@ import { TiTick } from "react-icons/ti";
 
 const SourceSafePlan = () => {
     return (
-        <div className="flex flex-col items-center justify-center w-3/4 rounded p-4 bg-gray-200 mb-7 md:w-2/4 lg:w-1/4 bgGray200">
+        <div className="flex flex-col items-center justify-center w-3/4 rounded p-4 bg-gray-200 mb-7 md:w-2/4 lg:w-1/4">
             <h3 className="text-3xl font-bold text-purple-900 textPurple2 mt-5">
                 Source Safe Premium
             </h3>

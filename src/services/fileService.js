@@ -27,7 +27,6 @@ export async function indexFile(groupId, pageId) {
     }
 }
 
-
 export const storeFile = async (groupId, fileName, file) => {
     let token = localStorage.getItem('authToken')
     const data = new FormData();

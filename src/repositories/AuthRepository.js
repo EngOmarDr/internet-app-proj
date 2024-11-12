@@ -1,6 +1,3 @@
-// ثم استيراد AuthRepository بدلًا من AuthService في RegisterPage.jsx إذا كنت تريد استخدام الـ Repository.
-
-// repositories/AuthRepository.js
 
 import AuthService from '../services/AuthService';
 

@@ -5,6 +5,8 @@ import {  FaAngleLeft, FaAngleRight, FaPencilAlt, FaTimes, FaUserPlus } from "re
 import { indexFile, storeFile, downloadFile } from "../../services/fileService";
 import { useParams } from "react-router-dom";
 import { CustomInput } from "../../components/CustomInput";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 const Files = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -20,6 +22,7 @@ const Files = () => {
     let { groupId } = useParams();
     useEffect(() => {
         getFiles(currentPage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [groupId]);
 
     async function getFiles(page) {
@@ -34,6 +37,15 @@ const Files = () => {
 
         } catch (error) {
             console.error("Error fetching files:", error);
+            Toastify({
+                text: "Error fetching files: " + error.message,
+                duration: 5000,
+                close: true,
+                gravity: "top",
+                position: "center", 
+                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+                stopOnFocus: true, 
+              }).showToast();
         }
     }
 
@@ -63,18 +75,32 @@ const Files = () => {
         if (newFile && fileName) {
             try {
                 const result = await storeFile(groupId, fileName, newFile);
-                // console.log(result);
-
-                // const updatedFiles = await indexFile(groupId);
                 setFiles([...files, { id: result.data.id, name: result.data.name }]);
                 setShowUploadFile(false);
                 setFileName("");
                 setNewFile(null);
             } catch (error) {
                 console.error("Error uploading file:", error);
+                Toastify({
+                    text: "Error uploading file: " + error.message,
+                    duration: 5000,
+                    close: true,
+                    gravity: "top",
+                    position: "center", 
+                    backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+                    stopOnFocus: true, 
+                  }).showToast();
             }
         } else {
-            alert("يرجى إدخال اسم الملف والملف المراد تحميله.");
+            Toastify({
+                text: "يرجى إدخال اسم الملف والملف المراد تحميله.",
+                duration: 5000,
+                close: true,
+                gravity: "top",
+                position: "center", 
+                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+                stopOnFocus: true, 
+              }).showToast();
         }
     };
 
@@ -90,20 +116,17 @@ const Files = () => {
             link.parentNode.removeChild(link);
         } catch (error) {
             console.error("Error downloading file:", error);
+            Toastify({
+                text: "Error downloading file: " + error.message,
+                duration: 5000,
+                close: true,
+                gravity: "top",
+                position: "center", 
+                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+                stopOnFocus: true, 
+              }).showToast();
         }
     };
-
-    // eslint-disable-next-line no-unused-vars
-    async function handleEditFile(groupId, fileId, newName) {
-        try {
-            // eslint-disable-next-line no-undef
-            const res = await editFile(groupId, fileId, newName);
-            // console.log(res);
-
-        } catch (error) {
-            console.error("Error downloading file:", error);
-        }
-    }
 
     return (
         <div className="files-container">
@@ -128,7 +151,7 @@ const Files = () => {
                             </td>
                             <td onClick={() => handleSelectFile(file)}>{file.name}</td>
                             <td className={`status ${file.active ? "active" : "inactive"}`}>
-                                {file.active ? "محجوز" : "غير محجوز"}
+                                {!file.active ? "محجوز" : "غير محجوز"}
                             </td>
                             <td>
                                 {file.active && (
@@ -210,7 +233,7 @@ const Files = () => {
                     <p>حجم: {previewFile.size}</p>
                     <p>تاريخ: {previewFile.date}</p>
 
-                    <p>الحالة: {previewFile.active ? "غير محجوز" : "محجوز"}</p>
+                    <p>الحالة: {!previewFile.active ? "غير محجوز" : "محجوز"}</p>
                     <button className="button" onClick={() => handleDownload(previewFile.id)}>
                         تحميل الملف
                     </button>

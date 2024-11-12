@@ -4,6 +4,8 @@ import AuthService from "../../services/AuthService";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa6";
 import { CustomField } from "../../components/CustomField";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -30,8 +32,16 @@ export default function Login() {
                 alert("Error: " + data.message);
             }
         } catch (error) {
-            alert("Invalid credentials");
             console.log(error);
+            Toastify({
+                text: "Invalid credentials: " + error.message,
+                duration: 5000,
+                close: true,
+                gravity: "top",
+                position: "center", 
+                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+                stopOnFocus: true, 
+              }).showToast();
         }
     };
 

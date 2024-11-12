@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom"; // استيراد Link
+import { Link } from "react-router-dom";
 import "./Header.css";
 import { FaBell, FaSearch, FaBars } from "react-icons/fa";
 import { useState } from "react";
 import UserProfileMenu from "../user/UserProfileMenu";
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false); // حالة القائمة
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen); // دالة لتبديل حالة القائمة
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
   return (
     <header className="header">

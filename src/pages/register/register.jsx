@@ -5,6 +5,8 @@ import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { CustomField } from "../../components/CustomField";
+import Toastify from "toastify-js";
+import "toastify-js/src/toastify.css";
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -33,6 +35,15 @@ export default function Register() {
             navigate('/home');
         } catch (err) {
             setError(err.message || "Registration failed");
+            Toastify({
+                text: "Registration failed: " + error.message,
+                duration: 5000,
+                close: true,
+                gravity: "top",
+                position: "center", 
+                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+                stopOnFocus: true, 
+              }).showToast();
         }
     };
 

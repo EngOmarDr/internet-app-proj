@@ -1,11 +1,13 @@
 // components/Page.jsx
 import { useEffect, useState } from 'react';
 import { getUsers } from '../../services/users';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import LoadingSpinner from '../LoadingSpinner';
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState({});
@@ -13,17 +15,16 @@ const UsersPage = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
-      setError(null);
       try {
         const data = await getUsers(query, page);
         setUsers(data.data);
         setMeta(data.meta);
       } catch (err) {
-        if (err.response && err.response.status === 401) {
-          setError('Unauthorized access. Please check your credentials.');
-        } else {
-          setError('Failed to fetch users');
-        }
+        const errorMessage = 
+          err.response && err.response.status === 401 
+          ? 'Unauthorized access. Please check your credentials.'
+          : 'Failed to fetch users';
+        toast.error(errorMessage);
       } finally {
         setLoading(false);
       }
@@ -40,9 +41,9 @@ const UsersPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <ToastContainer />
       <h1 className="text-3xl font-bold text-center mb-6">User List</h1>
 
-      {/* مربع البحث */}
       <form onSubmit={handleSearch} className="flex justify-center mb-4">
         <input
           type="text"
@@ -56,12 +57,9 @@ const UsersPage = () => {
       </form>
 
       {loading ? (
-        <p className="text-center text-gray-500">Loading...</p>
-      ) : error ? (
-        <p className="text-center text-red-500">{error}</p>
+        <LoadingSpinner/>
       ) : (
         <div>
-          {/* قائمة المستخدمين */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {users.map((user) => (
               <div key={user.id} className="bg-white rounded-lg shadow-md p-4 hover:bg-gray-50 transition-all">
@@ -71,7 +69,6 @@ const UsersPage = () => {
             ))}
           </div>
 
-          {/* التصفح */}
           <div className="flex justify-center mt-6 space-x-2">
             <button
               onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
