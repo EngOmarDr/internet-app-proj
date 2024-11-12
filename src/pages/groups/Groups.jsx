@@ -147,14 +147,34 @@ const Groups = () => {
   const handleRemoveUser = async (groupId, userId) => {
     try {
       await removeUserFromGroup(groupId, userId);
-      setSelectedGroup({
-        ...selectedGroup,
-        users: selectedGroup.users.filter((user) => user.id !== userId),
-      });
+  
+      // تحديث حالة المستخدمين في المجموعة الحالية
+      setSelectedGroup((prevSelectedGroup) => ({
+        ...prevSelectedGroup,
+        users: prevSelectedGroup.users.filter((user) => user.id !== userId),
+      }));
+  
+      // تحديث قائمة المجموعات الأصلية في حال تم عرض المجموعة ضمنها
+      setGroups((prevGroups) =>
+        prevGroups.map((group) =>
+          group.id === groupId
+            ? { ...group, users: group.users.filter((user) => user.id !== userId) }
+            : group
+        )
+      );
+  
+      Toastify({
+        text: "تم إزالة المستخدم بنجاح",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: "linear-gradient(to right, #56ab2f, #a8e063)",
+      }).showToast();
     } catch (error) {
       console.error("Error removing user:", error);
       Toastify({
-        text: "Error removing user: " + error.message,
+        text: "خطأ في إزالة المستخدم: " + error.message,
         duration: 5000,
         close: true,
         gravity: "top",
@@ -164,40 +184,61 @@ const Groups = () => {
       }).showToast();
     }
   };
+  
 
   const handleUpdateGroup = async () => {
     if (!selectedGroup || !selectedGroup.id) {
-      console.error("No selected group to update");
       Toastify({
-        text: "No group selected for update",
+        text: "لم يتم تحديد أي مجموعة للتحديث",
         duration: 5000,
         close: true,
         gravity: "top",
         position: "center",
         backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-        stopOnFocus: true,
       }).showToast();
       return;
     }
-
+  
+    // تعريف المتغيرات للمستخدمين الذين سيتم إضافتهم أو حذفهم
+    const addedUserIds = manageUserIds.filter(
+      (id) => !selectedGroup.users.some((user) => user.id === id)
+    );
+    const removedUserIds = selectedGroup.users
+      .filter((user) => !manageUserIds.includes(user.id))
+      .map((user) => user.id);
+  
     try {
       const updatedGroup = await updateGroup(
         selectedGroup.id,
         editGroupName,
-        manageUserIds
+        addedUserIds,
+        removedUserIds
       );
-
-      setGroups(
-        groups.map((group) =>
+  
+      // تحديث قائمة المجموعات في حال نجاح التحديث
+      setGroups((prevGroups) =>
+        prevGroups.map((group) =>
           group.id === selectedGroup.id ? updatedGroup : group
         )
       );
+  
+      // إعادة تعيين الحالة بعد التحديث
       setShowManageGroup(false);
       setManageUserIds([]);
+      setSelectedGroup(updatedGroup);
+  
+      Toastify({
+        text: "تم تحديث المجموعة بنجاح",
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: "linear-gradient(to right, #56ab2f, #a8e063)",
+      }).showToast();
     } catch (error) {
       console.error("Error updating group:", error);
       Toastify({
-        text: "Error updating group: " + error.message,
+        text: "خطأ في تحديث المجموعة: " + error.message,
         duration: 5000,
         close: true,
         gravity: "top",
@@ -207,6 +248,7 @@ const Groups = () => {
       }).showToast();
     }
   };
+  
 
   return (
     <div className="p-6 ">
