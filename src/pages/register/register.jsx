@@ -7,6 +7,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { CustomField } from "../../components/CustomField";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import ToggleTheme from "../../components/ToggleTheme";
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -48,8 +49,10 @@ export default function Register() {
     };
 
     return (
+        <>
+        <ToggleTheme className='fixed right-4 top-4'></ToggleTheme>
         <div className="min-h-screen flex fle-col items-center justify-center py-6 px-4">
-            <div className="grid md:grid-cols-2 items-center max-w-6xl w-full m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-lg">
+            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl w-full m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-lg">
 
                 {/* image */}
                 <div className="h-[200px] sm:h-[300px] md:h-full bg-[#000842] rounded-t-lg md:rounded-t-none md:rounded-bl-lg md:rounded-tl-lg lg:p-12 p-8">
@@ -127,7 +130,7 @@ export default function Register() {
                         </CustomField>
                         
                         {error && <p className="text-red-500">{error}</p>}
-                        <button type="submit" className="w-full rounded-lg text-sm tracking-wide bg-blue-600 hover:bg-blue-700 text-white py-3 m-0">
+                        <button type="submit" className="w-full rounded-lg text-sm tracking-wide bg-blue-600 dark:bg-blue-900 hover:bg-blue-700 text-white py-3 m-0">
                             REGISTER NOW
                         </button>
                         <p className="text-sm !mt-8 text-center text-gray-800">
@@ -140,6 +143,7 @@ export default function Register() {
                 </div>
             </div>
         </div >
+        </>
 
     );
 }
