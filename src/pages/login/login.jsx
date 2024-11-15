@@ -7,18 +7,20 @@ import { CustomField } from "../../components/CustomField";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import ToggleTheme from "../../components/ToggleTheme";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/LanguageSelector";
 
 export default function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const { t } = useTranslation()
 
     const handleTogglePassword = () => {
         setShowPassword(prevState => !prevState);
     };
 
     const navigate = useNavigate();
-    console.log(username);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -47,23 +49,26 @@ export default function Login() {
     };
 
     return (<>
+        <div className="fixed top-4 right-4 flex items-center">
 
-        <ToggleTheme className="fixed top-4 right-4"></ToggleTheme>
+            <ToggleTheme ></ToggleTheme>
+            <LanguageSelector ></LanguageSelector>
+        </div>
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl w-full m-4 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] rounded-lg">
+            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl w-full m-4 shadow-[2px_2px_10px_-3px_rgba(6,81,237,0.9)] rounded-lg">
 
                 {/* image */}
-                <div className="h-[200px] sm:h-[300px] md:h-full bg-[#000842] rounded-t-lg md:rounded-t-none md:rounded-bl-lg md:rounded-tl-lg lg:p-12 p-8">
+                <div className="h-[200px] sm:h-[300px] md:h-full bg-[#000842] rounded-t-lg md:rounded-s-lg md:rounded-t-none lg:p-12 p-8">
                     <img src="/images/login-image.webp" className="w-full h-full object-contain" alt="login-image" />
                 </div>
 
                 {/* login form */}
-                <div className="flex items-center justify-center rounded-b-lg md:rounded-b-none md:rounded-tr-lg md:rounded-br-lg p-6 h-full w-full shadow-[0_2px_22px_-4px_rgba(93,96,127,0.2)] max-md:mx-auto">
+                <div className="flex items-center justify-center md:rounded-e-lg p-6 h-full w-full shadow-[2px_2px_22px_-4px_rgba(93,96,127,0.9)] max-md:mx-auto">
                     <form onSubmit={handleLogin} className="space-y-4" >
 
                         {/* title */}
                         <div className="mb-8">
-                            <h3 className="text-gray-800 text-3xl font-bold">Login</h3>
+                            <h3 className="text-gray-800 text-3xl font-bold">{t("login")}</h3>
                             <p className="text-gray-500 text-sm mt-4 leading-relaxed">Login to your account and explore a world of possibilities. Your journey begins here.</p>
                         </div>
 
@@ -76,7 +81,7 @@ export default function Login() {
                             value={username}
                         >
                             <FaRegUser
-                                className="w-4 h-4 absolute right-4"
+                                className="w-4 h-4 absolute end-4"
                                 fill="#bbb"
                             />
                         </CustomField>
@@ -92,11 +97,11 @@ export default function Login() {
                             {
                                 showPassword
                                     ? <AiOutlineEyeInvisible
-                                        className="w-4 h-4 absolute right-4 cursor-pointer"
+                                        className="w-4 h-4 absolute end-4 cursor-pointer"
                                         onClick={handleTogglePassword}
                                     />
                                     : <AiOutlineEye
-                                        className="w-4 h-4 absolute right-4 cursor-pointer"
+                                        className="w-4 h-4 absolute end-4 cursor-pointer"
                                         onClick={handleTogglePassword}
                                     />
                             }
