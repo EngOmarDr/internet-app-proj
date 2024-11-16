@@ -15,6 +15,7 @@ import AccountSettingsPage from './pages/user/setting/AccountSettingsPage.jsx';
 import HomePage from './pages/Home.jsx';
 import AboutPage from './pages/about/AboutPage.jsx';
 import UsersPage from './components/users/UsersPage.jsx';
+import './utils/i18n.js'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
