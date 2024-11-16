@@ -1,0 +1,161 @@
+.app-dashboard-nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #34495e;
+    color: #fff;
+    padding: 0 20px;
+    margin-top: 1px;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 10;
+}
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+}
+.nav-link:hover {
+    color: #f39c12;
+}
+
+/* All Groups  */
+.all-groups-continar{
+    padding: 10px 20px;
+}
+.group{
+    background-color: white;
+    border: 2px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+.group h3{
+    color: black;
+    font-weight: bold;
+}
+.group .options{
+    width: 25%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.icon-folder {
+    color: #FFC107; 
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s ;
+}
+
+.icon-users {
+    color: #007BFF; 
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s ;
+}
+
+.icon-trash {
+    color: #FF5252; 
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s ;
+}
+
+.icon-folder:hover,
+.icon-users:hover,
+.icon-user-friends,
+.icon-trash:hover {
+    font-size: 24px;
+}
+
+.group-users-outlay{
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.group-users{
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    padding: 10px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+}
+.group-users .info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.info h1{
+    font-weight: bold;
+    font-size: 25px;
+}
+.group-users .members{
+    overflow-y: scroll;
+    padding: 5px;
+    height: 80%;
+}
+.members .member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* All Users */
+.all-users-continar{
+    padding: 10px 20px;
+}
+.all-users-continar .user{
+    background-color: white;
+    border: 2px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+.user .options{
+    width: 25%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.icon-user-friends{
+    color: #38bdf8  ; /* Choose a matching color */
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s;
+}
+.group-users .groups-in{
+    overflow-y: scroll;
+    padding: 5px;
+    height: 80%;
+}
+.groups-in .group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: black;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
