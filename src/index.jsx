@@ -16,6 +16,9 @@ import HomePage from './pages/Home.jsx';
 import AboutPage from './pages/about/AboutPage.jsx';
 import UsersPage from './components/users/UsersPage.jsx';
 import './utils/i18n.js'
+import AppDashboard from './pages/appDasshbord/AppDashboard.jsx';
+import AllGroups from './pages/appDasshbord/AllGroups.jsx';
+import AllUsers from './pages/appDasshbord/AllUsers.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -36,6 +39,10 @@ root.render(
           <Route path="notifications" element={<Notifications />} />
           <Route path="/account-settings" element={<AccountSettingsPage />} />
           <Route path="/users" element={<UsersPage />} />
+          <Route path="/appDashboard" element={<AppDashboard />}>
+          <Route index element={<AllGroups />} />
+          <Route path='allUsers' element={<AllUsers />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

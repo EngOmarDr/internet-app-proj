@@ -33,6 +33,9 @@ const Header = () => {
         <Link to="/dashboard" className="nav-link">
           AdminDashboard
         </Link>
+        <Link to="/appDashboard" className="nav-link">
+        AppDashboard
+        </Link>
         <Link to="/users" className="nav-link">
           Users
         </Link>
@@ -73,6 +76,9 @@ const Header = () => {
           >
             AdminDashboard
           </Link>
+          <Link to="/appDashboard" className="nav-link">
+            AppDashboard
+        </Link>
         </div>
       )}
     </header>
