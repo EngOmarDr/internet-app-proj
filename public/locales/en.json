@@ -2,5 +2,18 @@
     "login": "Login",
     "register": "Register",
     "en": "English",
-    "ar": "Arabic"
+    "ar": "Arabic",
+    "login_intro": "Login to your account and explore a world of possibilities. Your journey begins here.",
+    "username": "Username",
+    "password": "Password",
+    "c_password": "Confirm Password",
+    "email": "Email",
+    "not_account":"Dont have an account",
+    "have_account":"have an account",
+    "login_here":"Login here",
+    "reg_here": "Register here",
+    "reg_intro": "Enter your information to register",
+    
+    "required": "this field is required",
+    "email_valid": "insert a valid email"
 }

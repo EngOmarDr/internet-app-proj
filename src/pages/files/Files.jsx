@@ -4,9 +4,9 @@ import "../groups/groups.css";
 import {  FaAngleLeft, FaAngleRight, FaPencilAlt, FaTimes, FaUserPlus } from "react-icons/fa";
 import { indexFile, storeFile, downloadFile } from "../../services/fileService";
 import { useParams } from "react-router-dom";
-import { CustomInput } from "../../components/CustomInput";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
+import CustomInput from "../../components/CustomInput";
 
 const Files = () => {
     const [selectedFiles, setSelectedFiles] = useState([]);

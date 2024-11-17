@@ -1,8 +1,7 @@
+import React from 'react';
+import CustomInput from './CustomInput'
 
-import { CustomInput } from './CustomInput'
-
-// eslint-disable-next-line react/prop-types
-export function CustomField({ name, type, value, onChange, required = true, placeholder, children }) {
+const CustomField = React.forwardRef(({ name, type, placeholder, children,...props }, ref) => {
     return (
         <div>
             <label className="text-gray-800 text-sm mb-2 block">{placeholder}</label>
@@ -11,12 +10,13 @@ export function CustomField({ name, type, value, onChange, required = true, plac
                     placeholder={placeholder}
                     name={name}
                     type={type}
-                    value={value}
-                    onChange={onChange}
-                    required={required}
+                    ref={ref}
+                    {...props}
                 />
                 {children}
             </div>
         </div>
-    )
-}
+    );
+});
+
+export default CustomField

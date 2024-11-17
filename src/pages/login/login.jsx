@@ -3,41 +3,36 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthService from "../../services/AuthService";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa6";
-import { CustomField } from "../../components/CustomField";
+import CustomField from "../../components/CustomField";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import ToggleTheme from "../../components/ToggleTheme";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../components/LanguageSelector";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const { t } = useTranslation()
-
-    const handleTogglePassword = () => {
-        setShowPassword(prevState => !prevState);
-    };
-
-    const navigate = useNavigate();
-
-    const handleLogin = async (e) => {
-        e.preventDefault();
-
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm()
+    const onSubmit = async (data) => {
         try {
-            const data = await AuthService.loginUser(username, password);
-
-            if (data.status === 1 && data.data.token) {
-                localStorage.setItem('authToken', data.data.token);
-                navigate('/home'); // إعادة توجيه إلى الصفحة الرئيسية بعد تسجيل الدخول
+            const res = await AuthService.loginUser(data.username, data.password);
+            console.log(res);
+            
+            
+            if (res.status === 1 && res.data.token) {
+                localStorage.setItem('authToken', res.data.token);
+                navigate('/home');
             } else {
-                alert("Error: " + data.message);
+                alert("Error: " + res.message);
             }
         } catch (error) {
             console.log(error);
             Toastify({
-                text: "Invalid credentials: " + error.message,
+                text: "Invalid credentials: " + error.response.data.message,
                 duration: 5000,
                 close: true,
                 gravity: "top",
@@ -46,7 +41,16 @@ export default function Login() {
                 stopOnFocus: true,
             }).showToast();
         }
+    }
+
+    const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
+    const { t } = useTranslation()
+
+    const handleTogglePassword = () => {
+        setShowPassword(prevState => !prevState);
     };
+
 
     return (<>
         <div className="fixed top-4 right-4 flex items-center">
@@ -64,35 +68,34 @@ export default function Login() {
 
                 {/* login form */}
                 <div className="flex items-center justify-center md:rounded-e-lg p-6 h-full w-full shadow-[2px_2px_22px_-4px_rgba(93,96,127,0.9)] max-md:mx-auto">
-                    <form onSubmit={handleLogin} className="space-y-4" >
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full" >
 
                         {/* title */}
                         <div className="mb-8">
                             <h3 className="text-gray-800 text-3xl font-bold">{t("login")}</h3>
-                            <p className="text-gray-500 text-sm mt-4 leading-relaxed">Login to your account and explore a world of possibilities. Your journey begins here.</p>
+                            <p className="text-gray-500 text-sm mt-4 leading-relaxed">{t("login_intro")}</p>
                         </div>
 
                         {/* user name field */}
                         <CustomField
-                            placeholder="Username"
+                            placeholder={t("username")}
                             name="username"
                             type="text"
-                            onChange={setUsername}
-                            value={username}
+                            {...register("username", { required: true })}
                         >
                             <FaRegUser
                                 className="w-4 h-4 absolute end-4"
                                 fill="#bbb"
                             />
                         </CustomField>
+                        {errors.username && <span className="text-red-500 text-sm">{t("required")}</span>}
 
                         {/* password field */}
                         <CustomField
-                            placeholder="password"
+                            placeholder={t("password")}
                             name="password"
                             type={showPassword ? "text" : "password"}
-                            value={password}
-                            onChange={setPassword}
+                            {...register("password", { required: true })}
                         >
                             {
                                 showPassword
@@ -106,34 +109,17 @@ export default function Login() {
                                     />
                             }
                         </CustomField>
-
-
-
-                        {/* <div className="flex flex-wrap items-center justify-between gap-4"> 
-              <div className="flex items-center">
-                <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 shrink-0 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-                <label htmlFor="remember-me" className="ml-3 block text-sm text-gray-800">
-                  Remember me
-                </label>
-              </div> 
-
-              <div className="text-sm">
-                <a href="jajvascript:void(0);" className="text-blue-600 hover:underline font-semibold">
-                  Forgot your password?
-                </a>
-              </div>
-            </div> */}
-
+                        {errors.password && <span className="text-red-500 text-sm">{t("required")}</span>}
 
                         <button type="submit" className="w-full mx-0 !mt-7 shadow-xl py-3 text-sm tracking-wide rounded-lg text-white bg-blue-600 dark:bg-blue-900 hover:bg-blue-700">
-                            Log in
+                            {t("login")}
                         </button>
 
 
                         <p className="text-sm !mt-8 text-center text-gray-800">
-                            Dont have an account
+                            {t("not_account")}
                             <Link to="/register" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">
-                                Register here
+                                {t("reg_here")}
                             </Link>
                         </p>
                     </form>
