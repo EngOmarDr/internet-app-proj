@@ -21,7 +21,7 @@ export default function AllUsers(){
     })
     const groupsIn = arr.map(()=> {
         return  <>
-                    <div className="group">
+                    <div className="group-dash">
                         <h1>Group Name</h1>
                         <FaTrashAlt className="icon-trash" />
                     </div>
