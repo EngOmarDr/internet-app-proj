@@ -22,7 +22,6 @@ const register = async (username, email, password, password_confirmation) => {
 };
 
 const loginUser = async (username, password) => {
-  try {
     const response = await axios.post(`${API_URL}/login`, {
       username,
       password,
@@ -31,11 +30,13 @@ const loginUser = async (username, password) => {
         'Accept': 'application/json',
       },
     });
-    return response.data;
-  } catch (error) {
-    console.error('Login Error:', error);
-    throw error;
-  }
+    if (response.status === 200) {
+      return response.data;
+      
+    } else {
+      return response.data.message
+    }
+  
 };
 
 export default {

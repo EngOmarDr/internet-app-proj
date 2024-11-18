@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useTheme } from '../utils/theme_provider';
 
 const ToggleTheme = ({ className }) => {
-    const [theme, setTheme] = useState(
-        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark' : 'light');
-
-    useEffect(() => {
-        document.documentElement.className = theme;
-    }, [theme]);
-
-    const toggleTheme = () => {
-        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-    };
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <div className={className}>

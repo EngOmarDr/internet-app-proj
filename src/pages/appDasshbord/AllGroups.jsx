@@ -10,7 +10,7 @@ export default function AllGroups(){
     {/* i'll make a seprate component for the group letter >>> just for testing now ! */}
     const groups = arr.map(() => {
         return  <>
-                <div className="group">
+                <div className="group-dash">
                     <h3>group Name</h3>
                     <div className="options">
                         <button onClick={()=> navigat('/groups/1/files')}>

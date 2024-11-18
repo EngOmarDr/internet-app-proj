@@ -19,32 +19,43 @@ import './utils/i18n.js'
 import AppDashboard from './pages/appDasshbord/AppDashboard.jsx';
 import AllGroups from './pages/appDasshbord/AllGroups.jsx';
 import AllUsers from './pages/appDasshbord/AllUsers.jsx';
+import { I18nextProvider } from 'react-i18next';
+import i18next from './utils/i18n.js';
+import { ThemeProvider } from './utils/theme_provider.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+
+
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path='/' element={<App />}>
-          <Route index element={<HomePage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="groups" element={<Groups />} />
-          <Route path="groups/:groupId/files" element={<Files />} />
-          <Route path="reports" element={<Reports />} />
-          <Route path="backup" element={<BackupRestore />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="/account-settings" element={<AccountSettingsPage />} />
-          <Route path="/users" element={<UsersPage />} />
-          <Route path="/appDashboard" element={<AppDashboard />}>
-          <Route index element={<AllGroups />} />
-          <Route path='allUsers' element={<AllUsers />} />
-          </Route>
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+    
+    <ThemeProvider>
+      <I18nextProvider i18n={i18next}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path='/' element={<App />}>
+              <Route index element={<HomePage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="groups" element={<Groups />} />
+              <Route path="groups/:groupId/files" element={<Files />} />
+              <Route path="reports" element={<Reports />} />
+              <Route path="backup" element={<BackupRestore />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="/account-settings" element={<AccountSettingsPage />} />
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/appDashboard" element={<AppDashboard />}>
+                <Route index element={<AllGroups />} />
+                <Route path='allUsers' element={<AllUsers />} />
+              </Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </I18nextProvider>
+    </ThemeProvider>
+
+  </React.StrictMode >
 );
