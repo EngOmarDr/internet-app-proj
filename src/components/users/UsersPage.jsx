@@ -20,7 +20,6 @@ const UsersPage = () => {
         setUsers(data.data);
         setMeta(data.meta);
       } catch (err) {
-        console.error(err); // تسجيل الخطأ في وحدة التحكم
         const errorMessage = 
           err.response && err.response.status === 401 
           ? 'Unauthorized access. Please check your credentials.'

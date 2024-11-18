@@ -11,6 +11,7 @@ const api = axios.create({
 });
 
 export const getUsers = async (query = '') => {
+    
   try {
     const response = await api.get(`/users?username=${query}`);
     return response.data;
