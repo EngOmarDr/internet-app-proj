@@ -1,5 +1,6 @@
 import React from 'react'
 
+// eslint-disable-next-line react/display-name, react/prop-types
 const CustomInput = React.forwardRef(({ name, type, placeholder,...props }, ref) => {
     return (
         <input

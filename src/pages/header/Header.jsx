@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
 import "./Header.css";
-import { FaBell, FaSearch, FaBars } from "react-icons/fa";
+import { FaBell, FaBars } from "react-icons/fa";
 import { useState } from "react";
 import UserProfileMenu from "../user/UserProfileMenu";
+import ToggleTheme from "../../components/ToggleTheme";
+import LanguageSelector from "../../components/LanguageSelector";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const token = localStorage.getItem("authToken");
 
   return (
     <header className="header">
@@ -34,26 +38,40 @@ const Header = () => {
           AdminDashboard
         </Link>
         <Link to="/appDashboard" className="nav-link">
-        AppDashboard
+          AppDashboard
         </Link>
         <Link to="/users" className="nav-link">
           Users
         </Link>
       </nav>
-      <div className="header-actions">
-        <div className="search-bar">
-          <FaSearch className="search-icon" />
-          <input type="text" placeholder="Search..." className="search-input" />
+      {token ? (
+        <div className="header-actions">
+          <div className="fixed top-4 right-32 flex items-center space-x-4">
+            <ToggleTheme />
+            <LanguageSelector />
+          </div>
+          <Link to="/notifications" className="nav-link">
+            <FaBell className="icon notification-icon" title="Notifications" />
+          </Link>
+          <UserProfileMenu />
+          <FaBars className="menu-toggle" onClick={toggleMenu} />
         </div>
-        <Link to="/notifications" className="nav-link">
-          <FaBell className="icon notification-icon" title="Notifications" />
-        </Link>
-        <UserProfileMenu />
-        <FaBars className="menu-toggle" onClick={toggleMenu} />{" "}
-        {/* زر القائمة للموبايل */}
-      </div>
-
-      {/* قائمة منسدلة للروابط للموبايل */}
+      ) : (
+        <div className="header-actions flex space-x-4 items-center">
+          <Link
+            to="/login"
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+          >
+            Register
+          </Link>
+        </div>
+      )}
       {menuOpen && (
         <div className="mobile-menu show">
           <Link to="/home" className="nav-link-mobile" onClick={toggleMenu}>
@@ -62,7 +80,9 @@ const Header = () => {
           <Link to="/groups" className="nav-link-mobile" onClick={toggleMenu}>
             Groups
           </Link>
-          <Link to="/about" className="nav-link-mobile" onClick={toggleMenu}>About</Link>
+          <Link to="/about" className="nav-link-mobile" onClick={toggleMenu}>
+            About
+          </Link>
           <Link to="/reports" className="nav-link-mobile" onClick={toggleMenu}>
             Reports
           </Link>
@@ -76,9 +96,13 @@ const Header = () => {
           >
             AdminDashboard
           </Link>
-          <Link to="/appDashboard" className="nav-link">
+          <Link
+            to="/appDashboard"
+            className="nav-link-mobile"
+            onClick={toggleMenu}
+          >
             AppDashboard
-        </Link>
+          </Link>
         </div>
       )}
     </header>
