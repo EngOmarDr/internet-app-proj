@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Groups.css";
-import {
-  FaFolderOpen,
-  FaCog,
-  FaPlusCircle,
-  FaTimes,
-  FaTrashAlt,
-} from "react-icons/fa";
+import { FaTimes, FaTrashAlt } from "react-icons/fa";
 import {
   indexGroup,
   storeGroup,
@@ -17,7 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { getUsers } from "../../services/users";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
-import LoadingSpinner from "../../components/LoadingSpinner";
+import HeaderComponent from "./components/HeaderComponent";
+import GroupListComponent from "./components/GroupListComponent";
 
 const Groups = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
@@ -147,22 +142,25 @@ const Groups = () => {
   const handleRemoveUser = async (groupId, userId) => {
     try {
       await removeUserFromGroup(groupId, userId);
-  
+
       // تحديث حالة المستخدمين في المجموعة الحالية
       setSelectedGroup((prevSelectedGroup) => ({
         ...prevSelectedGroup,
         users: prevSelectedGroup.users.filter((user) => user.id !== userId),
       }));
-  
+
       // تحديث قائمة المجموعات الأصلية في حال تم عرض المجموعة ضمنها
       setGroups((prevGroups) =>
         prevGroups.map((group) =>
           group.id === groupId
-            ? { ...group, users: group.users.filter((user) => user.id !== userId) }
+            ? {
+                ...group,
+                users: group.users.filter((user) => user.id !== userId),
+              }
             : group
         )
       );
-  
+
       Toastify({
         text: "تم إزالة المستخدم بنجاح",
         duration: 3000,
@@ -184,7 +182,6 @@ const Groups = () => {
       }).showToast();
     }
   };
-  
 
   const handleUpdateGroup = async () => {
     if (!selectedGroup || !selectedGroup.id) {
@@ -198,7 +195,7 @@ const Groups = () => {
       }).showToast();
       return;
     }
-  
+
     // تعريف المتغيرات للمستخدمين الذين سيتم إضافتهم أو حذفهم
     const addedUserIds = manageUserIds.filter(
       (id) => !selectedGroup.users.some((user) => user.id === id)
@@ -206,7 +203,7 @@ const Groups = () => {
     const removedUserIds = selectedGroup.users
       .filter((user) => !manageUserIds.includes(user.id))
       .map((user) => user.id);
-  
+
     try {
       const updatedGroup = await updateGroup(
         selectedGroup.id,
@@ -214,19 +211,19 @@ const Groups = () => {
         addedUserIds,
         removedUserIds
       );
-  
+
       // تحديث قائمة المجموعات في حال نجاح التحديث
       setGroups((prevGroups) =>
         prevGroups.map((group) =>
           group.id === selectedGroup.id ? updatedGroup : group
         )
       );
-  
+
       // إعادة تعيين الحالة بعد التحديث
       setShowManageGroup(false);
       setManageUserIds([]);
       setSelectedGroup(updatedGroup);
-  
+
       Toastify({
         text: "تم تحديث المجموعة بنجاح",
         duration: 3000,
@@ -248,84 +245,17 @@ const Groups = () => {
       }).showToast();
     }
   };
-  
 
   return (
     <div className="p-6 ">
-      <header className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h2 className="text-3xl font-extrabold text-blue-800 mb-4 md:mb-0">
-          Groups
-        </h2>
-        <button
-          className="flex items-center space-x-2 text-white bg-blue-600 hover:bg-blue-700 rounded-full px-6 py-2 shadow-lg transition transform hover:scale-105"
-          onClick={() => setShowCreateGroup(true)}
-        >
-          <FaPlusCircle /> <span>Create New Group</span>
-        </button>
-      </header>
-      <div>
-        {loading ? (
-          <LoadingSpinner />
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {groups.length === 0 ? (
-              <p className="col-span-full text-center text-gray-600 text-lg">
-                You do not have a group. Do you want to
-                <span
-                  className="text-blue-600 cursor-pointer"
-                  onClick={() => setShowCreateGroup(true)}
-                >
-                  {" "}
-                  add one
-                </span>
-                ?
-              </p>
-            ) : (
-              groups.map((group) => {
-                const adminUser = group.users.find(
-                  (user) => user.role === "admin"
-                );
-                return (
-                  <div
-                    key={group.id}
-                    className="bg-white shadow-lg rounded-lg p-6 hover:shadow-2xl transition transform hover:scale-105 flex flex-col justify-between"
-                  >
-                    <div>
-                      <h3 className="text-xl font-semibold text-blue-800 mb-2">
-                        {group.name}
-                      </h3>
-                      <p className="text-gray-600">Group ID: {group.id}</p>
-                      <p className="text-gray-600">
-                        Created by: {adminUser ? adminUser.name : "N/A"}
-                      </p>
-                      <p className="text-gray-600">
-                        Members Count: {group.users.length}
-                      </p>
-                    </div>
-                    <div className="flex space-x-4 mt-4 justify-center">
-                      <button
-                        className="flex items-center space-x-2 text-white font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-md transform hover:scale-105 transition-all duration-200"
-                        onClick={() => handleShowFiles(group.id)}
-                      >
-                        <FaFolderOpen /> <span>View Files</span>
-                      </button>
-
-                      {adminUser && (
-                        <button
-                          className="flex items-center space-x-2 text-white font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 shadow-md transform hover:scale-105 transition-all duration-200"
-                          onClick={() => handleManageGroup(group)}
-                        >
-                          <FaCog /> <span>Manage Group</span>
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        )}
-      </div>
+      <HeaderComponent onCreateGroup={() => setShowCreateGroup(true)} />
+      <GroupListComponent
+        groups={groups}
+        onViewFiles={handleShowFiles}
+        onManageGroup={handleManageGroup}
+        onCreateGroup={() => setShowCreateGroup(true)}
+        loading={loading}
+      />
       {showManageGroup && selectedGroup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-6 w-full max-w-lg shadow-2xl transform transition-all duration-300">

@@ -1,6 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useTheme } from '../utils/theme_provider';
 
+// eslint-disable-next-line react/prop-types
 const ToggleTheme = ({ className }) => {
     const { theme, toggleTheme } = useTheme();
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Button, Checkbox, FileInput, Label, Modal, TextInput } from "flowbite-react";
 import { useRef, useState } from "react";
 import { storeFile } from "../../../services/fileService";
@@ -5,6 +6,7 @@ import "toastify-js/src/toastify.css";
 import Toastify from "toastify-js";
 import { AiOutlineFileAdd } from "react-icons/ai";
 
+// eslint-disable-next-line react/prop-types
 export function UploadFileModal({ handlStoreFile, groupId }) {
     const [openModal, setOpenModal] = useState(false);
     const [newFile, setNewFile] = useState(null);

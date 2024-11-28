@@ -28,7 +28,7 @@ const Header = () => {
         <Link to="/about" className="nav-link">
           About
         </Link>
-        <Link to="/reports" className="nav-link">
+        {/* <Link to="/reports" className="nav-link">
           Reports
         </Link>
         <Link to="/backup" className="nav-link">
@@ -39,14 +39,14 @@ const Header = () => {
         </Link>
         <Link to="/appDashboard" className="nav-link">
           AppDashboard
-        </Link>
+        </Link> */}
         <Link to="/users" className="nav-link">
           Users
         </Link>
       </nav>
       {token ? (
         <div className="header-actions">
-          <div className="fixed top-4 right-32 flex items-center space-x-4">
+          <div className="nav-link">
             <ToggleTheme />
             <LanguageSelector />
           </div>
@@ -83,7 +83,7 @@ const Header = () => {
           <Link to="/about" className="nav-link-mobile" onClick={toggleMenu}>
             About
           </Link>
-          <Link to="/reports" className="nav-link-mobile" onClick={toggleMenu}>
+          {/* <Link to="/reports" className="nav-link-mobile" onClick={toggleMenu}>
             Reports
           </Link>
           <Link to="/backup" className="nav-link-mobile" onClick={toggleMenu}>
@@ -102,7 +102,7 @@ const Header = () => {
             onClick={toggleMenu}
           >
             AppDashboard
-          </Link>
+          </Link> */}
         </div>
       )}
     </header>

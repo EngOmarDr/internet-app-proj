@@ -8,7 +8,6 @@ import CustomField from "../../components/CustomField";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import ToggleTheme from "../../components/ToggleTheme";
-import { t } from "i18next";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 

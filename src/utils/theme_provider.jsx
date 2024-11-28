@@ -3,10 +3,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-    const localTheme = localStorage.getItem('theme') ??
+    const localTheme = localStorage.getItem('theme') ==null ?
         (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
         ? 'dark'
         : 'light'
+        : localStorage.getItem('theme');
         
     const [theme, setTheme] = useState(localTheme);
 
