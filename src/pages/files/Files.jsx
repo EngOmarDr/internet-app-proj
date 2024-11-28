@@ -1,19 +1,24 @@
 import { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { indexFile, downloadFile } from "../../services/fileService";
+import { indexFile, downloadFile, checkIn, checkOut, fileVersions } from "../../services/fileService";
 import { useParams } from "react-router-dom";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import { UploadFileModal } from "./components/UploadFileModal";
-import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Button, Checkbox, Dropdown, Spinner, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { EditFileModal } from "./components/EditFileModal";
+import { CheckOutModal } from "./components/CheckOutModal";
+import getFiles from "./hooks/getFilesHook";
 
 const Files = () => {
+    let { groupId } = useParams();
+
+    const { files, currentPage, lastPage, setFiles } = getFiles(groupId)
+
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [files, setFiles] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [lastPage, setLastPage] = useState();
+    const [versions, setVersions] = useState([]);
+    const [selectedVersions, setSelectedVersions] = useState([]);
 
     const handleStoreFile = (data) => {
         setFiles((prev) => [...prev, data]);
@@ -29,19 +34,30 @@ const Files = () => {
         setFiles(updatedItems)
     };
 
-    let { groupId } = useParams();
-    useEffect(() => {
-        getFiles(currentPage)
-    }, [groupId]);
+    const handleMultiSelect = (file) => {
+        setSelectedFiles((prevSelected) => {
+            return prevSelected.includes(file)
+                ? prevSelected.filter((e) => e != file)
+                : [...prevSelected, file]
+        });
+    };
+    const handleMultiVersion = (fileId, version) => {
+        const oldIndex = selectedVersions?.findIndex((e) => e.fileId == fileId)
 
-    async function getFiles(page) {
+        setSelectedVersions((prevSelected) => {
+            if (oldIndex != -1 && oldIndex != null && oldIndex != undefined) {
+                prevSelected[oldIndex] = { fileId, version };
+                return [...prevSelected];
+            } else {
+                return [...prevSelected, { fileId, version }]
+            }
+        });
+    };
+
+    const handleCheckIn = async (files) => {
         try {
-            const data = await indexFile(groupId, page)
-            setFiles(data.data);
-            setLastPage(data.meta.last_page)
-            setCurrentPage(data.meta.current_page)
+            const res = await checkIn(groupId, files);
         } catch (error) {
-            console.error("Error fetching files:", error);
             Toastify({
                 text: "Error fetching files: " + error.message,
                 duration: 5000,
@@ -54,21 +70,12 @@ const Files = () => {
                 stopOnFocus: true,
             }).showToast();
         }
-    }
-
-    const handleInCheck = (file) => {
-        alert(`${file.name} محجوز الآن`);
     };
 
-    const handleMultiSelect = (fileId) => {
-        setSelectedFiles((prevSelected) => {
-            return prevSelected.includes(fileId)
-                ? prevSelected.filter((id) => id != fileId)
-                : [...prevSelected, fileId]
-        });
+    const getVersions = async (fileId) => {
+        const res = await fileVersions(groupId, fileId);
+        setVersions(res.data)
     };
-
-
 
     const handleDownload = async (fileId, fileName) => {
         try {
@@ -101,15 +108,14 @@ const Files = () => {
                     <Button
                         size="sm"
                         color="success"
-                        onClick={() => alert("إجراء In-Check لجميع الملفات المحددة")}>
-                        Check Out
-                    </Button>
-
-                    <Button
-                        size="sm"
-                        color="success"
                         className={`transition duration-300 ${selectedFiles.length > 0 ? "opacity-100" : "opacity-0 "} `}
-                        onClick={() => alert("إجراء out-Check لجميع الملفات المحددة")}>
+                        onClick={() => {
+                            const files = selectedFiles.map((e) => {
+                                const file = selectedVersions.find((e2) => e2.fileId == e.id);
+                                return { id: file.fileId, version: file.version }
+                            })
+                            handleCheckIn(files)
+                        }}>
                         Check In
                     </Button>
                 </div>
@@ -118,19 +124,21 @@ const Files = () => {
 
             {/* Start Table */}
             <div className="overflow-x-auto border border-gray-200 rounded-lg">
-                <Table hoverable striped>
+                <Table hoverable >
                     <TableHead >
                         <TableHeadCell className="p-4 bg-slate-200 rounded-ss-lg rounded-tl-none">
-                            <Checkbox onChange={(e) => {
-                                if (e.target.checked) {
-                                    const allFileIds = files.map((file) => file.id);
-                                    setSelectedFiles(allFileIds);
-                                } else {
-                                    setSelectedFiles([]);
-                                }
-                            }} />
+                            <Checkbox
+                                checked={selectedFiles.length == files.length}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setSelectedFiles(files);
+                                    } else {
+                                        setSelectedFiles([]);
+                                    }
+                                }} />
                         </TableHeadCell>
                         <TableHeadCell className="bg-slate-200">name</TableHeadCell>
+                        <TableHeadCell className="bg-slate-200">version</TableHeadCell>
                         <TableHeadCell className="bg-slate-200">status</TableHeadCell>
                         <TableHeadCell className="bg-slate-200">actions</TableHeadCell>
                     </TableHead>
@@ -139,21 +147,42 @@ const Files = () => {
                             <TableRow key={file.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                                 <TableCell className="p-4">
                                     <Checkbox
-                                        checked={selectedFiles.includes(file.id)}
-                                        onChange={() => handleMultiSelect(file.id)}
+                                        checked={selectedFiles.includes(file)}
+                                        onChange={() => handleMultiSelect(file)}
                                     />
                                 </TableCell>
                                 <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {file.name}
                                 </TableCell>
+                                <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                    <select
+                                        id="versions"
+                                        onClick={(_) => getVersions(file.id)}
+                                        onChange={(e) => { handleMultiVersion(file.id, e.target.value) }}
+                                        value={selectedVersions?.find(e => e.fileId == file.id)?.version ?? 'def'}
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value='def' disabled >selected version</option>
+                                        {
+
+                                            (versions.length > 0 && versions[0].file_id == file.id) ?
+                                                versions.map((e) => {
+                                                    return <option onSelect={(e) => handleMultiVersion(file.id, e.target.value)} key={e.id} value={e.Version_number}>{e.Version_number}</option>
+                                                })
+                                                : selectedVersions?.find(e => e.fileId == file.id)?.version ? <option value={selectedVersions?.find(e => e.fileId == file.id)?.version}>{selectedVersions?.find(e => e.fileId == file.id)?.version}</option> : <></>
+                                        }
+                                    </select>
+
+                                </TableCell>
                                 <TableCell className={`status ${file.active ? "active" : "inactive"}`}>
                                     {!file.active ? "محجوز" : "غير محجوز"}</TableCell>
                                 <TableCell className="flex items-center gap-1 ">
+
                                     {file.active && (
-                                        <Button size="sm" onClick={() => handleInCheck(file)}>Check In</Button>
+                                        <Button size="sm" onClick={() => handleCheckIn([{ file_id: file.id, version: parseInt(selectedVersions.find((e) => e.fileId == file.id)?.version) }])}>Check In</Button>
                                     )}
+
                                     {!file.active && (
-                                        <Button size="sm" onClick={() => alert("Out-Check")}>Check Out</Button>
+                                        <CheckOutModal groupId={groupId} fileId={file.id} />
                                     )}
                                     <Button size="sm" onClick={() => handleDownload(file.id, file.name)}><AiOutlineDownload className="h-5 w-5" /></Button>
                                     <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} />
@@ -182,7 +211,7 @@ const Files = () => {
                     (index + 1 > currentPage - 3 && index + 1 < currentPage + 3) ?
                         <button
                             key={index + 1}
-                            className={`relative z-10 inline-flex items-center px-4 py-2 text-sm font-semibold 
+                            className={`relative z-1 inline-flex items-center px-4 py-2 text-sm font-semibold 
                                         ${currentPage == index + 1
                                     ? 'bg-indigo-600 text-white focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 '
                                     : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:outline-offset-0'
