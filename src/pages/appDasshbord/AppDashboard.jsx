@@ -12,7 +12,7 @@ export default function AppDashboard(){
 
                 <NavLink 
                     to='.' 
-                    className='nav-link' 
+                    className='nav-link slide' 
                     style={({isActive})=> isActive ? activeStyleObj : null }
                     end
                 >
@@ -22,14 +22,30 @@ export default function AppDashboard(){
 
                 <NavLink 
                     to='allUsers' 
-                    className='nav-link' 
+                    className='nav-link slide' 
                     style={({isActive})=> isActive ? activeStyleObj : null }
                 >
                     All Users 
                 </NavLink>
 
             </div>
-            <Outlet/>
+            <div className="outlet">
+                <div className="statistics">
+                    <div className="stat">
+                        <h1>Top User Group</h1>
+                        <h3>Group Name</h3>
+                    </div>
+                    <div className="stat">
+                        <h1>Most Active User</h1>
+                        <h3>UserName</h3>
+                    </div>
+                    <div className="stat">
+                        <h1>File-Heavy Group</h1>
+                        <h3>Group Name</h3>
+                    </div>
+                </div>
+                <Outlet/>
+            </div>
         </div>
     )
 } 
