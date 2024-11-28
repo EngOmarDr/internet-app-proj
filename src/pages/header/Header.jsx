@@ -5,13 +5,14 @@ import { useState } from "react";
 import UserProfileMenu from "../user/UserProfileMenu";
 import ToggleTheme from "../../components/ToggleTheme";
 import LanguageSelector from "../../components/LanguageSelector";
+import { accessToken } from "../../utils/constant";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-  const token = localStorage.getItem("authToken");
+  const token = localStorage.getItem(accessToken);
 
   return (
     <header className="header">

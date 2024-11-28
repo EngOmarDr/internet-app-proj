@@ -2,10 +2,11 @@ import './App.css';
 import { Navigate, Outlet } from 'react-router-dom';
 import Header from './pages/header/Header';
 import Footer from './components/Footer';
+import { accessToken } from './utils/constant';
 
 const App = () => {
 
-  if(!localStorage.getItem('authToken')){
+  if(!localStorage.getItem(accessToken)){
     return <Navigate to='/login'/>
   }
 

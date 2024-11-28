@@ -20,17 +20,13 @@ export default function Login() {
     const onSubmit = async (data) => {
         try {
             const res = await AuthService.loginUser(data.username, data.password);
-            console.log(res);
-            
-            
-            if (res.status === 1 && res.data.token) {
-                localStorage.setItem('authToken', res.data.token);
-                navigate('/home');
-            } else {
-                alert("Error: " + res.message);
-            }
+
+            localStorage.setItem('access_token', res.data.access_token);
+            localStorage.setItem('refresh_token', res.data.refresh_token);
+            navigate('/home');
+
         } catch (error) {
-            console.log(error);
+            alert(error);
             Toastify({
                 text: "Invalid credentials: " + error.response.data.message,
                 duration: 5000,
@@ -59,11 +55,11 @@ export default function Login() {
             <LanguageSelector ></LanguageSelector>
         </div>
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl w-full m-4 shadow-[2px_2px_10px_-3px_rgba(6,81,237,0.9)] rounded-lg">
+            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl m-4 shadow-[0px_0px_5px_1px_rgba(93,96,127,0.9)] dark:shadow-white rounded-lg">
 
                 {/* image */}
-                <div className="h-[200px] sm:h-[300px] md:h-full bg-[#000842] rounded-t-lg md:rounded-s-lg md:rounded-t-none lg:p-12 p-8">
-                    <img src="/images/login-image.webp" className="w-full h-full object-contain" alt="login-image" />
+                <div className="h-[200px] sm:h-[300px] md:h-full bg-[#000842] rounded-t-lg md:rounded-none md:rounded-s-lg lg:p-12 p-8">
+                    <img src="/images/login-image.webp" className="w-full h-full object-scale-down" alt="login-image" />
                 </div>
 
                 {/* login form */}
@@ -111,9 +107,12 @@ export default function Login() {
                         </CustomField>
                         {errors.password && <span className="text-red-500 text-sm">{t("required")}</span>}
 
-                        <button type="submit" className="w-full mx-0 !mt-7 shadow-xl py-3 text-sm tracking-wide rounded-lg text-white bg-blue-600 dark:bg-blue-900 hover:bg-blue-700">
-                            {t("login")}
-                        </button>
+                        <span className="flex justify-center items-center">
+
+                            <button type="submit" className=" shadow-xl max-w-[300px] w-full py-3 text-sm rounded-lg text-white bg-blue-600 dark:bg-blue-900 hover:bg-blue-700">
+                                {t("login")}
+                            </button>
+                        </span>
 
 
                         <p className="text-sm !mt-8 text-center text-gray-800">

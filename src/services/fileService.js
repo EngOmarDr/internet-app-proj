@@ -1,13 +1,12 @@
 import axios from "axios";
-
-const API_URL = 'http://127.0.0.1:8000/api';
+import { accessToken, baseUrl } from "../utils/constant";
 
 export async function indexFile(groupId, pageId) {
-    let token = localStorage.getItem('authToken')
+    let token = localStorage.getItem(accessToken)
 
     try {
         const response = await axios.get(
-            `${API_URL}/groups/${groupId}/files?page=${pageId}`,
+            `${baseUrl}/groups/${groupId}/files?page=${pageId}`,
             {
                 headers: {
                     Accept: 'application/json',
@@ -27,7 +26,7 @@ export async function indexFile(groupId, pageId) {
 }
 
 export const storeFile = async (groupId, file) => {
-    let token = localStorage.getItem('authToken')
+    let token = localStorage.getItem(accessToken)
     const data = new FormData();
     data.append('path', file);
 
@@ -52,11 +51,11 @@ export const storeFile = async (groupId, file) => {
 };
 
 export const downloadFile = async (groupId, fileId, version = '') => {
-    let token = localStorage.getItem('authToken');
-    console.log(`${API_URL}/groups/${groupId}/files/${fileId}/download?version=${version}`);
+    let token = localStorage.getItem(accessToken);
+    console.log(`${baseUrl}/groups/${groupId}/files/${fileId}/download?version=${version}`);
 
     try {
-        const response = await axios.get(`${API_URL}/groups/${groupId}/files/${fileId}/download?version=${version}`, {
+        const response = await axios.get(`${baseUrl}/groups/${groupId}/files/${fileId}/download?version=${version}`, {
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`
@@ -72,9 +71,9 @@ export const downloadFile = async (groupId, fileId, version = '') => {
 };
 
 export async function editFile(groupId, fileId, fileName) {
-    let token = localStorage.getItem('authToken');
+    let token = localStorage.getItem(accessToken);
     try {
-        const response = await axios.post(`${API_URL}/groups/${groupId}/files/${fileId}?name=${fileName}`,
+        const response = await axios.post(`${baseUrl}/groups/${groupId}/files/${fileId}?name=${fileName}`,
             undefined,
             {
                 headers: {
@@ -91,27 +90,17 @@ export async function editFile(groupId, fileId, fileName) {
     }
 };
 
-export async function checkIn(groupId, fileIds) {
-    let data = JSON.stringify({
-        "file_ids": fileIds,
-        "versions": {
-            "1": 1
-        }
-    });
-
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${API_URL}/groups/${groupId}/files/check_in'`,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('authToken')
-        },
-        data: data
-    };
-
+export async function checkIn(groupId, files) {
     try {
-        const response = await axios.request(config);
+        const response = await axios.post(
+            `${baseUrl}/groups/${groupId}/files/check_in`,
+            { "files": files },
+            {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem(accessToken)}`,
+                    'Accept': 'application/json',
+                },
+            });
         console.log(JSON.stringify(response.data));
         return response.data;
     }
@@ -122,44 +111,64 @@ export async function checkIn(groupId, fileIds) {
 
 }
 
-export async function checkOut(groupId, fileIds) {
-    throw 'UnImplemented'
-    // let data = JSON.stringify({
-    //     "file_ids": fileIds,
-    //     "versions": {
-    //         "1": 1
-    //     }
-    // });
+export async function checkOut(groupId, fileId, file) {
+    const data = new FormData();
+    data.append('file', file);
+    data.append('file_id', fileId);
 
-    // let config = {
-    //     method: 'post',
-    //     maxBodyLength: Infinity,
-    //     url: `${API_URL}/groups/${groupId}/files/check_in'`,
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //         'Authorization': localStorage.getItem('authToken')
-    //     },
-    //     data: data
-    // };
+    console.log(`${baseUrl}/groups/${groupId}/files/check_out'`);
+    
 
-    // try {
-    //     const response = await axios.request(config);
-    //     console.log(JSON.stringify(response.data));
-    //     return response.data;
-    // }
-    // catch (error) {
-    //     console.log(error);
-    //     throw error.response ? error.response.data : new Error("Network Error");
-    // }
-
+    try {
+        const response = await axios.post(
+            `${baseUrl}/groups/${groupId}/files/check_out`,
+             data,
+            {
+                headers: {
+                    'Accept': 'Application/json',
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${localStorage.getItem(accessToken)}`
+                },
+            });
+        console.log(JSON.stringify(response.data));
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+        throw error.response ? error.response.data : new Error("Network Error");
+    }
 }
 
-export async function showFile(groupId, fileId) {
-    let token = localStorage.getItem('authToken')
+export async function fileVersions(groupId, fileId) {
+    let token = localStorage.getItem(accessToken)
 
     try {
         const response = await axios.get(
-            `${API_URL}/groups/${groupId}/files/${fileId}`,
+            `${baseUrl}/groups/${groupId}/files/${fileId}/versions`,
+            {
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+            });
+        if (response.status == 200) {
+            return response.data;
+        } else {
+            throw response.data.message
+        }
+    } catch (error) {
+        console.log(error);
+
+        throw error.response ? error.response.data : new Error("Network Error");
+    }
+}
+
+export async function showFile(groupId, fileId) {
+    let token = localStorage.getItem(accessToken)
+
+    try {
+        const response = await axios.get(
+            `${baseUrl}/groups/${groupId}/files/${fileId}`,
             {
                 headers: {
                     Accept: 'application/json',

@@ -1,9 +1,12 @@
 import axios from "axios";
+import { accessToken } from "../utils/constant";
 
 const API_URL = "http://127.0.0.1:8000/api";
 
 export async function storeGroup(name, userIds) {
-  let token = localStorage.getItem("authToken");
+  let token = localStorage.getItem(accessToken);
+  console.log(token);
+  
   try {
     const response = await axios.post(
       `${API_URL}/store_group`,
@@ -29,7 +32,7 @@ export async function storeGroup(name, userIds) {
 }
 
 export async function indexGroup() {
-  let token = localStorage.getItem("authToken");
+  let token = localStorage.getItem(accessToken);
 
   try {
     const response = await axios.get(`${API_URL}/index_group`, {
@@ -49,7 +52,7 @@ export async function indexGroup() {
 }
 
 export async function removeUserFromGroup(groupId, userId) {
-  let token = localStorage.getItem("authToken");
+  let token = localStorage.getItem(accessToken);
 
   try {
     const response = await axios.post(
@@ -74,7 +77,7 @@ export async function removeUserFromGroup(groupId, userId) {
 }
 
 export async function updateGroup(groupId, name, addUserIds, removeUserIds) {
-  let token = localStorage.getItem("authToken");
+  let token = localStorage.getItem(accessToken);
   console.log('====================================');
   console.log(removeUserIds);
   console.log(addUserIds);

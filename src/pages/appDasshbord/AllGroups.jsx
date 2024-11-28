@@ -6,7 +6,7 @@ export default function AllGroups(){
 
     const [seeGroupUsers , setSeeGroupUsers] = useState(false);
     const navigat = useNavigate();
-    const arr = new Array(10).fill(1)
+    const arr = new Array(15).fill(1)
     {/* i'll make a seprate component for the group letter >>> just for testing now ! */}
     const groups = arr.map(() => {
         return  <>
