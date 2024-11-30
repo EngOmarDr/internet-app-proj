@@ -23,8 +23,10 @@ export default function AllGroups(){
             try {
             const response = await getAllGroups();
             const groupsData = response.data
+            console.log(groupsData);
+            
             Toastify({
-                text: `All Users Has Been Fetch Correctly`,
+                text: `All Groups Has Been Fetch Correctly`,
                 duration: 2000,
                 close: true,
                 gravity: "top",
@@ -158,27 +160,41 @@ async function handleRemoveFile(fileId) {
         }
     }
 }
-const groups = allGroups.map((group) => {
-    const groupOwnerInfo = group.users.filter((user)=> user.role === 'admin' )
-    const groupOwnerName = groupOwnerInfo[0].name;
-    return  <>
-            <div className="group-dash" key={group.id}>
-                <h3>{group.name}</h3>
-                <h3>OwnedBy: {groupOwnerName}</h3>
-                <div className="options">
-                    <button onClick={()=> handelSeeGroupFiles(group.id)}>
-                        <FaFolderOpen className="icon-folder" />
-                    </button>
-                    <button onClick={()=> handelSeeGroupUsers(group.users,group.id)}>
-                        <FaUsers className="icon-users" />
-                    </button>
-                    <button onClick={()=> handelDeleteGroup(group.id)}>
-                        <FaTrashAlt className="icon-trash" />
-                    </button>
-                </div>
-            </div>
-            </>
-})
+
+const groups =
+<table className="w-full text-left mt-6 bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+<thead className="bg-blue-600 text-white">
+<tr>
+    <th className="p-3 font-semibold">Name</th>
+    <th className="p-3 font-semibold act" colSpan={3}>Actions</th>
+</tr>
+</thead>
+<tbody>
+{allGroups.map((group) => (
+    <tr
+    key={group.id}
+    className="border-b last:border-none hover:bg-gray-100 transition act"
+    >
+    <td className="p-3">{group.name}</td>
+    <td className="p-3">
+        <button onClick={()=> handelSeeGroupFiles(group.id)}>
+            <FaFolderOpen className="icon-folder" />
+        </button>
+    </td>
+    <td className="p-3">
+        <button onClick={()=> handelSeeGroupUsers(group.users,group.id)}>
+            <FaUsers className="icon-users" />
+        </button>
+    </td>
+    <td className="p-3">
+        <button onClick={()=> handelDeleteGroup(group.id)}>
+            <FaTrashAlt className="icon-trash" />
+        </button>
+    </td>
+    </tr>
+))}
+</tbody>
+</table>
     const membersTable = 
     (
         <table className="w-full text-left mt-6 bg-gray-50 rounded-lg shadow-lg overflow-hidden">
@@ -245,8 +261,7 @@ const groups = allGroups.map((group) => {
     )
     return(
         <div className="all-groups-continar">
-            {loading && <LoadingSpinner/>}
-            {groups}
+            {loading ? <LoadingSpinner/> : groups}
             {seeGroupUsers && (
                 <div className="group-users-outlay">
                     <div className="group-users">

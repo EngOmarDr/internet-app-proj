@@ -75,23 +75,39 @@ const handelDeletUser = async (id) => {
         }
     }
 }
-const users = allUsers.map((user) => {
-    return  <>
-            <div className="user" key={user.id}>
-                <h3>{user.username}</h3>
-                <h3>{user.email}</h3>
-                <h3>{user.roles[0].name}</h3>
-                <div className="options">
-                    <button onClick={()=> setSeeGroupsUserIn(true)}>
-                        <FaUserFriends className="icon-user-friends" />
-                    </button>
-                    <button onClick={()=> handelDeletUser(user.id)}>
-                        <FaTrashAlt className="icon-trash" />
-                    </button>
-                </div>
-            </div>
-            </>
-})
+const users =
+<table className="w-full text-left mt-6 bg-gray-50 rounded-lg shadow-lg overflow-hidden">
+<thead className="bg-blue-600 text-white">
+<tr>
+    <th className="p-3 font-semibold">Name</th>
+    <th className="p-3 font-semibold">Email</th>
+    <th className="p-3 font-semibold">Role</th>
+    <th className="p-3 font-semibold act" colSpan={2}>Actions</th>
+</tr>
+</thead>
+<tbody>
+{allUsers.map((user) => (
+    <tr
+    key={user.id}
+    className="border-b last:border-none hover:bg-gray-100 transition act"
+    >
+    <td className="p-3">{user.username}</td>
+    <td className="p-3">{user.email}</td>
+    <td className="p-3">{user.roles[0].name}</td>
+    <td className="p-3">
+        <button onClick={()=> setSeeGroupsUserIn(true)}>
+            <FaUserFriends className="icon-user-friends" />
+        </button>
+    </td>
+    <td className="p-3">
+        <button onClick={()=> handelDeletUser(user.id)}>
+            <FaTrashAlt className="icon-trash" />
+        </button>
+    </td>
+    </tr>
+))}
+</tbody>
+</table>
 
     //for testing    
     const arr = new Array(10).fill(1)
@@ -106,8 +122,7 @@ const users = allUsers.map((user) => {
 
     return(
         <div className="all-users-continar">
-            {loading && <LoadingSpinner/>}
-            {users}
+            {loading ? <LoadingSpinner/> :  users}
             {seeGroupsUserIn && (
                 <div className="group-users-outlay">
                 <div className="group-users">
