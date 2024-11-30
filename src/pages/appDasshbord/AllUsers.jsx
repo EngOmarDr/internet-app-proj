@@ -18,7 +18,7 @@ export default function AllUsers(){
             const usersData = response.data
             Toastify({
                 text: `${response.message}`,
-                duration: 5000,
+                duration: 2000,
                 close: true,
                 gravity: "top",
                 position: "center",
