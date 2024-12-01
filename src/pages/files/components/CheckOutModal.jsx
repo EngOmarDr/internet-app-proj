@@ -4,7 +4,7 @@ import "toastify-js/src/toastify.css";
 import Toastify from "toastify-js";
 import { checkOut } from "../../../services/fileService";
 
-export function CheckOutModal({ groupId, fileId }) {
+export function CheckOutModal({ groupId, fileId ,handleEditFile}) {
     const [openModal, setOpenModal] = useState(false);
     const [newFile, setNewFile] = useState(null);
     const [isLoad, setIsLoad] = useState(false);
@@ -36,10 +36,10 @@ export function CheckOutModal({ groupId, fileId }) {
             return
         }
         try {
-            const res = await checkOut(groupId, fileId, newFile);
-            console.log(res);
+            const file = await checkOut(groupId, fileId, newFile);
+            
 
-            // handlStoreFile({ id: result.data.id, name: result.data.name, active: result.data.active });
+            handleEditFile(file);
             setNewFile(null);
             setIsLoad(false)
             setOpenModal(false)

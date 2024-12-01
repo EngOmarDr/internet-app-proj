@@ -1,19 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { indexFile, downloadFile, checkIn, checkOut, fileVersions } from "../../services/fileService";
+import { downloadFile, checkIn, fileVersions } from "../../services/fileService";
 import { useParams } from "react-router-dom";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
+import { Bounce, Flip, Slide, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { UploadFileModal } from "./components/UploadFileModal";
-import { Button, Checkbox, Dropdown, Spinner, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { AiOutlineDownload } from "react-icons/ai";
-import { EditFileModal } from "./components/EditFileModal";
 import { CheckOutModal } from "./components/CheckOutModal";
 import getFiles from "./hooks/getFilesHook";
+import { useTheme } from "../../utils/theme_provider";
 
 const Files = () => {
     let { groupId } = useParams();
-
+    const theme = useTheme().theme
     const { files, currentPage, lastPage, setFiles } = getFiles(groupId)
 
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -35,6 +35,21 @@ const Files = () => {
     };
 
     const handleMultiSelect = (file) => {
+        const item = selectedVersions.find((e) => e.fileId == file.id)
+        if (!item) {
+            toast.error('you have to select version for file', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                // transition: Bounce,
+            });
+            return;
+        }
         setSelectedFiles((prevSelected) => {
             return prevSelected.includes(file)
                 ? prevSelected.filter((e) => e != file)
@@ -54,21 +69,53 @@ const Files = () => {
         });
     };
 
-    const handleCheckIn = async (files) => {
+    const handleCheckIn = async (selectedFiles) => {
+        const file = selectedFiles.find((e) => e.version)
+        if (!file) {
+            toast('you have to select version for the file', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme,
+                transition: Slide,
+            });
+            return;
+        }
         try {
-            const res = await checkIn(groupId, files);
+            console.log(selectedFiles);
+
+            await checkIn(groupId, selectedFiles);
+
+            const editeFiles = files.map((file) => {
+                console.log(file,'file');
+                const item = selectedFiles.find((it) => it.file_id == file.id)
+                
+                if (item) {
+                    return {id: file.id, name: file.name, is_locked: item.is_locked};
+                }
+                return file;
+            })
+            console.log(editeFiles);
+
+            setFiles(editeFiles)
+
         } catch (error) {
-            Toastify({
-                text: "Error fetching files: " + error.message,
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                // style: {
-                //     backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)"
-                // },
-                stopOnFocus: true,
-            }).showToast();
+            console.log(error);
+
+            toast.error(error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: theme,
+                // transition: Bounce,
+            });
         }
     };
 
@@ -103,6 +150,8 @@ const Files = () => {
 
     return (
         <div className="px-5">
+            <ToastContainer />
+
             <div className="actions flex flex-row gap-1 py-5 justify-between items-center">
                 <div className="flex flex-row gap-1">
                     <Button
@@ -112,7 +161,7 @@ const Files = () => {
                         onClick={() => {
                             const files = selectedFiles.map((e) => {
                                 const file = selectedVersions.find((e2) => e2.fileId == e.id);
-                                return { id: file.fileId, version: file.version }
+                                return { file_id: file.fileId, version: parseInt(file.version) }
                             })
                             handleCheckIn(files)
                         }}>
@@ -130,6 +179,10 @@ const Files = () => {
                             <Checkbox
                                 checked={selectedFiles.length == files.length}
                                 onChange={(e) => {
+                                    if (selectedVersions.length != files.length) {
+                                        // toast.error('you have to selected version for all files');
+                                        return;
+                                    }
                                     if (e.target.checked) {
                                         setSelectedFiles(files);
                                     } else {
@@ -173,19 +226,19 @@ const Files = () => {
                                     </select>
 
                                 </TableCell>
-                                <TableCell className={`status ${file.active ? "active" : "inactive"}`}>
-                                    {!file.active ? "محجوز" : "غير محجوز"}</TableCell>
+                                <TableCell> {file.is_locked ? "محجوز" : "غير محجوز"}</TableCell>
                                 <TableCell className="flex items-center gap-1 ">
 
-                                    {file.active && (
+                                    {file.is_locked && (
+                                        <CheckOutModal groupId={groupId} fileId={file.id} handleEditFile={handleEditFile} />
+                                    )}
+
+                                    {!file.is_locked && (
                                         <Button size="sm" onClick={() => handleCheckIn([{ file_id: file.id, version: parseInt(selectedVersions.find((e) => e.fileId == file.id)?.version) }])}>Check In</Button>
                                     )}
 
-                                    {!file.active && (
-                                        <CheckOutModal groupId={groupId} fileId={file.id} />
-                                    )}
                                     <Button size="sm" onClick={() => handleDownload(file.id, file.name)}><AiOutlineDownload className="h-5 w-5" /></Button>
-                                    <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} />
+                                    {/* <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} /> */}
                                 </TableCell>
                             </TableRow>
                         ))}
