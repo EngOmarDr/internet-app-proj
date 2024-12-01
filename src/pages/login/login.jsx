@@ -23,6 +23,9 @@ export default function Login() {
 
             localStorage.setItem('access_token', res.data.access_token);
             localStorage.setItem('refresh_token', res.data.refresh_token);
+            res.data.roles[0] === 'admin' 
+            ? localStorage.setItem('isAdmin', true)
+            : localStorage.setItem('isAdmin', false)
             navigate('/home');
 
         } catch (error) {

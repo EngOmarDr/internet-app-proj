@@ -38,9 +38,12 @@ const Header = () => {
         <Link to="/dashboard" className="nav-link">
           AdminDashboard
         </Link>
-        <Link to="/appDashboard" className="nav-link">
-          AppDashboard
-        </Link>
+        {
+            JSON.parse(localStorage.getItem('isAdmin')) == true &&
+            <Link to="/appDashboard" className="nav-link">
+              AppDashboard
+            </Link>
+        }
         <Link to="/users" className="nav-link">
           Users
         </Link>
