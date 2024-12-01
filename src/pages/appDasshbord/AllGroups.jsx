@@ -74,7 +74,7 @@ async function handleRemoveUser(groupId,userId) {
             await removeUserFromGroup(groupId,userId)
             MySwal.fire(
                 'Deleted!',
-                `User Has Been Deleted `,
+                `User Has Been Deleted Successfully ! `,
                 'success'
             );
             setGroupInfo((prev) => ({...prev, groupMembers: prev.groupMembers.filter((user) => user.id !== userId)}));
