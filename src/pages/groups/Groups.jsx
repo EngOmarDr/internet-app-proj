@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import "./Groups.css";
-import { FaTimes, FaTrashAlt } from "react-icons/fa";
 import {
   indexGroup,
   storeGroup,
@@ -13,6 +12,8 @@ import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 import HeaderComponent from "./components/HeaderComponent";
 import GroupListComponent from "./components/GroupListComponent";
+import EditGroupModalComponent from "./components/EditgroupModalComponent";
+import CreateGroupModalComponent from "./components/CreateGroupModalComponent";
 
 const Groups = () => {
   const [showCreateGroup, setShowCreateGroup] = useState(false);
@@ -257,162 +258,33 @@ const Groups = () => {
         loading={loading}
       />
       {showManageGroup && selectedGroup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-6 w-full max-w-lg shadow-2xl transform transition-all duration-300">
-            <FaTimes
-              className="text-gray-600 cursor-pointer float-right text-2xl hover:text-gray-800 transition"
-              onClick={() => setShowManageGroup(false)}
-            />
-            <h3 className="text-2xl font-semibold text-blue-800 mb-4 border-b pb-2">
-              Edit Group: {selectedGroup.name}
-            </h3>
-            <input
-              type="text"
-              value={editGroupName}
-              onChange={(e) => setEditGroupName(e.target.value)}
-              className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Edit Group Name"
-            />
-            <form
-              onSubmit={handleManageSearch}
-              className="flex items-center mb-4"
-            >
-              <input
-                type="text"
-                placeholder="Search users by name..."
-                value={manageSearchQuery}
-                onChange={(e) => setManageSearchQuery(e.target.value)}
-                className="p-3 border border-gray-300 rounded-lg flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                className="ml-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg hover:from-blue-600 hover:to-indigo-700 transition"
-              >
-                Search
-              </button>
-            </form>
-            <ul className="max-h-60 overflow-y-auto rounded-lg border border-gray-200 mb-4 shadow-inner">
-              {manageSearchResults.map((user) => (
-                <li
-                  key={user.id}
-                  className="p-3 flex justify-between items-center border-b border-gray-200 last:border-none"
-                >
-                  <span className="font-medium">{user.username}</span>
-                  <button
-                    onClick={() => handleAddUserToManage(user.id)}
-                    className={`px-4 py-2 rounded-lg font-semibold transition ${
-                      manageUserIds.includes(user.id)
-                        ? "bg-red-500 hover:bg-red-600 text-white"
-                        : "bg-green-500 hover:bg-green-600 text-white"
-                    }`}
-                  >
-                    {manageUserIds.includes(user.id) ? "Remove" : "Add"}
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              onClick={handleUpdateGroup}
-              className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 rounded-lg mt-4 transition transform hover:scale-105"
-            >
-              Update Group
-            </button>
-            <table className="w-full text-left mt-6 bg-gray-50 rounded-lg shadow-lg overflow-hidden">
-              <thead className="bg-blue-600 text-white">
-                <tr>
-                  <th className="p-3 font-semibold">Name</th>
-                  <th className="p-3 font-semibold">Email</th>
-                  <th className="p-3 font-semibold">Role</th>
-                  <th className="p-3 font-semibold">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedGroup.users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="border-b last:border-none hover:bg-gray-100 transition"
-                  >
-                    <td className="p-3">{user.name}</td>
-                    <td className="p-3">{user.email}</td>
-                    <td className="p-3">{user.role}</td>
-                    <td className="p-3">
-                      <button
-                        className="text-red-600 hover:text-red-800 flex items-center space-x-1"
-                        onClick={() =>
-                          handleRemoveUser(selectedGroup.id, user.id)
-                        }
-                      >
-                        <FaTrashAlt /> <span>Remove</span>
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <EditGroupModalComponent
+        selectedGroup={selectedGroup}
+        setShowManageGroup={setShowManageGroup}
+        handleManageSearch={handleManageSearch}
+        manageSearchQuery={manageSearchQuery}
+        setManageSearchQuery={setManageSearchQuery}
+        manageSearchResults={manageSearchResults}
+        manageUserIds={manageUserIds}
+        handleAddUserToManage={handleAddUserToManage}
+        handleUpdateGroup={handleUpdateGroup}
+        handleRemoveUser={handleRemoveUser}
+      />
       )}
       {showCreateGroup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg">
-            <FaTimes
-              className="text-gray-600 cursor-pointer float-right"
-              onClick={() => setShowCreateGroup(false)}
-            />
-            <h3 className="text-2xl font-semibold text-blue-800 mb-4">
-              Create New Group
-            </h3>
-            <input
-              type="text"
-              placeholder="Group Name"
-              value={newGroupName}
-              onChange={(e) => setNewGroupName(e.target.value)}
-              className="w-full p-2 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            />
-            <form onSubmit={handleSearch} className="flex mb-4">
-              <input
-                type="text"
-                placeholder="Search users by name..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="p-2 border border-gray-300 rounded-lg flex-grow focus:outline-none focus:border-blue-500"
-              />
-              <button
-                type="submit"
-                className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-              >
-                Search
-              </button>
-            </form>
-            <ul className="max-h-60 overflow-y-auto">
-              {searchResults.map((user) => (
-                <li
-                  key={user.id}
-                  className="p-2 flex justify-between items-center border-b border-gray-300"
-                >
-                  <span>{user.username}</span>
-                  <button
-                    onClick={() => handleAddUser(user.id)}
-                    className={`px-4 py-2 rounded-lg transition ${
-                      userIds.includes(user.id)
-                        ? "bg-red-600 text-white"
-                        : "bg-blue-600 text-white"
-                    }`}
-                  >
-                    {userIds.includes(user.id) ? "Remove" : "Add"}
-                  </button>
-                </li>
-              ))}
-            </ul>
+        <CreateGroupModalComponent
 
-            <button
-              onClick={handleCreateGroup}
-              className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition transform hover:scale-105"
-            >
-              Create Group
-            </button>
-          </div>
-        </div>
+        setShowCreateGroup={setShowCreateGroup}
+        handleCreateGroup={handleCreateGroup}
+        newGroupName={newGroupName}
+        setNewGroupName={setNewGroupName}
+        handleSearch={handleSearch}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        searchResults={searchResults}
+        handleAddUser={handleAddUser}
+        userIds={userIds}
+      />
       )}
     </div>
   );
