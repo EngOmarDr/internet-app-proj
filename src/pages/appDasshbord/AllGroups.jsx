@@ -74,7 +74,7 @@ async function handleRemoveUser(groupId,userId) {
             await removeUserFromGroup(groupId,userId)
             MySwal.fire(
                 'Deleted!',
-                `User Has Been Deleted `,
+                `User Has Been Deleted Successfully ! `,
                 'success'
             );
             setGroupInfo((prev) => ({...prev, groupMembers: prev.groupMembers.filter((user) => user.id !== userId)}));
@@ -212,7 +212,7 @@ const groups =
                 key={user.id}
                 className="border-b last:border-none hover:bg-gray-100 transition"
                 >
-                <td className="p-3">{user.name}</td>
+                <td className="p-3">{user.username}</td>
                 <td className="p-3">{user.email}</td>
                 <td className="p-3">{user.role}</td>
                 <td className="p-3">

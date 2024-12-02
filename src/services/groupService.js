@@ -56,7 +56,7 @@ export async function removeUserFromGroup(groupId, userId) {
 
   try {
     const response = await axios.post(
-      `${API_URL}/removeUserFromGroup/${groupId}/${userId}`,
+      `${API_URL}/groups/${groupId}/users/${userId}`,
       {},
       {
         headers: {
