@@ -3,6 +3,7 @@ import LoadingSpinner from "../../../components/LoadingSpinner"
 import GroupCardComponent from "./GroupCardComponent"
 
 const GroupListComponent = ({ groups, onViewFiles, onManageGroup, onCreateGroup, loading }) => {
+  console.log(groups)
   return (
     <>
     {loading ? (

@@ -58,7 +58,7 @@ const EditGroupModalComponent = ({
                 key={user.id}
                 className="border-b last:border-none hover:bg-gray-100 transition"
               >
-                <td className="p-3">{user.name}</td>
+                <td className="p-3">{user.username}</td>
                 <td className="p-3">{user.email}</td>
                 <td className="p-3">{user.role}</td>
                 <td className="p-3">

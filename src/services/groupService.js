@@ -104,6 +104,7 @@ export async function updateGroup(groupId, name, addUserIds, removeUserIds) {
       throw new Error(response.data.message);
     }
   } catch (error) {
+    console.error("Error updating group:", error);
     throw error.response ? error.response.data : new Error("Network Error");
   }
 }

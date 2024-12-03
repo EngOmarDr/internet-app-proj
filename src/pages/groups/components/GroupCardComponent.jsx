@@ -7,8 +7,9 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
 
   // البحث عن المستخدم الذي يمتلك دور "admin"
   const adminUser =
-    group?.users?.find((user) => user.roles && user.roles.includes("admin")) ||
+    group?.users?.find((user) => user.role && user.role.includes("admin")) ||
     null;
+    console.log(adminUser)
 
   return (
     <div
