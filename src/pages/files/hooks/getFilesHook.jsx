@@ -28,8 +28,8 @@ function getFiles(groupId) {
     try {
       const data = await indexFile(groupId, page)
       setFiles(data.data);
-      setLastPage(data.meta.last_page)
-      setCurrentPage(data.meta.current_page)
+      setLastPage(data.last_page)
+      setCurrentPage(data.current_page)
     } catch (error) {
       console.error("Error fetching files:", error);
       Toastify({

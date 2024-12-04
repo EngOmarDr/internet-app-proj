@@ -47,9 +47,9 @@ const Header = () => {
       </nav>
       {token ? (
         <div className="header-actions">
-          <div className="nav-link">
+          <div className="nav-link ">
             <ToggleTheme />
-            <LanguageSelector />
+            <LanguageSelector className={`text-slate-900`} />
           </div>
           <Link to="/notifications" className="nav-link">
             <FaBell className="icon notification-icon" title="Notifications" />

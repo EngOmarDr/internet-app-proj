@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from './constant';
-import { useNavigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:8000/api',
@@ -13,10 +12,15 @@ const axiosInstance = axios.create({
 
 
 const refreshToken = async () => {
-    const response = await axiosInstance.post(
+    const response = await axios.post(
         '/refresh',
-        null,
-        { headers: `Bearer ${localStorage.getItem(REFRESH_TOKEN_KEY)}` },
+        undefined,
+        {
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${localStorage.getItem(REFRESH_TOKEN_KEY)}`,
+            },
+        },
     );
     console.log('-----------------------------------------------------------');
     console.log(response.data);
@@ -37,6 +41,8 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (error) => {
+        console.log(error, 'errror from request');
+
         return Promise.reject(error);
     }
 );
@@ -46,29 +52,27 @@ axiosInstance.interceptors.response.use(
     async error => {
         const originalRequest = error.config;
 
-        if (error.response.status === 401 && !originalRequest && !originalRequest._retry) {
-            console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
-            
+        if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try {
-                console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
                 const res = await refreshToken();
-                console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+
                 axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${res.data.access_token}`;
                 originalRequest.headers['Authorization'] = `Bearer ${res.data.access_token}`;
 
                 localStorage.setItem(ACCESS_TOKEN_KEY, res.data.access_token)
                 localStorage.setItem(REFRESH_TOKEN_KEY, res.data.refresh_token)
-                console.log('----------------------');
 
                 return axiosInstance(originalRequest);
             } catch (refreshError) {
-                console.log('uuuuuuuuuuuuuuuuuuuuuuuuuuu');
-                console.log(refreshError);
-                console.log('=======-============-------');
+                alert(`${refreshError} from axsio.js`);
+                if (refreshError.response?.status === 401) {
 
-                localStorage.removeItem(ACCESS_TOKEN_KEY)
-                localStorage.removeItem(REFRESH_TOKEN_KEY)
+                    localStorage.removeItem(ACCESS_TOKEN_KEY)
+                    localStorage.removeItem(REFRESH_TOKEN_KEY)
+                    // navigate('/login'); // Redirect to login
+                }
+
                 return Promise.reject(refreshError);
             }
         }

@@ -2,8 +2,7 @@ import { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { downloadFile, checkIn, fileVersions } from "../../services/fileService";
 import { useParams } from "react-router-dom";
-import { Bounce, Flip, Slide, ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Slide, toast } from 'react-toastify';
 import { UploadFileModal } from "./components/UploadFileModal";
 import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { AiOutlineDownload } from "react-icons/ai";
@@ -18,7 +17,6 @@ const Files = () => {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [versions, setVersions] = useState([]);
-    const [selectedVersions, setSelectedVersions] = useState([]);
 
     const handleStoreFile = (data) => {
         setFiles((prev) => [...prev, data]);
@@ -35,8 +33,7 @@ const Files = () => {
     };
 
     const handleMultiSelect = (file) => {
-        const item = selectedVersions.find((e) => e.fileId == file.id)
-        if (!item) {
+        if (!file.version) {
             toast.error('you have to select version for file', {
                 position: "top-right",
                 autoClose: 5000,
@@ -56,17 +53,13 @@ const Files = () => {
                 : [...prevSelected, file]
         });
     };
-    const handleMultiVersion = (fileId, version) => {
-        const oldIndex = selectedVersions?.findIndex((e) => e.fileId == fileId)
 
-        setSelectedVersions((prevSelected) => {
-            if (oldIndex != -1 && oldIndex != null && oldIndex != undefined) {
-                prevSelected[oldIndex] = { fileId, version };
-                return [...prevSelected];
-            } else {
-                return [...prevSelected, { fileId, version }]
-            }
-        });
+    const handleMultiVersion = (fileId, version) => {
+        setFiles((oldFiles) =>
+            oldFiles.map((file) =>
+                file.id === fileId ? { ...file, version } : file
+            )
+        );
     };
 
     const handleCheckIn = async (selectedFiles) => {
@@ -90,11 +83,11 @@ const Files = () => {
             await checkIn(groupId, selectedFiles);
 
             const editeFiles = files.map((file) => {
-                console.log(file,'file');
+                console.log(file, 'file');
                 const item = selectedFiles.find((it) => it.file_id == file.id)
-                
+
                 if (item) {
-                    return {id: file.id, name: file.name, is_locked: item.is_locked};
+                    return { id: file.id, name: file.name, is_locked: item.is_locked };
                 }
                 return file;
             })
@@ -124,34 +117,52 @@ const Files = () => {
         setVersions(res.data)
     };
 
-    const handleDownload = async (fileId, fileName) => {
+    const handleDownload = async (fileId, fileName, version) => {
+        if (!version) {
+            toast.error('you have to select version', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: theme,
+            });
+            return
+        }
         try {
-            const fileData = await downloadFile(groupId, fileId);
-            const url = window.URL.createObjectURL(new Blob([fileData]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `${fileName}`);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
+            await downloadFile(groupId, fileId, fileName, version);
         } catch (error) {
             console.error("Error downloading file:", error);
-            Toastify({
-                text: "Error downloading file: " + error.message,
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-                stopOnFocus: true,
-            }).showToast();
+            toast.error(error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: theme,
+                // transition: Bounce,
+            });
         }
     };
 
+    // if (isLoading) return (
+    //     <div className="grid place-items-center h-[calc(100svh-110px)] ">
+    //         <LoadingSpinner />
+    //     </div>
+    // )
+
+    // if (error) return (
+    //     <div className="grid place-items-center h-[calc(100svh-110px)]">
+    //         <h1>{error.message}</h1>
+    //     </div>
+    // )
+
     return (
         <div className="px-5">
-            <ToastContainer />
-
             <div className="actions flex flex-row gap-1 py-5 justify-between items-center">
                 <div className="flex flex-row gap-1">
                     <Button
@@ -160,7 +171,7 @@ const Files = () => {
                         className={`transition duration-300 ${selectedFiles.length > 0 ? "opacity-100" : "opacity-0 "} `}
                         onClick={() => {
                             const files = selectedFiles.map((e) => {
-                                const file = selectedVersions.find((e2) => e2.fileId == e.id);
+                                const file = files.find((e2) => e2.fileId == e.id);
                                 return { file_id: file.fileId, version: parseInt(file.version) }
                             })
                             handleCheckIn(files)
@@ -179,10 +190,10 @@ const Files = () => {
                             <Checkbox
                                 checked={selectedFiles.length == files.length}
                                 onChange={(e) => {
-                                    if (selectedVersions.length != files.length) {
-                                        // toast.error('you have to selected version for all files');
-                                        return;
-                                    }
+                                    // if (selectedVersions.length != files.length) {
+                                    //     // toast.error('you have to selected version for all files');
+                                    //     return;
+                                    // }
                                     if (e.target.checked) {
                                         setSelectedFiles(files);
                                     } else {
@@ -212,7 +223,7 @@ const Files = () => {
                                         id="versions"
                                         onClick={(_) => getVersions(file.id)}
                                         onChange={(e) => { handleMultiVersion(file.id, e.target.value) }}
-                                        value={selectedVersions?.find(e => e.fileId == file.id)?.version ?? 'def'}
+                                        value={file.version ?? 'def' /*selectedVersions?.find(e => e.fileId == file.id)?.version ?? 'def'*/}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value='def' disabled >selected version</option>
                                         {
@@ -221,7 +232,7 @@ const Files = () => {
                                                 versions.map((e) => {
                                                     return <option onSelect={(e) => handleMultiVersion(file.id, e.target.value)} key={e.id} value={e.Version_number}>{e.Version_number}</option>
                                                 })
-                                                : selectedVersions?.find(e => e.fileId == file.id)?.version ? <option value={selectedVersions?.find(e => e.fileId == file.id)?.version}>{selectedVersions?.find(e => e.fileId == file.id)?.version}</option> : <></>
+                                                : file.version /*selectedVersions?.find(e => e.fileId == file.id)?.version*/ ? <option value={file.version}>{file.version}</option> : <></>
                                         }
                                     </select>
 
@@ -234,10 +245,10 @@ const Files = () => {
                                     )}
 
                                     {!file.is_locked && (
-                                        <Button size="sm" onClick={() => handleCheckIn([{ file_id: file.id, version: parseInt(selectedVersions.find((e) => e.fileId == file.id)?.version) }])}>Check In</Button>
+                                        <Button size="sm" onClick={() => handleCheckIn([{ file_id: file.id, version: file.version }])}>Check In</Button>
                                     )}
 
-                                    <Button size="sm" onClick={() => handleDownload(file.id, file.name)}><AiOutlineDownload className="h-5 w-5" /></Button>
+                                    <Button size="sm" onClick={() => handleDownload(file.id, file.name, file.version)}><AiOutlineDownload className="h-5 w-5" /></Button>
                                     {/* <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} /> */}
                                 </TableCell>
                             </TableRow>

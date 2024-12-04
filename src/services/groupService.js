@@ -1,5 +1,6 @@
 import axios from "axios";
 import { accessToken } from "../utils/constant";
+import axiosInstance from "../utils/axios";
 
 const API_URL = "http://127.0.0.1:8000/api";
 
@@ -32,23 +33,23 @@ export async function storeGroup(name, userIds) {
 }
 
 export async function indexGroup() {
-  let token = localStorage.getItem(accessToken);
-
   try {
-    const response = await axios.get(`${API_URL}/index_group`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axiosInstance.get(`/index_group`)
+   console.log(response);
+   
     if (response.status == 200) {
-      return response.data.data;
+        return response.data.data;
     } else {
-      throw response.data.message;
+        console.log(response);
+
+        throw response.data.message
     }
-  } catch (error) {
+} catch (error) {
+    console.log(error);
+
     throw error.response ? error.response.data : new Error("Network Error");
-  }
+}
+ 
 }
 
 export async function removeUserFromGroup(groupId, userId) {

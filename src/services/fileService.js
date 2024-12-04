@@ -44,10 +44,16 @@ export const storeFile = async (groupId, file) => {
     }
 };
 
-export const downloadFile = async (groupId, fileId, version = '') => {
+export const downloadFile = async (groupId, fileId, fileName,version) => {
     try {
         const response = await axiosInstance.get(`/groups/${groupId}/files/${fileId}/download?version=${version}`);
-
+        const url = window.URL.createObjectURL(new Blob([response]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${fileName}`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
         return response.data;
     } catch (error) {
         console.error("Error downloading file:", error);
@@ -60,7 +66,7 @@ export async function checkIn(groupId, files) {
     try {
         // console.log(axiosInstance.defaults.headers);
         // console.log(files);
-        
+
         const response = await axiosInstance.post(
             `/groups/${groupId}/files/check_in`,
             { "files": files },
