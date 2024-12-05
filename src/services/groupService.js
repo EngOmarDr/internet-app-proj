@@ -79,10 +79,6 @@ export async function removeUserFromGroup(groupId, userId) {
 
 export async function updateGroup(groupId, name, addUserIds, removeUserIds) {
   let token = localStorage.getItem(accessToken);
-  console.log('====================================');
-  console.log(removeUserIds);
-  console.log(addUserIds);
-  console.log('====================================');
   try {
     const response = await axios.post(
       `${API_URL}/update_group/${groupId}`,

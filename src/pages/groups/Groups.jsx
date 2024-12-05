@@ -213,6 +213,8 @@ const Groups = () => {
         removedUserIds
       );
 
+      console.log(updatedGroup);
+
       // تحديث قائمة المجموعات في حال نجاح التحديث
       setGroups((prevGroups) =>
         prevGroups.map((group) =>
@@ -269,6 +271,7 @@ const Groups = () => {
         handleAddUserToManage={handleAddUserToManage}
         handleUpdateGroup={handleUpdateGroup}
         handleRemoveUser={handleRemoveUser}
+        setEditGroupName={setEditGroupName}
       />
       )}
       {showCreateGroup && (

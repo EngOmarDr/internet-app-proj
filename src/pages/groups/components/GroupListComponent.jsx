@@ -1,22 +1,23 @@
 /* eslint-disable react/prop-types */
 import LoadingSpinner from "../../../components/LoadingSpinner"
 import GroupCardComponent from "./GroupCardComponent"
+import { useTranslation } from "react-i18next";
 
 const GroupListComponent = ({ groups, onViewFiles, onManageGroup, onCreateGroup, loading }) => {
-  console.log(groups)
+  const { t } = useTranslation();
   return (
     <>
     {loading ? (
       <LoadingSpinner />
     ) : groups.length === 0 ? (
       <p className="col-span-full text-center text-gray-600 text-lg">
-        You do not have a group. Do you want to
+        {t("no_groups_found")}. {t("do_you_want_to")}
         <span
           className="text-blue-600 cursor-pointer"
           onClick={onCreateGroup}
         >
           {" "}
-          add one
+          {t("add_one")}
         </span>
         ?
       </p>

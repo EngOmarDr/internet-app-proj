@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
 import { FaCog } from "react-icons/fa";
 import { FaFolderOpen } from "react-icons/fa6";
+import { useTranslation } from "react-i18next";
 
 const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
-  console.log("Group Data:", group);
-
-  // البحث عن المستخدم الذي يمتلك دور "admin"
   const adminUser =
     group?.users?.find((user) => user.role && user.role.includes("admin")) ||
     null;
-    console.log(adminUser)
+
+    const { t } = useTranslation();
 
   return (
     <div
@@ -20,12 +19,12 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
         <h3 className="text-xl font-semibold text-blue-800 mb-2">
           {group?.name || "Unknown Group"}
         </h3>
-        <p className="text-gray-600">Group ID: {group?.id || "N/A"}</p>
+        <p className="text-gray-600">{t("group_id")}: {group?.id || t("not_available")}</p>
         <p className="text-gray-600">
-          Created by: {adminUser ? adminUser.username : "No Admin Assigned"}
+        {t("created_by")}: {adminUser ? adminUser.username : t("no_admin_assigned")}
         </p>
         <p className="text-gray-600">
-          Member Count: {group?.users?.length || 0}
+        {t("member_count")}: {group?.users?.length || 0}
         </p>
       </div>
 
@@ -34,7 +33,7 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
           className="flex items-center space-x-2 text-white font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-md transform hover:scale-105 transition-all duration-200"
           onClick={() => onViewFiles(group?.id)}
         >
-          <FaFolderOpen /> <span>View Files</span>
+          <FaFolderOpen /> <span>{t("view_files")}</span>
         </button>
 
         {adminUser && (
@@ -42,7 +41,7 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
             className="flex items-center space-x-2 text-white font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 shadow-md transform hover:scale-105 transition-all duration-200"
             onClick={() => onManageGroup(group)}
           >
-            <FaCog /> <span>Manage Group</span>
+            <FaCog /> <span>{t("manage_group")}</span>
           </button>
         )}
       </div>
