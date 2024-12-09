@@ -2,20 +2,42 @@
     height: calc(100vh - 110px);
     display: flex;
 }
+@media (max-width: 767px) {
+    .app-dashboard-continar{
+        display: block;
+    }
+}
 .app-dashboard-nav{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     gap: 15px;
     background-color: #34495e;
     color: #fff;
-    padding: 0 20px;
-    /* margin-top: 1px; */
-    width: 150px;
+    padding: 20px;
+    width: 200px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
     z-index: 10;
+    transition: .3s;
+}
+@media (max-width: 767px) {
+    .app-dashboard-nav{
+        display: none ;
+    }
+}
+.app-dashboard-nav.hide{
+    width: 0;
+}
+.nav-header{
+    color: white ;
+    font-weight: bold;
+    font-size: 18px;
+    transition: .3s;
+}
+.app-dashboard-nav .nav-header.hide{
+    display: none;
 }
 .nav-link.slide {
     color: #fff;
@@ -27,15 +49,60 @@
     border-radius: 8px;
     padding: 5px 15px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    width: 80%;
+    text-align: center;
+    transition: .3s;
+}
+.nav-link.slide.hide{
+    display: none;
 }
 .nav-link:hover {
     color: #f39c12;
+}
+.hide-nav{
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    padding: 10px;
+    background-color: #336290;
+    border-radius: 50%;
+    text-align: center;
+    transition: .3s;
+}
+.appDashboard-menu-toggle{
+    display: none;
+}
+@media (max-width: 767px) {
+    .appDashboard-menu-toggle{
+        font-size: 22px;
+        color:  white;
+        cursor: pointer;
+        display: inline;
+        margin: 2px;
+    }
+}
+.mobile-appDashboard-menue{
+    width: 100%;
+    background-color: #34495e;
+    min-height: 150px;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
 }
 .outlet{
     flex: 1;
     overflow-y: auto;
     scrollbar-width: thin; /* Thinner scrollbar */
     scrollbar-color: #888 transparent; /* Color for thumb and track */
+}
+@media (max-width: 767px) {
+    .outlet{
+        /* i had some error when i didnt do this (becase of  the footer postioning i guse) */
+        height: calc(100vh - 130px);
+    }
 }
 /* Styling the scrool bar  */
 div::-webkit-scrollbar {
@@ -58,7 +125,9 @@ div::-webkit-scrollbar-thumb {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 10px
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px 10px 0
 }
 .statistics .stat{
     width: 300px;
@@ -71,7 +140,7 @@ div::-webkit-scrollbar-thumb {
     align-items: center;
     padding: 15px;
     border-radius: 8px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
 }
 .stat h1{
@@ -219,4 +288,31 @@ table th.act {
     border-radius: 8px;
     margin-bottom: 10px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 767px) {
+    .email-th,
+    .email-td,
+    .role-th,
+    .role-td{
+        display: none;
+    }
+}
+.info-td{
+    position: relative;
+}
+@media (min-width: 768px) {
+    .info-td{
+        display: none;
+    }
+}
+.show-info{
+    width: fit-content;
+    padding: 8px;
+    position: absolute;
+    right: 45px;
+    background-color: #eee;
+    border: 1px solid red;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaTrashAlt, FaUserFriends, FaTimes } from "react-icons/fa";
+import { FaTrashAlt, FaUserFriends, FaTimes, FaInfoCircle  } from "react-icons/fa";
 import { deleteUserFromTheSystem, getAllUsers } from "../../services/SystemAdminService";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
@@ -10,6 +10,7 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 export default function AllUsers(){
     const [seeGroupsUserIn , setSeeGroupsUserIn] = useState(false)
     const [allUsers,setAllUsers] = useState([])
+    const [showInfo,setShowInfo] = useState({show:false,id:''})
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         async function fetchAllUsers() {
@@ -44,7 +45,11 @@ export default function AllUsers(){
         fetchAllUsers();
 }, []);
 const MySwal = withReactContent(Swal)
-
+function handelShowUserInfo(userId){
+    setShowInfo(prev=>({show: !prev.show, id:userId}))
+    console.log(showInfo);
+    
+}
 const handelDeletUser = async (id) => {
     const result = await MySwal.fire({
         title: 'Are you sure you want to delete this user ?',
@@ -80,22 +85,20 @@ const users =
 <thead className="bg-blue-600 text-white">
 <tr>
     <th className="p-3 font-semibold">Name</th>
-    <th className="p-3 font-semibold">Email</th>
-    <th className="p-3 font-semibold">Role</th>
-    <th className="p-3 font-semibold act" colSpan={2}>Actions</th>
+    <th className="p-3 font-semibold email-th">Email</th>
+    <th className="p-3 font-semibold role-th">Role</th>
+    <th className="p-3 font-semibold act" colSpan={3}>Actions</th>
 </tr>
 </thead>
 <tbody>
 {allUsers.map((user) => (
-
-    
     <tr
     key={user.id}
     className="border-b last:border-none hover:bg-gray-100 transition act"
     >
     <td className="p-3">{user.username}</td>
-    <td className="p-3">{user.email}</td>
-    <td className="p-3">{user.roles[0].name}</td>
+    <td className="p-3 email-td">{user.email}</td>
+    <td className="p-3 role-td">{user.roles[0].name}</td>
     <td className="p-3">
         <button onClick={()=> setSeeGroupsUserIn(true)}>
             <FaUserFriends className="icon-user-friends" />
@@ -105,6 +108,20 @@ const users =
         <button onClick={()=> handelDeletUser(user.id)}>
             <FaTrashAlt className="icon-trash" />
         </button>
+    </td>
+    <td className="p-3 info-td">
+        <FaInfoCircle className="icon-info" 
+        onClick={()=>{
+            handelShowUserInfo(user.id)
+        }} 
+        />
+        {
+            showInfo.show && showInfo.id === user.id &&
+            <div className="show-info">
+                <h1 className="user-role">role: {user.roles[0].name} </h1>
+                <h1 className="user-email">email: {user.email} </h1>
+            </div>
+        }
     </td>
     </tr>
 ))}
