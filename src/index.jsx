@@ -15,7 +15,6 @@ import AccountSettingsPage from "./pages/user/setting/AccountSettingsPage.jsx";
 import HomePage from "./pages/Home.jsx";
 import AboutPage from "./pages/about/AboutPage.jsx";
 import UsersPage from "./components/users/UsersPage.jsx";
-import "./utils/i18n.js";
 import AppDashboard from "./pages/appDasshbord/AppDashboard.jsx";
 import AllGroups from "./pages/appDasshbord/AllGroups.jsx";
 import AllUsers from "./pages/appDasshbord/AllUsers.jsx";

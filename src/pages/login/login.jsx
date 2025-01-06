@@ -6,10 +6,9 @@ import { FaRegUser } from "react-icons/fa6";
 import CustomField from "../../components/CustomField";
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
-import ToggleTheme from "../../components/ToggleTheme";
 import { useTranslation } from "react-i18next";
-import LanguageSelector from "../../components/LanguageSelector";
 import { useForm } from "react-hook-form";
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../../utils/constant";
 
 export default function Login() {
     const {
@@ -17,12 +16,13 @@ export default function Login() {
         handleSubmit,
         formState: { errors },
     } = useForm()
+
     const onSubmit = async (data) => {
         try {
             const res = await AuthService.loginUser(data.username, data.password);
 
-            localStorage.setItem('access_token', res.data.access_token);
-            localStorage.setItem('refresh_token', res.data.refresh_token);
+            localStorage.setItem(ACCESS_TOKEN_KEY, res.data.access_token);
+            localStorage.setItem(REFRESH_TOKEN_KEY, res.data.refresh_token);
             res.data.roles[0] === 'admin' 
             ? localStorage.setItem('isAdmin', true)
             : localStorage.setItem('isAdmin', false)
@@ -52,11 +52,11 @@ export default function Login() {
 
 
     return (<>
-        <div className="fixed top-4 right-4 flex items-center">
+        {/* <div className="fixed top-4 right-4 flex items-center">
 
             <ToggleTheme ></ToggleTheme>
             <LanguageSelector ></LanguageSelector>
-        </div>
+        </div> */}
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
             <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl m-4 shadow-[0px_0px_5px_1px_rgba(93,96,127,0.9)] dark:shadow-white rounded-lg">
 

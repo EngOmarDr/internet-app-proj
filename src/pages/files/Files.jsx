@@ -9,6 +9,7 @@ import { AiOutlineDownload } from "react-icons/ai";
 import { CheckOutModal } from "./components/CheckOutModal";
 import getFiles from "./hooks/getFilesHook";
 import { useTheme } from "../../utils/theme_provider";
+import { useTranslation } from "react-i18next";
 
 const Files = () => {
     let { groupId } = useParams();
@@ -17,6 +18,7 @@ const Files = () => {
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [versions, setVersions] = useState([]);
+    const { t } = useTranslation()
 
     const handleStoreFile = (data) => {
         setFiles((prev) => [...prev, data]);
@@ -170,13 +172,14 @@ const Files = () => {
                         color="success"
                         className={`transition duration-300 ${selectedFiles.length > 0 ? "opacity-100" : "opacity-0 "} `}
                         onClick={() => {
-                            const files = selectedFiles.map((e) => {
-                                const file = files.find((e2) => e2.fileId == e.id);
-                                return { file_id: file.fileId, version: parseInt(file.version) }
+                            const res = selectedFiles.map((e) => {
+                                const file = files.find((e2) => e2.id == e.id);
+                                
+                                return { file_id: file.id, version: parseInt(file.version) }
                             })
-                            handleCheckIn(files)
+                            handleCheckIn(res)
                         }}>
-                        Check In
+                        {t("checkIn")}
                     </Button>
                 </div>
                 <UploadFileModal groupId={groupId} handlStoreFile={handleStoreFile} />
@@ -201,10 +204,10 @@ const Files = () => {
                                     }
                                 }} />
                         </TableHeadCell>
-                        <TableHeadCell className="bg-slate-200">name</TableHeadCell>
-                        <TableHeadCell className="bg-slate-200">version</TableHeadCell>
-                        <TableHeadCell className="bg-slate-200">status</TableHeadCell>
-                        <TableHeadCell className="bg-slate-200">actions</TableHeadCell>
+                        <TableHeadCell className="bg-slate-200">{t("name")}</TableHeadCell>
+                        <TableHeadCell className="bg-slate-200">{t("version")}</TableHeadCell>
+                        <TableHeadCell className="bg-slate-200">{t("status")}</TableHeadCell>
+                        <TableHeadCell className="bg-slate-200">{t("actions")}</TableHeadCell>
                     </TableHead>
                     <TableBody className="divide-y">
                         {files.map((file) => (
@@ -225,7 +228,7 @@ const Files = () => {
                                         onChange={(e) => { handleMultiVersion(file.id, e.target.value) }}
                                         value={file.version ?? 'def' /*selectedVersions?.find(e => e.fileId == file.id)?.version ?? 'def'*/}
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value='def' disabled >selected version</option>
+                                        <option value='def' disabled >{t("version")}</option>
                                         {
 
                                             (versions.length > 0 && versions[0].file_id == file.id) ?
@@ -237,7 +240,7 @@ const Files = () => {
                                     </select>
 
                                 </TableCell>
-                                <TableCell> {file.is_locked ? "محجوز" : "غير محجوز"}</TableCell>
+                                <TableCell> {file.is_locked ? t("reserved") : t("not_reserved")}</TableCell>
                                 <TableCell className="flex items-center gap-1 ">
 
                                     {file.is_locked && (
@@ -245,10 +248,10 @@ const Files = () => {
                                     )}
 
                                     {!file.is_locked && (
-                                        <Button size="sm" onClick={() => handleCheckIn([{ file_id: file.id, version: file.version }])}>Check In</Button>
+                                        <Button size="sm" onClick={() => handleCheckIn([{ file_id: file.id, version: file.version }])}>{t("checkIn")}</Button>
                                     )}
 
-                                    <Button size="sm" onClick={() => handleDownload(file.id, file.name, file.version)}><AiOutlineDownload className="h-5 w-5" /></Button>
+                                    <Button size="sm" title="download file" onClick={() => handleDownload(file.id, file.name, file.version)}><AiOutlineDownload className="h-5 w-5" /></Button>
                                     {/* <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} /> */}
                                 </TableCell>
                             </TableRow>
@@ -269,7 +272,7 @@ const Files = () => {
                     onClick={() => getFiles(currentPage - 1)}
                 >
                     {/* <span className="sr-only">Previous</span> */}
-                    <FaAngleLeft aria-hidden="true" className="h-5 w-5" />
+                    <FaAngleLeft title="previos page" aria-hidden="true" className="h-5 w-5" />
                 </Button>
                 {Array.from({ length: lastPage }, (_, index) => (
                     (index + 1 > currentPage - 3 && index + 1 < currentPage + 3) ?
@@ -296,7 +299,7 @@ const Files = () => {
                     disabled={currentPage == lastPage}
                 >
                     {/* <span className="sr-only">Next</span> */}
-                    <FaAngleRight aria-hidden="true" className="h-5 w-5" />
+                    <FaAngleRight title="next page" aria-hidden="true" className="h-5 w-5" />
                 </Button>
             </nav>
             {/* End Pagination */}

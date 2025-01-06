@@ -49,7 +49,7 @@ const Header = () => {
         <div className="header-actions">
           <div className="nav-link ">
             <ToggleTheme />
-            <LanguageSelector className={`text-slate-900`} />
+            {/* <LanguageSelector className={`text-slate-900`} /> */}
           </div>
           <Link to="/notifications" className="nav-link">
             <FaBell className="icon notification-icon" title="Notifications" />

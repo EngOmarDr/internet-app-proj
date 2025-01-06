@@ -51,5 +51,12 @@
     "edit_group_label": "تعديل المجموعة:",
     "user_name": "الاسم",
     "actions": "الإجراءات",
-    "remove": "إزالة"
+    "remove": "إزالة",
+
+    "version": "الإصدار",
+    "status": "الحالة",
+    "checkIn": "CheckIn",
+    "checkOut": "CheckOut",
+    "not_reserved": "غير محجوز",
+    "reserved": "محجوز"
 }

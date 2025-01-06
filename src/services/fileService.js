@@ -46,8 +46,10 @@ export const storeFile = async (groupId, file) => {
 
 export const downloadFile = async (groupId, fileId, fileName,version) => {
     try {
+        console.log(version);
+        
         const response = await axiosInstance.get(`/groups/${groupId}/files/${fileId}/download?version=${version}`);
-        const url = window.URL.createObjectURL(new Blob([response]));
+        const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', `${fileName}`);
@@ -77,8 +79,8 @@ export async function checkIn(groupId, files) {
                 // },
             }
         );
-        console.log(response.data);
-
+        console.log(response);
+        
         const url = window.URL.createObjectURL(new Blob([response.data]));
 
         const link = document.createElement('a');

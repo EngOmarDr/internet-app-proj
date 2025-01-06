@@ -63,7 +63,7 @@ export function CheckOutModal({ groupId, fileId ,handleEditFile}) {
 
     return (
         <>
-            <Button size="sm" className="button" onClick={() => setOpenModal(true)}>Check Out</Button>
+            <Button size="sm" className="button" onClick={() => setOpenModal(true)}>CheckOut</Button>
             <Modal show={openModal} size="md" dismissible popup onClose={onCloseModal} >
                 <Modal.Header />
                 <Modal.Body>

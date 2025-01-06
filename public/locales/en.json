@@ -52,5 +52,12 @@
     "edit_group_label": "Edit Group:",
     "user_name": "Name",
     "actions": "Actions",
-    "remove": "Remove"
+    "remove": "Remove",
+    
+    "version": "Version",
+    "status": "Status",
+    "checkIn": "CheckIn",
+    "checkOut": "CheckOut",
+    "not_reserved": "Not Reserved",
+    "reserved": "Reserved"
 }

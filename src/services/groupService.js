@@ -1,11 +1,11 @@
 import axios from "axios";
-import { accessToken } from "../utils/constant";
+import { ACCESS_TOKEN_KEY, accessToken } from "../utils/constant";
 import axiosInstance from "../utils/axios";
 
 const API_URL = "http://127.0.0.1:8000/api";
 
 export async function storeGroup(name, userIds) {
-  let token = localStorage.getItem(accessToken);
+  let token = localStorage.getItem(ACCESS_TOKEN_KEY);
   console.log(token);
   
   try {
