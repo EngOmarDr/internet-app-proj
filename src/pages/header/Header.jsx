@@ -37,10 +37,14 @@ const Header = () => {
         </Link>
         <Link to="/dashboard" className="nav-link">
           AdminDashboard
-        </Link>*/
-        <Link to="/appDashboard" className="nav-link">
-          AppDashboard
-        </Link> }
+        </Link>*/}
+        {
+          JSON.parse(localStorage.getItem('isAdmin')) == true
+          &&
+          <Link to="/appDashboard" className="nav-link">
+            AppDashboard
+          </Link>
+        } 
         <Link to="/users" className="nav-link">
           Users
         </Link>
@@ -96,14 +100,18 @@ const Header = () => {
             onClick={toggleMenu}
           >
             AdminDashboard
-          </Link>
-          <Link
+          </Link> */}
+          {   
+            JSON.parse(localStorage.getItem('isAdmin')) == true
+            && 
+            <Link
             to="/appDashboard"
             className="nav-link-mobile"
             onClick={toggleMenu}
           >
             AppDashboard
-          </Link> */}
+          </Link>
+          }
         </div>
       )}
     </header>
