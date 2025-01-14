@@ -4,11 +4,11 @@ import AuthService from "../../services/AuthService";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa6";
 import CustomField from "../../components/CustomField";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "../../utils/constant";
+import { toast, ToastContainer } from "react-toastify";
+import { useTheme } from "../../utils/theme_provider";
 
 export default function Login() {
     const {
@@ -17,28 +17,33 @@ export default function Login() {
         formState: { errors },
     } = useForm()
 
+    const theme = useTheme().theme
+
+
     const onSubmit = async (data) => {
         try {
             const res = await AuthService.loginUser(data.username, data.password);
 
             localStorage.setItem(ACCESS_TOKEN_KEY, res.data.access_token);
             localStorage.setItem(REFRESH_TOKEN_KEY, res.data.refresh_token);
-            res.data.roles[0] === 'admin' 
-            ? localStorage.setItem('isAdmin', true)
-            : localStorage.setItem('isAdmin', false)
+            res.data.roles[0] === 'admin'
+                ? localStorage.setItem('isAdmin', true)
+                : localStorage.setItem('isAdmin', false)
             navigate('/home');
 
         } catch (error) {
-            alert(error);
-            Toastify({
-                text: "Invalid credentials: " + error.response.data.message,
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-                stopOnFocus: true,
-            }).showToast();
+            toast.error(`${error}`, {
+                data: error.response,
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: theme,
+                // transition: Bounce,
+            });
         }
     }
 
@@ -58,6 +63,8 @@ export default function Login() {
             <LanguageSelector ></LanguageSelector>
         </div> */}
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
+            <ToastContainer />
+
             <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl m-4 shadow-[0px_0px_5px_1px_rgba(93,96,127,0.9)] dark:shadow-white rounded-lg">
 
                 {/* image */}
