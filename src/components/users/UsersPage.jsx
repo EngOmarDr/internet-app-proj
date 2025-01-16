@@ -1,16 +1,17 @@
 // components/Page.jsx
-import { useEffect, useState } from 'react';
-import { getUsers } from '../../services/users';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import LoadingSpinner from '../LoadingSpinner';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from "react";
+import { getUsers } from "../../services/users";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import LoadingSpinner from "../LoadingSpinner";
+import { useTranslation } from "react-i18next";
+import UserOperations from "./UserOperations";
 
 const UsersPage = () => {
   const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -21,8 +22,8 @@ const UsersPage = () => {
       } catch (err) {
         const errorMessage =
           err.response && err.response.status === 401
-            ? t('unauthorized_access')
-            : t('fetch_users_error');
+            ? t("unauthorized_access")
+            : t("fetch_users_error");
         toast.error(errorMessage);
       } finally {
         setLoading(false);
@@ -40,20 +41,20 @@ const UsersPage = () => {
   return (
     <div className="container mx-auto p-4">
       <ToastContainer />
-      <h1 className="text-3xl font-bold text-center mb-6">{t('user_list')}</h1>
+      <h1 className="text-3xl font-bold text-center mb-6">{t("user_list")}</h1>
 
       <form onSubmit={handleSearch} className="flex justify-center mb-4">
         <input
           type="text"
           name="query"
-          placeholder={t('search_placeholder')}
+          placeholder={t("search_placeholder")}
           className="p-2 border border-gray-300 rounded-l-lg focus:outline-none"
         />
         <button
           type="submit"
           className="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 transition"
         >
-          {t('search_button')}
+          {t("search_button")}
         </button>
       </form>
 
@@ -72,6 +73,16 @@ const UsersPage = () => {
           ))}
         </div>
       )}
+
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="w-full max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
+            User Operations Viewer
+          </h1>
+          {/* تمرير قيم المجموعة والمستخدم */}
+          <UserOperations groupId={1} userId={1} />
+        </div>
+      </div>
     </div>
   );
 };
