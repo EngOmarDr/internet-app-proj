@@ -12,6 +12,7 @@
   "dependencies": {
     "@rive-app/react-canvas": "^4.16.4",
     "axios": "^1.7.7",
+    "firebase": "^11.1.0",
     "flowbite-react": "^0.10.2",
     "framer-motion": "^11.11.17",
     "i18next": "^23.16.5",

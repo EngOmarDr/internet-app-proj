@@ -1,5 +1,6 @@
 import { accessToken, baseUrl } from "../utils/constant";
 import axiosInstance from "../utils/axios";
+import axios from "axios";
 
 export async function indexFile(groupId, pageId) {
     try {
@@ -23,7 +24,7 @@ export const storeFile = async (groupId, file) => {
     data.append('path', file);
 
     try {
-        const response = await axiosInstance.post(
+        const response = await axios.post(
             `/groups/${groupId}/files`,
             data,
             {
@@ -44,19 +45,23 @@ export const storeFile = async (groupId, file) => {
     }
 };
 
-export const downloadFile = async (groupId, fileId, fileName,version) => {
+export const downloadFile = async (groupId, fileId, fileName, version) => {
     try {
         console.log(version);
-        
+
         const response = await axiosInstance.get(`/groups/${groupId}/files/${fileId}/download?version=${version}`);
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${fileName}`);
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-        return response.data;
+        if (response.status == 200) {
+
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `${fileName}`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            return response.data;
+        }
+        throw (response.data.message)
     } catch (error) {
         console.error("Error downloading file:", error);
         throw error;
@@ -66,7 +71,7 @@ export const downloadFile = async (groupId, fileId, fileName,version) => {
 
 export async function checkIn(groupId, files) {
     try {
-        // console.log(axiosInstance.defaults.headers);
+        // console.log(axios.defaults.headers);
         // console.log(files);
 
         const response = await axiosInstance.post(
@@ -80,26 +85,31 @@ export async function checkIn(groupId, files) {
             }
         );
         console.log(response);
-        
-        const url = window.URL.createObjectURL(new Blob([response.data]));
+        if (response.status === 200) {
 
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'files.zip');
-        document.body.appendChild(link);
-        link.click();
+            const url = window.URL.createObjectURL(new Blob([response.data]));
 
-        // Clean up and remove the link
-        link.parentNode.removeChild(link);
-        window.URL.revokeObjectURL(url); // Free up memory
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'files.zip');
+            document.body.appendChild(link);
+            link.click();
 
-        return files.map((file) => {
-            file.is_locked = true;
-            return file
-        });
+            // Clean up and remove the link
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url); // Free up memory
+
+            return files.map((file) => {
+                file.is_locked = true;
+                return file
+            });
+        }else {
+            throw response;
+        }
     }
     catch (error) {
-
+        console.log(error);
+        
         throw error.response ? error.response.data : new Error("Network Error");
     }
 
