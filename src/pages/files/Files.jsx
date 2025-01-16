@@ -10,6 +10,7 @@ import { CheckOutModal } from "./components/CheckOutModal";
 import getFiles from "./hooks/getFilesHook";
 import { useTheme } from "../../utils/theme_provider";
 import { useTranslation } from "react-i18next";
+import OperationsList from "./components/OperationsList";
 
 const Files = () => {
     let { groupId } = useParams();
@@ -224,6 +225,7 @@ const Files = () => {
                                 <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     <select
                                         id="versions"
+                                        // eslint-disable-next-line no-unused-vars
                                         onClick={(_) => getVersions(file.id)}
                                         onChange={(e) => { handleMultiVersion(file.id, e.target.value) }}
                                         value={file.version ?? 'def' /*selectedVersions?.find(e => e.fileId == file.id)?.version ?? 'def'*/}
@@ -303,6 +305,12 @@ const Files = () => {
                 </Button>
             </nav>
             {/* End Pagination */}
+            <div>
+            <h1>My Operations App</h1>
+            <h1>Operations Viewer</h1>
+            {/* تمرير قيم المجموعة وملف التشغيل */}
+            <OperationsList groupId={groupId} fileId={1} />
+        </div>
         </div>
     );
 };

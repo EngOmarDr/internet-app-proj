@@ -83,5 +83,37 @@
     "manageMembers":"Manage Members",
     "membersIn":"Members In This Group:",
     "filesIn":"Files In This Group:",
-    "noFilesYet":"There Is Now File In This Group Yet ! "
+    "noFilesYet":"There Is Now File In This Group Yet ! ",
+
+    "title": "Source Safe",
+    "user_friendly": "User-friendly Interface",
+    "robust_security": "Robust Security Features",
+    "comprehensive_backup": "Comprehensive Backup Solutions",
+    "collaboration": "Collaboration",
+
+    "premium_plan": "Source Safe Premium",
+    "price": "$9.99/mo",
+    "discount": "15% OFF",
+    "key_features": "Key Features",
+    "unlimited_repos": "Unlimited Repositories",
+    "storage": "500 GB Storage",
+    "security": "Advanced Security Features",
+    "collaboration_tool": "Collaboration Tools",
+    "ci_support": "Continuous Integration Support",
+    "customer_support": "24/7 Customer Support",
+    "buy_now": "Buy Now",
+
+    "user_list": "User List",
+    "search_button": "Search",
+    "unauthorized_access": "Unauthorized access. Please check your credentials.",
+    "fetch_users_error": "Failed to fetch users",
+
+    "about_app": "About This App",
+    "welcome_message": "Welcome to Safe Source! Your trusted platform for ensuring secure and seamless online collaboration. Manage files with ease, and experience the comfort of a system designed just for you.",
+    "how_to_use": "How to Use",
+    "create_groupAbout": "Create a group and invite your team members.",
+    "upload_manage_files": "Upload, manage, and reserve files seamlessly.",
+    "real_time_updates": "Enjoy real-time updates and notifications.",
+    "access_logs": "Access logs and reports to track progress.",
+    "get_started": "Get Started Now"
 }

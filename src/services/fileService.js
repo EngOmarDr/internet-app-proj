@@ -163,3 +163,14 @@ export async function showFile(groupId, fileId) {
         throw error.response ? error.response.data : new Error("Network Error");
     }
 }
+
+export const fetchOperations = async (groupId, fileId) => {
+    try {
+        const response = await axiosInstance.get(`/groups/${groupId}/files/${fileId}/operations`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching operations:', error);
+        throw error;
+    }
+};
+

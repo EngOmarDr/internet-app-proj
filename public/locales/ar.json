@@ -82,5 +82,37 @@
     "checkIn": "CheckIn",
     "checkOut": "CheckOut",
     "not_reserved": "غير محجوز",
-    "reserved": "محجوز"
+    "reserved": "محجوز",
+
+
+    "title": "سورس سيف",
+    "user_friendly": "واجهة سهلة الاستخدام",
+    "robust_security": "ميزات أمان قوية",
+    "comprehensive_backup": "حلول نسخ احتياطي شاملة",
+    "collaboration": "التعاون",
+
+    "premium_plan": "سورس سيف بريميوم",
+    "price": "9.99 دولار/شهر",
+    "discount": "خصم 15%",
+    "key_features": "الميزات الرئيسية",
+    "unlimited_repos": "مستودعات غير محدودة",
+    "storage": "500 جيجابايت مساحة تخزين",
+    "security": "ميزات أمان متقدمة",
+    "collaboration_tool": "أدوات التعاون",
+    "ci_support": "دعم التكامل المستمر",
+    "customer_support": "دعم العملاء 24/7",
+    "buy_now": "اشترِ الآن",
+    "user_list": "قائمة المستخدمين",
+    "search_button": "بحث",
+    "unauthorized_access": "وصول غير مصرح به. يرجى التحقق من بيانات الاعتماد.",
+    "fetch_users_error": "فشل في جلب المستخدمين",
+
+    "about_app": "حول هذا التطبيق",
+    "welcome_message": "مرحبًا بك في Safe Source! منصتك الموثوقة لضمان التعاون عبر الإنترنت بشكل آمن وسلس. إدارة الملفات بسهولة، وتجربة الراحة من نظام مصمم خصيصًا لك.",
+    "how_to_use": "كيفية الاستخدام",
+    "create_groupAbout": "أنشئ مجموعة وادعُ أعضاء فريقك.",
+    "upload_manage_files": "قم بتحميل وإدارة وحجز الملفات بسلاسة.",
+    "real_time_updates": "استمتع بالتحديثات والإشعارات الفورية.",
+    "access_logs": "الوصول إلى السجلات والتقارير لتتبع التقدم.",
+    "get_started": "ابدأ الآن"
 }

@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const AboutPage = () => {
+  const { t } = useTranslation();
+
   return (
     <motion.section
       className="fix-height container mx-auto shadow-lg rounded-lg overflow-hidden p-8"
@@ -14,7 +17,7 @@ const AboutPage = () => {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.2, duration: 0.8 }}
       >
-        About This App
+        {t("about_app")} {/* استخدم الترجمة هنا */}
       </motion.h1>
 
       <motion.p
@@ -23,9 +26,7 @@ const AboutPage = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4, duration: 0.8 }}
       >
-        Welcome to Safe Source! Your trusted platform for ensuring secure and
-        seamless online collaboration. Manage files with ease, and experience
-        the comfort of a system designed just for you.
+        {t("welcome_message")} {/* استخدم الترجمة هنا */}
       </motion.p>
 
       <motion.div
@@ -43,25 +44,26 @@ const AboutPage = () => {
             className="text-2xl font-bold mb-2 text-left"
             whileHover={{ color: "#4A90E2" }}
           >
-            How to Use
+            {t("how_to_use")} {/* استخدم الترجمة هنا */}
           </motion.h2>
           <ul className="list-disc ml-6 space-y-2">
-            <li>Create a group and invite your team members.</li>
-            <li>Upload, manage, and reserve files seamlessly.</li>
-            <li>Enjoy real-time updates and notifications.</li>
-            <li>Access logs and reports to track progress.</li>
+            <li>{t("create_groupAbout")}</li>
+            <li>{t("upload_manage_files")}</li>
+            <li>{t("real_time_updates")}</li>
+            <li>{t("access_logs")}</li>
           </ul>
         </div>
 
         <div className="p-5 md:order-2">
           <motion.img
             src="/images/Home.jpg"
-            alt="Collaboration"
+            alt={t("collaboration")} // استخدم الترجمة هنا
             className="rounded-lg shadow-lg"
             whileHover={{ scale: 1.05 }}
           />
         </div>
       </motion.div>
+      
       <motion.div
         className="text-center mt-10"
         initial={{ opacity: 0, scale: 0.8 }}
@@ -69,7 +71,7 @@ const AboutPage = () => {
         transition={{ delay: 0.6, duration: 0.8 }}
       >
         <button className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg shadow-lg hover:bg-blue-700 transition duration-300">
-          Get Started Now
+          {t("get_started")} {/* استخدم الترجمة هنا */}
         </button>
       </motion.div>
     </motion.section>
