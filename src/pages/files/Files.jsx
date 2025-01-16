@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { downloadFile, checkIn, fileVersions } from "../../services/fileService";
+import { FaAngleLeft, FaAngleRight, FaEye, FaRegFileExcel } from "react-icons/fa6";
+import { downloadFile, checkIn, fileVersions, fileOperationPdf, fileOperationCsv } from "../../services/fileService";
 import { useParams } from "react-router-dom";
 import { Slide, toast } from 'react-toastify';
 import { UploadFileModal } from "./components/UploadFileModal";
-import { Button, Checkbox, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+import { Button, Checkbox, Modal, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { CheckOutModal } from "./components/CheckOutModal";
 import getFiles from "./hooks/getFilesHook";
 import { useTheme } from "../../utils/theme_provider";
 import { useTranslation } from "react-i18next";
+import { FaRegFilePdf } from "react-icons/fa6";
 import OperationsList from "./components/OperationsList";
 
 const Files = () => {
@@ -18,8 +19,11 @@ const Files = () => {
     const { files, currentPage, lastPage, setFiles } = getFiles(groupId)
 
     const [selectedFiles, setSelectedFiles] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+
     const [versions, setVersions] = useState([]);
     const { t } = useTranslation()
+    const [showFile, setShowFile] = useState()
 
     const handleStoreFile = (data) => {
         setFiles((prev) => [...prev, data]);
@@ -120,7 +124,7 @@ const Files = () => {
         setVersions(res.data)
     };
 
-    const handleDownload = async (fileId, fileName, version) => {
+    const handleDownload = async (fileId, fileName, version,showFile=false) => {
         if (!version) {
             toast.error('you have to select version', {
                 position: "top-right",
@@ -135,7 +139,9 @@ const Files = () => {
             return
         }
         try {
-            await downloadFile(groupId, fileId, fileName, version);
+            const data = await downloadFile(groupId, fileId, fileName, version,showFile);
+            setModalOpen(true)
+            setShowFile(data);
         } catch (error) {
             console.error("Error downloading file:", error);
             toast.error(error.message, {
@@ -175,7 +181,7 @@ const Files = () => {
                         onClick={() => {
                             const res = selectedFiles.map((e) => {
                                 const file = files.find((e2) => e2.id == e.id);
-                                
+
                                 return { file_id: file.id, version: parseInt(file.version) }
                             })
                             handleCheckIn(res)
@@ -254,6 +260,9 @@ const Files = () => {
                                     )}
 
                                     <Button size="sm" title="download file" onClick={() => handleDownload(file.id, file.name, file.version)}><AiOutlineDownload className="h-5 w-5" /></Button>
+                                    <Button size="sm" title="download changed as pdf" onClick={() => fileOperationPdf(groupId, file.id, file.name)}><FaRegFilePdf className="h-5 w-5" /></Button>
+                                    <Button size="sm" title="download changed as csv" onClick={() => fileOperationCsv(groupId, file.id, file.name)}><FaRegFileExcel className="h-5 w-5" /></Button>
+                                    <Button size="sm" title="show file" onClick={() => handleDownload(file.id, file.name, file.version,true)}><FaEye className="h-5 w-5" /></Button>
                                     {/* <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} /> */}
                                 </TableCell>
                             </TableRow>
@@ -305,12 +314,30 @@ const Files = () => {
                 </Button>
             </nav>
             {/* End Pagination */}
+
+            <Modal show={isModalOpen} onClose={()=>setModalOpen(false)}>
+                <Modal.Header>PDF Document</Modal.Header>
+                <Modal.Body className="p-0">
+                    <iframe
+                        src={showFile}
+                        width="100%"
+                        height='500px'
+                        title="Viewer"
+                        className="bg-slate-100"
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <button onClick={()=>setModalOpen(false)} className="btn btn-primary">
+                        Close
+                    </button>
+                </Modal.Footer>
+            </Modal>
+
             <div>
-            <h1>My Operations App</h1>
-            <h1>Operations Viewer</h1>
-            {/* تمرير قيم المجموعة وملف التشغيل */}
-            <OperationsList groupId={groupId} fileId={1} />
-        </div>
+                <h1>My Operations App</h1>
+                <h1>Operations Viewer</h1>
+                <OperationsList groupId={groupId} fileId={1} />
+            </div>
         </div>
     );
 };
