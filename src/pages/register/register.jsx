@@ -5,8 +5,6 @@ import { FaRegUser } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
 import { AiFillLock, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import CustomField from "../../components/CustomField";
-import Toastify from "toastify-js";
-import "toastify-js/src/toastify.css";
 import ToggleTheme from "../../components/ToggleTheme";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -15,8 +13,11 @@ export default function Register() {
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm()
+    const password = watch('password');
+    const [serverErrors, setServerErrors] = useState();
 
     const onSubmit = async (data) => {
         // if (data.password !== data.confirmPassword) {
@@ -26,22 +27,12 @@ export default function Register() {
 
         try {
             const response = await AuthService.register(data.username, data.email, data.password, data.confirmPassword);
-            localStorage.setItem('access_token', response.data.access_token);  
+            localStorage.setItem('access_token', response.data.access_token);
             localStorage.setItem('refresh_token', response.data.refresh_token);
             navigate('/home');
         } catch (err) {
-            // setError(err.message || "Registration failed");
-            console.log(err);
-
-            Toastify({
-                text: "Registration failed: " + err.message,
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
-                stopOnFocus: true,
-            }).showToast();
+            setServerErrors(err.message);
+            console.log(err.message);
         }
 
     }
@@ -110,19 +101,33 @@ export default function Register() {
                                 placeholder={t("password")}
                                 name="password"
                                 type="password"
-                                {...register("password", { required: true })}
+                                {...register("password", { required: true, minLength: 8, })}
                             >
                                 <AiFillLock className="w-[18px] h-[18px] absolute end-4" fill="#bbb" />
 
                             </CustomField>
-                            {errors.password && <span className="text-red-500 text-sm m-0">{t("required")}</span>}
+                            {errors.password && <span className="text-red-500 text-sm m-0">{
+
+                                errors.password.type === 'required' ?
+                                    t('required')
+                                    : errors.password.type === 'minLength' ?
+                                        'min length 8 letters'
+                                        : errors.password.message
+                            }</span>}
 
                             {/* Password Confirm */}
                             <CustomField
                                 placeholder={t("c_password")}
                                 name="confirm password"
                                 type={showPassword ? "text" : "password"}
-                                {...register("confirmPassword", { required: true })}
+                                // className=""
+                                {...register("confirmPassword",
+                                    {
+                                        required: true,
+                                        minLength: 8,
+                                        validate: (value) => value !== password ? 'Passwords do not match' : undefined,
+                                    }
+                                )}
                             >
                                 {
                                     showPassword
@@ -136,15 +141,20 @@ export default function Register() {
                                         />
                                 }
                             </CustomField>
-                            {errors.confirmPassword && <span className="text-red-500 text-sm">{t("required")}</span>}
+                            {errors.confirmPassword && <span className="text-red-500 text-sm">{
+                                errors.confirmPassword.type === 'required' ?
+                                    t('required')
+                                    : errors.confirmPassword.type === 'minLength' ?
+                                        'min length 8 letters'
+                                        : errors.confirmPassword.message
+                            }</span>}
 
+                            {serverErrors && <p className="bg-red-600 text-white rounded-lg mt-0 px-2 py-1 text-xs font-bold">{serverErrors}</p>}
                             <span className="flex justify-center items-center">
-
                                 <button type="submit" className=" shadow-xl max-w-[300px] w-full py-3 rounded-lg text-sm bg-blue-600 dark:bg-blue-900 hover:bg-blue-700 text-white">
                                     {t("register")}
                                 </button>
                             </span>
-
                             <p className="text-sm text-center text-gray-800">
                                 {t("have_account")}
                                 <Link to="/login" className="text-blue-600 font-semibold hover:underline ml-1 whitespace-nowrap">

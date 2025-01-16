@@ -24,14 +24,13 @@ export const storeFile = async (groupId, file) => {
     data.append('path', file);
 
     try {
-        const response = await axios.post(
+        const response = await axiosInstance.post(
             `/groups/${groupId}/files`,
             data,
             {
                 headers: {
                     'Accept': 'Application/json',
                     'Content-Type': 'multipart/form-data',
-                    'Authorization': `Bearer ${localStorage.getItem(accessToken)}`
                 },
             }
         );
