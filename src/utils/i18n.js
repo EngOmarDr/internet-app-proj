@@ -9,9 +9,6 @@ i18next
     .use(HTTPApi)
     .init({
         fallbackLng: 'en',
-        backend: {
-            loadPath: "./locales/{{lng}}.json",
-        },
         interpolation: {
             escapeValue: false,
         },

@@ -35,16 +35,17 @@ const register = async (username, email, password, password_confirmation) => {
     }
 
     console.log(token);
-
-    const fcmtoken = await axios.post(`${API_URL}/fcm_token`, {
-      user_id: response.data.data.id,
-      fcm_token: token,
-    }, {
-      headers: {
-        Accept: 'application/json',
-      },
-    });
-    console.log(fcmtoken);
+    if (token) {
+      const fcmtoken = await axios.post(`${API_URL}/fcm_token`, {
+        user_id: response.data.data.id,
+        fcm_token: token,
+      }, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+      console.log(fcmtoken);
+    }
 
     return response.data;
   } catch (error) {
@@ -80,21 +81,23 @@ const loginUser = async (username, password) => {
   }
 
   if (response.status === 200) {
-    
-    await axios.post(`${API_URL}/fcm_token`, {
-      user_id: response.data.data.id,
-      fcm_token: token,
-    }, {
-      headers: {
-        Authorization: `Bearer ${response.data.data.access_token}`,
-        Accept: 'application/json',
-      },
-    });
-    return response.data;
+    if (token) {
 
+
+      await axios.post(`${API_URL}/fcm_token`, {
+        user_id: response.data.data.id,
+        fcm_token: token,
+      }, {
+        headers: {
+          Authorization: `Bearer ${response.data.data.access_token}`,
+          Accept: 'application/json',
+        },
+      });
+    }
   } else {
     return response.data.message
   }
+  return response.data;
 
 };
 

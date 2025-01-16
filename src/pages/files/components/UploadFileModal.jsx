@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { Button, Checkbox, FileInput, Label, Modal, TextInput } from "flowbite-react";
-import { useRef, useState } from "react";
+import { Button, FileInput, Modal } from "flowbite-react";
+import { useState } from "react";
 import { storeFile } from "../../../services/fileService";
 import "toastify-js/src/toastify.css";
 import Toastify from "toastify-js";

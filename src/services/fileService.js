@@ -45,7 +45,7 @@ export const storeFile = async (groupId, file) => {
     }
 };
 
-export const downloadFile = async (groupId, fileId, fileName, version) => {
+export const downloadFile = async (groupId, fileId, fileName, version, showFile = false) => {
     try {
         console.log(version);
 
@@ -53,13 +53,15 @@ export const downloadFile = async (groupId, fileId, fileName, version) => {
         if (response.status == 200) {
 
             const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `${fileName}`);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-            return response.data;
+            if (!showFile) {
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', `${fileName}`);
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode.removeChild(link);
+            }
+            return url;
         }
         throw (response.data.message)
     } catch (error) {
@@ -103,13 +105,13 @@ export async function checkIn(groupId, files) {
                 file.is_locked = true;
                 return file
             });
-        }else {
+        } else {
             throw response;
         }
     }
     catch (error) {
         console.log(error);
-        
+
         throw error.response ? error.response.data : new Error("Network Error");
     }
 
@@ -184,3 +186,68 @@ export const fetchOperations = async (groupId, fileId) => {
     }
 };
 
+export async function fileOperationCsv(groupId, fileId, fileName) {
+    try {
+        const response = await axiosInstance.get(`/groups/${groupId}/files/${fileId}/operations/csv`, {
+            responseType: 'blob', // Important for handling binary data
+            headers: {
+                'Content-Type': 'text/csv', // Adjust if necessary
+            },
+        });
+        console.log(response);
+
+        // Create a blob from the response
+        const blob = new Blob([response.data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${fileName}-operations.csv`); // Set the file name
+
+        // Append to the body
+        document.body.appendChild(link);
+        link.click(); // Trigger the download
+
+        // Clean up and remove the link
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url); // Free up memory
+    } catch (error) {
+        console.error('Error downloading the CSV file:', error);
+    }
+}
+
+export async function fileOperationPdf(groupId, fileId, fileName) {
+    try {
+        const response = await axiosInstance.get(`/groups/${groupId}/files/${fileId}/operations/pdf`, {
+            responseType: 'blob',
+            headers: {
+                'Content-Type': 'application/pdf',
+            },
+        });
+
+        if (response.status !== 200) {
+            throw new Error(response);
+        }
+
+        // Create a blob from the response
+        const blob = new Blob([response.data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+
+        // Create a link element
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${fileName}-operations.pdf`); // Set the file name
+
+        // Append to the body
+        document.body.appendChild(link);
+        link.click(); // Trigger the download
+
+        // Clean up and remove the link
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url); // Free up memory
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
+}
