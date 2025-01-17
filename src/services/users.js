@@ -33,4 +33,37 @@ export const fetchUserOperations = async (groupId, userId) => {
   }
 };
 
+export const getOperationsAsCSV = async (groupId, userId) => {
+  try {
+    const response = await axiosInstance.get(`/groups/${groupId}/users/${userId}/operations/csv`, {
+      headers: {
+        Accept: 'text/csv', // توضيح أن نوع البيانات هو CSV
+      },
+      responseType: 'blob', // لتأكيد استقبال الملف كـ Blob
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error fetching CSV:', error);
+    throw error;
+  }
+};
+
+export const getOperationsAsPDF = async (groupId, userId) => {
+  try {
+    const response = await axiosInstance.get(`/groups/${groupId}/users/${userId}/operations/pdf`, {
+      headers: {
+        Accept: 'application/pdf', // نوع البيانات PDF
+      },
+      responseType: 'blob', // استقبال الملف كـ Blob
+    });
+
+    return response;
+  } catch (error) {
+    console.error('Error fetching PDF:', error);
+    throw error;
+  }
+};
+
+
 export default api;

@@ -111,7 +111,7 @@ const Groups = () => {
   const handleCreateGroup = async () => {
     try {
       const newGroup = await storeGroup(newGroupName, userIds);
-      setGroups([...groups, newGroup]);
+      setGroups([...groups, { ...newGroup, users: searchResults.filter((user) => userIds.includes(user.id)) }]);
       setNewGroupName("");
       setUserIds([]);
       setShowCreateGroup(false);
@@ -128,6 +128,7 @@ const Groups = () => {
       }).showToast();
     }
   };
+  
 
   const handleShowFiles = (groupId) => {
     navigate(`${groupId}/files`);

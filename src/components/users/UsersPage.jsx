@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import LoadingSpinner from "../LoadingSpinner";
 import { useTranslation } from "react-i18next";
 import UserOperations from "./UserOperations";
+import GroupOperations from "./GroupOperations";
 
 const UsersPage = () => {
   const { t } = useTranslation();
@@ -80,9 +81,12 @@ const UsersPage = () => {
             User Operations Viewer
           </h1>
           {/* تمرير قيم المجموعة والمستخدم */}
-          <UserOperations groupId={1} userId={1} />
+          <UserOperations groupId={1} userId={4} />
         </div>
       </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-200">
+      <GroupOperations groupId={1} userId={1} />
+    </div>
     </div>
   );
 };

@@ -19,20 +19,29 @@
   }
   
   /* تصميم القائمة المنسدلة */
-  .dropdown-menu {
-    position: absolute;
-    top: 120%;
-    right: 0;
-    background-color: #34495e;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    z-index: 1000;
-    width: 220px;
-    transform: translateY(-20px);
-    opacity: 0;
-    animation: slideDown 0.3s forwards ease-out;
-  }
+/* القائمة المنسدلة في الوضع الافتراضي (LTR) */
+.dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0; /* الوضع الافتراضي للقائمة */
+  background-color: #34495e;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  z-index: 1000;
+  width: 220px;
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideDown 0.3s forwards ease-out;
+}
+
+/* القائمة في الوضع RTL */
+html[dir="rtl"] .dropdown-menu {
+  right: auto; /* تعطيل الموضع الافتراضي */
+  left: 0; /* نقل القائمة إلى اليسار */
+}
+
+
   
   @keyframes slideDown {
     to {
@@ -41,16 +50,22 @@
     }
   }
   
-  /* تصميم العناصر داخل القائمة */
-  .menu-item {
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
+/* العناصر داخل القائمة */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease;
+  justify-content: flex-start;
+}
+
+html[dir="rtl"] .menu-item {
+  justify-content: flex-end; /* ضبط الاتجاه */
+  text-align: right; /* لجعل النص متوافقاً مع اللغة العربية */
+}
   
   .menu-item:hover {
     background-color: #2c3e50;

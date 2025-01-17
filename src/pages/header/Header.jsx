@@ -4,7 +4,6 @@ import { FaBell, FaBars } from "react-icons/fa";
 import { useState } from "react";
 import UserProfileMenu from "../user/UserProfileMenu";
 import ToggleTheme from "../../components/ToggleTheme";
-import LanguageSelector from "../../components/LanguageSelector";
 import { accessToken } from "../../utils/constant";
 
 const Header = () => {
