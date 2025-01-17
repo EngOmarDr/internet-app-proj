@@ -116,5 +116,11 @@
     "access_logs": "الوصول إلى السجلات والتقارير لتتبع التقدم.",
     "get_started": "ابدأ الآن",
 
-    "view_operations" : "عرض العمليات"
+    "view_operations" : "عرض العمليات",
+
+    "home": "الرئيسية",
+    "about": "حول",
+    "users": "المستخدمون",
+    "notifications": "الإشعارات",
+    "sourceSafe": "SOURCE SAFE"
 }
