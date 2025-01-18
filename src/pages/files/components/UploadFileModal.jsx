@@ -1,16 +1,15 @@
-/* eslint-disable no-unused-vars */
 import { Button, FileInput, Modal } from "flowbite-react";
 import { useState } from "react";
 import { storeFile } from "../../../services/fileService";
-import "toastify-js/src/toastify.css";
-import Toastify from "toastify-js";
 import { AiOutlineFileAdd } from "react-icons/ai";
+import { toast } from "react-toastify";
+import { useTheme } from "../../../utils/theme_provider";
 
-// eslint-disable-next-line react/prop-types
 export function UploadFileModal({ handlStoreFile, groupId }) {
     const [openModal, setOpenModal] = useState(false);
     const [newFile, setNewFile] = useState(null);
     const [isLoad, setIsLoad] = useState(false);
+    const theme = useTheme().theme;
 
     function onCloseModal() {
         setOpenModal(false);
@@ -24,14 +23,16 @@ export function UploadFileModal({ handlStoreFile, groupId }) {
         setIsLoad(true)
         e.preventDefault();
         if (!newFile) {
-            Toastify({
-                text: "يرجى إدخال الملف المراد تحميله.",
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                stopOnFocus: true,
-            }).showToast();
+            toast.error('يرجى إدخال الملف المراد تحميله.', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: theme,
+            });
             setIsLoad(false)
             return
         }
@@ -44,18 +45,15 @@ export function UploadFileModal({ handlStoreFile, groupId }) {
             setIsLoad(false)
             setOpenModal(false)
         } catch (error) {
-            console.error("Error uploading file:", error);
-            Toastify({
-                text: "Error uploading file: " + error.response.data.message,
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                style: {
-                    backgroundColor: "gray",
-                },
-                stopOnFocus: true,
-            }).showToast();
+            toast.error(error.response.data.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme,
+            });
             setIsLoad(false)
         }
 
@@ -63,7 +61,7 @@ export function UploadFileModal({ handlStoreFile, groupId }) {
 
     return (
         <>
-            <Button size="sm" color="blue" className="button" onClick={() => setOpenModal(true)}><AiOutlineFileAdd size={20}/> Upload File</Button>
+            <Button size="sm" color="blue" className="button" onClick={() => setOpenModal(true)}><AiOutlineFileAdd size={20} /> Upload File</Button>
             <Modal show={openModal} size="md" dismissible popup onClose={onCloseModal} >
                 <Modal.Header />
                 <Modal.Body>

@@ -49,7 +49,7 @@ const Files = () => {
                 pauseOnHover: true,
                 draggable: true,
                 progress: undefined,
-                theme: "light",
+                theme: theme,
                 // transition: Bounce,
             });
             return;
@@ -72,7 +72,7 @@ const Files = () => {
     const handleCheckIn = async (selectedFiles) => {
         const file = selectedFiles.find((e) => e.version)
         if (!file) {
-            toast('you have to select version for the file', {
+            toast.info('you have to select version for the file', {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
