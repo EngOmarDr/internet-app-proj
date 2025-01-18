@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaTimes, FaTrashAlt } from "react-icons/fa";
 import UserSearchComponent from "./userSearchComponent";
 import { useTranslation } from "react-i18next";
