@@ -37,15 +37,13 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
         >
           <FaFolderOpen /> <span>{t("view_files")}</span>
         </button>
-
-        {adminUser && (
           <button
             className="flex items-center space-x-2 text-white font-semibold px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 shadow-md transform hover:scale-105 transition-all duration-200"
             onClick={() => onManageGroup(group)}
           >
             <FaCog /> <span>{t("manage_group")}</span>
           </button>
-        )}
+        
       </div>
     </div>
   );
