@@ -32,6 +32,9 @@ const Groups = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!window.performance.getEntriesByType("navigation").some(entry => entry.type === "reload")) {
+    window.location.reload();
+  }
     async function fetchGroups() {
       try {
         const groupsData = await indexGroup();
@@ -111,7 +114,13 @@ const Groups = () => {
   const handleCreateGroup = async () => {
     try {
       const newGroup = await storeGroup(newGroupName, userIds);
-      setGroups([...groups, { ...newGroup, users: searchResults.filter((user) => userIds.includes(user.id)) }]);
+      setGroups([
+        ...groups,
+        {
+          ...newGroup,
+          users: searchResults.filter((user) => userIds.includes(user.id)),
+        },
+      ]);
       setNewGroupName("");
       setUserIds([]);
       setShowCreateGroup(false);
@@ -128,7 +137,6 @@ const Groups = () => {
       }).showToast();
     }
   };
-  
 
   const handleShowFiles = (groupId) => {
     navigate(`${groupId}/files`);
@@ -250,45 +258,78 @@ const Groups = () => {
     }
   };
 
+  const handleUpdateBefore = () => {
+    // التحديثات التي تحدث قبل التفاعل مع الكومبوننت الأبناء
+    console.log("Starting interaction with child component...");
+  };
+
+  const handleUpdateAfter = () => {
+    // التحديثات التي تحدث بعد التفاعل مع الكومبوننت الأبناء
+    console.log("Finished interaction with child component...");
+  };
+
+  const wrappedHandleCreateGroup = async () => {
+    handleUpdateBefore(); // التحديث قبل الاستدعاء
+    await handleCreateGroup(); // تنفيذ المنطق الأساسي
+    handleUpdateAfter(); // التحديث بعد الاستدعاء
+  };
+
+  const wrappedHandleUpdateGroup = async () => {
+    handleUpdateBefore(); // التحديث قبل الاستدعاء
+    await handleUpdateGroup(); // تنفيذ المنطق الأساسي
+    handleUpdateAfter(); // التحديث بعد الاستدعاء
+  };
+
+  const handleCreateGroupClick = () => {
+    // تحديث أي حالة ضرورية هنا
+    setShowCreateGroup(true);
+  };
+
+  const handleManageGroupClick = (group) => {
+    // تحديث أي حالة ضرورية قبل الاستدعاء
+    setLoading(true);
+    handleManageGroup(group);
+    setLoading(false); // مثال: إذا أردت التحكم في حالة التحميل
+  };
+
   return (
     <div className="p-6 ">
       <HeaderComponent onCreateGroup={() => setShowCreateGroup(true)} />
       <GroupListComponent
         groups={groups}
         onViewFiles={handleShowFiles}
-        onManageGroup={handleManageGroup}
-        onCreateGroup={() => setShowCreateGroup(true)}
+        onManageGroup={handleManageGroupClick}
+        onCreateGroup={handleCreateGroupClick}
         loading={loading}
       />
       {showManageGroup && selectedGroup && (
         <EditGroupModalComponent
-        selectedGroup={selectedGroup}
-        setShowManageGroup={setShowManageGroup}
-        handleManageSearch={handleManageSearch}
-        manageSearchQuery={manageSearchQuery}
-        setManageSearchQuery={setManageSearchQuery}
-        manageSearchResults={manageSearchResults}
-        manageUserIds={manageUserIds}
-        handleAddUserToManage={handleAddUserToManage}
-        handleUpdateGroup={handleUpdateGroup}
-        handleRemoveUser={handleRemoveUser}
-        setEditGroupName={setEditGroupName}
-      />
+          selectedGroup={selectedGroup}
+          setShowManageGroup={setShowManageGroup}
+          handleManageSearch={handleManageSearch}
+          manageSearchQuery={manageSearchQuery}
+          setManageSearchQuery={setManageSearchQuery}
+          manageSearchResults={manageSearchResults}
+          manageUserIds={manageUserIds}
+          handleAddUserToManage={handleAddUserToManage}
+          handleUpdateGroup={wrappedHandleUpdateGroup} // استخدم الدالة المغلفة هنا
+          handleRemoveUser={handleRemoveUser}
+          setEditGroupName={setEditGroupName}
+        />
       )}
       {showCreateGroup && (
         <CreateGroupModalComponent
-
-        setShowCreateGroup={setShowCreateGroup}
-        handleCreateGroup={handleCreateGroup}
-        newGroupName={newGroupName}
-        setNewGroupName={setNewGroupName}
-        handleSearch={handleSearch}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        searchResults={searchResults}
-        handleAddUser={handleAddUser}
-        userIds={userIds}
-      />
+          setShowCreateGroup={setShowCreateGroup}
+          handleCreateGroup={wrappedHandleCreateGroup} // استخدم الدالة المغلفة هنا
+          newGroupName={newGroupName}
+          setNewGroupName={setNewGroupName}
+          handleSearch={handleSearch}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          searchResults={searchResults}
+          handleAddUser={handleAddUser}
+          userIds={userIds}
+        />
       )}
     </div>
   );
