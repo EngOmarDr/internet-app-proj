@@ -39,7 +39,7 @@ export const storeFile = async (groupId, file) => {
         else
             return response.data.message
     } catch (error) {
-        console.error("Error uploading file:", error);
+        console.log("Error uploading file:", error);
         throw error;
     }
 };
