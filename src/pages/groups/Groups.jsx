@@ -259,37 +259,34 @@ const Groups = () => {
   };
 
   const handleUpdateBefore = () => {
-    // التحديثات التي تحدث قبل التفاعل مع الكومبوننت الأبناء
     console.log("Starting interaction with child component...");
   };
 
   const handleUpdateAfter = () => {
-    // التحديثات التي تحدث بعد التفاعل مع الكومبوننت الأبناء
     console.log("Finished interaction with child component...");
   };
 
   const wrappedHandleCreateGroup = async () => {
-    handleUpdateBefore(); // التحديث قبل الاستدعاء
-    await handleCreateGroup(); // تنفيذ المنطق الأساسي
-    handleUpdateAfter(); // التحديث بعد الاستدعاء
+    handleUpdateBefore();  
+    await handleCreateGroup(); 
+    handleUpdateAfter();  
   };
 
   const wrappedHandleUpdateGroup = async () => {
-    handleUpdateBefore(); // التحديث قبل الاستدعاء
-    await handleUpdateGroup(); // تنفيذ المنطق الأساسي
-    handleUpdateAfter(); // التحديث بعد الاستدعاء
+    handleUpdateBefore(); 
+    await handleUpdateGroup();  
+    handleUpdateAfter();  
   };
 
   const handleCreateGroupClick = () => {
-    // تحديث أي حالة ضرورية هنا
+    
     setShowCreateGroup(true);
   };
 
   const handleManageGroupClick = (group) => {
-    // تحديث أي حالة ضرورية قبل الاستدعاء
     setLoading(true);
     handleManageGroup(group);
-    setLoading(false); // مثال: إذا أردت التحكم في حالة التحميل
+    setLoading(false);
   };
 
   return (
@@ -312,7 +309,7 @@ const Groups = () => {
           manageSearchResults={manageSearchResults}
           manageUserIds={manageUserIds}
           handleAddUserToManage={handleAddUserToManage}
-          handleUpdateGroup={wrappedHandleUpdateGroup} // استخدم الدالة المغلفة هنا
+          handleUpdateGroup={wrappedHandleUpdateGroup} 
           handleRemoveUser={handleRemoveUser}
           setEditGroupName={setEditGroupName}
         />
@@ -320,7 +317,7 @@ const Groups = () => {
       {showCreateGroup && (
         <CreateGroupModalComponent
           setShowCreateGroup={setShowCreateGroup}
-          handleCreateGroup={wrappedHandleCreateGroup} // استخدم الدالة المغلفة هنا
+          handleCreateGroup={wrappedHandleCreateGroup}
           newGroupName={newGroupName}
           setNewGroupName={setNewGroupName}
           handleSearch={handleSearch}
