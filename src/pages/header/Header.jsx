@@ -4,11 +4,13 @@ import { FaBell, FaBars } from "react-icons/fa";
 import { useState } from "react";
 import UserProfileMenu from "../user/UserProfileMenu";
 import ToggleTheme from "../../components/ToggleTheme";
-import LanguageSelector from "../../components/LanguageSelector";
 import { accessToken } from "../../utils/constant";
+import { useTranslation } from "react-i18next";
+
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -17,17 +19,17 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header-logo">
-        <h1>SOURCE SAFE</h1>
+      <h1>{t("sourceSafe")}</h1>
       </div>
       <nav className="header-nav">
         <Link to="/home" className="nav-link">
-          Home
+        {t("home")}
         </Link>
         <Link to="/groups" className="nav-link">
-          Groups
+        {t("groups")}
         </Link>
         <Link to="/about" className="nav-link">
-          About
+        {t("about")}
         </Link>
         {/* <Link to="/reports" className="nav-link">
           Reports
@@ -42,11 +44,11 @@ const Header = () => {
           JSON.parse(localStorage.getItem('isAdmin')) == true
           &&
           <Link to="/appDashboard" className="nav-link">
-            AppDashboard
+            {t("appDashboard")}
           </Link>
         } 
         <Link to="/users" className="nav-link">
-          Users
+        {t("users")}
         </Link>
       </nav>
       {token ? (
@@ -56,7 +58,7 @@ const Header = () => {
             {/* <LanguageSelector className={`text-slate-900`} /> */}
           </div>
           <Link to="/notifications" className="nav-link">
-            <FaBell className="icon notification-icon" title="Notifications" />
+            <FaBell className="icon notification-icon" title={t("notifications")} />
           </Link>
           <UserProfileMenu />
           <FaBars className="menu-toggle" onClick={toggleMenu} />
@@ -67,26 +69,26 @@ const Header = () => {
             to="/login"
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
           >
-            Login
+            {t("login")}
           </Link>
           <Link
             to="/register"
             className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
           >
-            Register
+            {t("register")}
           </Link>
         </div>
       )}
       {menuOpen && (
         <div className="mobile-menu show">
           <Link to="/home" className="nav-link-mobile" onClick={toggleMenu}>
-            Home
+          {t("home")}
           </Link>
           <Link to="/groups" className="nav-link-mobile" onClick={toggleMenu}>
-            Groups
+          {t("groups")}
           </Link>
           <Link to="/about" className="nav-link-mobile" onClick={toggleMenu}>
-            About
+          {t("about")}
           </Link>
           {/* <Link to="/reports" className="nav-link-mobile" onClick={toggleMenu}>
             Reports
@@ -109,7 +111,7 @@ const Header = () => {
             className="nav-link-mobile"
             onClick={toggleMenu}
           >
-            AppDashboard
+            {t("appDashboard")}
           </Link>
           }
         </div>

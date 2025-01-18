@@ -115,5 +115,13 @@
     "upload_manage_files": "Upload, manage, and reserve files seamlessly.",
     "real_time_updates": "Enjoy real-time updates and notifications.",
     "access_logs": "Access logs and reports to track progress.",
-    "get_started": "Get Started Now"
+    "get_started": "Get Started Now",
+
+    "view_operations" : "View Operations"
+
+    // "home": "Home",
+    // "about": "About",
+    // "users": "Users",
+    // "notifications": "Notifications",
+    // "sourceSafe": "SOURCE SAFE"
 }

@@ -114,5 +114,13 @@
     "upload_manage_files": "قم بتحميل وإدارة وحجز الملفات بسلاسة.",
     "real_time_updates": "استمتع بالتحديثات والإشعارات الفورية.",
     "access_logs": "الوصول إلى السجلات والتقارير لتتبع التقدم.",
-    "get_started": "ابدأ الآن"
+    "get_started": "ابدأ الآن",
+
+    "view_operations" : "عرض العمليات",
+
+    "home": "الرئيسية",
+    "about": "حول",
+    "users": "المستخدمون",
+    "notifications": "الإشعارات",
+    "sourceSafe": "SOURCE SAFE"
 }
