@@ -46,6 +46,7 @@ export async function register(username, email, password, password_confirmation)
       fcm_token: token,
     }, {
       headers: {
+        Authorization: `Bearer ${response.data.data.access_token}`,
         Accept: 'application/json',
       },
     });
@@ -85,7 +86,8 @@ const loginUser = async (username, password) => {
   if (response.status === 200) {
     if (token) {
 
-
+      console.log(response.data.data.access_token);
+      
       await axios.post(`${API_URL}/fcm_token`, {
         user_id: response.data.data.id,
         fcm_token: token,
