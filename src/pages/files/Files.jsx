@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaEye, FaRegFileExcel } from "react-icons/fa6";
-import { downloadFile, checkIn, fileVersions, fileOperationPdf, fileOperationCsv } from "../../services/fileService";
+import { downloadFile, checkIn, fileVersions, fileOperationPdf, fileOperationCsv, fetchOperations } from "../../services/fileService";
 import { useParams } from "react-router-dom";
 import { Slide, toast } from 'react-toastify';
 import { UploadFileModal } from "./components/UploadFileModal";
@@ -11,19 +11,46 @@ import getFiles from "./hooks/getFilesHook";
 import { useTheme } from "../../utils/theme_provider";
 import { useTranslation } from "react-i18next";
 import { FaRegFilePdf } from "react-icons/fa6";
-import OperationsList from "./components/OperationsList";
+import { MdOutlinePendingActions } from "react-icons/md";
+
 
 const Files = () => {
     let { groupId } = useParams();
     const theme = useTheme().theme
     const { files, currentPage, lastPage, setFiles } = getFiles(groupId)
+    const [operationsModal, setOperationsModal] = useState(false);
 
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [operations, setOperations] = useState([]);
 
     const [versions, setVersions] = useState([]);
     const { t } = useTranslation()
     const [showFile, setShowFile] = useState()
+
+    const loadOperations = async (fileId) => {
+        try {
+            console.log('00000000000000000000');
+
+            const data = await fetchOperations(groupId, fileId);
+            console.log('00000000000000000000');
+            setOperations(data.data.data);
+            setOperationsModal(true)
+            console.log(operations);
+
+        } catch (err) {
+            toast.error(err, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme,
+                transition: Slide,
+            });
+        }
+    };
 
     const handleStoreFile = (data) => {
         setFiles((prev) => [...prev, data]);
@@ -160,18 +187,6 @@ const Files = () => {
         }
     };
 
-    // if (isLoading) return (
-    //     <div className="grid place-items-center h-[calc(100svh-110px)] ">
-    //         <LoadingSpinner />
-    //     </div>
-    // )
-
-    // if (error) return (
-    //     <div className="grid place-items-center h-[calc(100svh-110px)]">
-    //         <h1>{error.message}</h1>
-    //     </div>
-    // )
-
     return (
         <div className="px-5">
             <div className="actions flex flex-row gap-1 py-5 justify-between items-center">
@@ -265,6 +280,7 @@ const Files = () => {
                                     <Button size="sm" title="download changed as pdf" onClick={() => fileOperationPdf(groupId, file.id, file.name)}><FaRegFilePdf className="h-5 w-5" /></Button>
                                     <Button size="sm" title="download changed as csv" onClick={() => fileOperationCsv(groupId, file.id, file.name)}><FaRegFileExcel className="h-5 w-5" /></Button>
                                     <Button size="sm" title="show file" onClick={() => handleDownload(file.id, file.name, file.version, true)}><FaEye className="h-5 w-5" /></Button>
+                                    <Button size="sm" title="show file" onClick={() => loadOperations(file.id)}><MdOutlinePendingActions className="h-5 w-5" /></Button>
                                     {/* <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} /> */}
                                 </TableCell>
                             </TableRow>
@@ -333,11 +349,32 @@ const Files = () => {
                 </Modal.Footer>
             </Modal>
 
-            <div>
+            <Modal
+                show={operationsModal}
+                dismissible
+                onClose={() => setOperationsModal(false)}
+            >
+                <Modal.Header>{t('operations')}</Modal.Header>
+                <Modal.Body className="p-0 m-0">
+                    <ul className="">
+                        {operations.map((operation, index) => (
+                            <li className={index % 2 == 0 ? "bg-slate-100 p-3" : "bg-blue-50 p-3"} key={operation.id}>
+                                <p>User ID: {operation.user_id}</p>
+                                <p>Type File: {operation.type}</p>
+                                <p>Status: {operation.status}</p>
+                                <p>Size: {operation.size}KB</p>
+                                <p>Created At: {operation.created_at}</p>
+                                <p>Updated At: {operation.updated_at}</p>
+                            </li>
+                        ))}
+                    </ul>
+                </Modal.Body>
+            </Modal>
+            {/* <div>
                 <h1>My Operations App</h1>
                 <h1>Operations Viewer</h1>
                 <OperationsList groupId={groupId} fileId={1} />
-            </div>
+            </div> */}
         </div>
     );
 };

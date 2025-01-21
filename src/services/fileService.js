@@ -250,3 +250,19 @@ export async function fileOperationPdf(groupId, fileId, fileName) {
         return error;
     }
 }
+
+export async function activateFile(groupId, fileId) {
+    try {
+        const response = await axiosInstance.post(`/groups/${groupId}/files/${fileId}/activate`);
+        console.log(response);
+        
+        if (response.status !== 200) {
+            throw new Error(response);
+        }
+
+        return response
+    } catch (error) {
+        console.log(error)
+        return error;
+    }
+}
