@@ -123,5 +123,10 @@
     "users": "المستخدمون",
     "notifications": "الإشعارات",
     "operations": "العمليات",
-    "sourceSafe": "SOURCE SAFE"
+    "sourceSafe": "SOURCE SAFE",
+
+    "download_csv": "تحميل ملف CSV",
+    "downloading_csv": "جاري تحميل ملف CSV...",
+    "download_pdf": "تحميل ملف PDF",
+    "downloading_pdf": "جاري تحميل ملف PDF..."
 }

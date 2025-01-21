@@ -118,5 +118,10 @@
     "get_started": "Get Started Now",
     "operations": "operations",
 
-    "view_operations" : "View Operations"
+    "view_operations" : "View Operations",
+
+    "download_csv": "Download CSV",
+    "downloading_csv": "Downloading CSV...",
+    "download_pdf": "Download PDF",
+    "downloading_pdf": "Downloading PDF..."
 }
