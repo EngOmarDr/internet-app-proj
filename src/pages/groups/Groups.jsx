@@ -113,6 +113,19 @@ const Groups = () => {
 
   const handleCreateGroup = async () => {
     try {
+      if (!newGroupName.trim()) {
+        Toastify({
+          text: "Group name is required.",
+          duration: 5000,
+          close: true,
+          gravity: "top",
+          position: "center",
+          backgroundColor: "linear-gradient(to right, #FF5F6D, #FFC371)",
+          stopOnFocus: true,
+        }).showToast();
+        return; // إيقاف التنفيذ إذا لم يتم إدخال اسم المجموعة
+      }
+      
       const newGroup = await storeGroup(newGroupName, userIds);
       setGroups([
         ...groups,

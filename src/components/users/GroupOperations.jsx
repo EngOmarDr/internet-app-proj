@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { getOperationsAsCSV, getOperationsAsPDF } from "../../services/users";
+import { useTranslation } from "react-i18next";
 
 const GroupOperations = ({ groupId, userId }) => {
   const [loading, setLoading] = useState({ csv: false, pdf: false });
+  const { t } = useTranslation();
 
   const handleDownloadCSV = async () => {
     setLoading((prev) => ({ ...prev, csv: true }));
@@ -49,28 +51,28 @@ const GroupOperations = ({ groupId, userId }) => {
   };
 
   return (
-    <div className="flex space-x-4 mt-4">
+    <div className="flex flex-wrap gap-2 justify-center">
       <button
-        className={`px-6 py-3 rounded-lg text-white font-semibold ${
+        className={`px-4 py-2 text-sm rounded-md font-medium text-white ${
           loading.csv
-            ? "bg-gray-400"
+            ? "bg-gray-400 cursor-not-allowed"
             : "bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700"
         } shadow-md transition-transform transform hover:scale-105`}
         onClick={handleDownloadCSV}
         disabled={loading.csv}
       >
-        {loading.csv ? "Downloading CSV..." : "Download CSV"}
+        {loading.csv ? t("downloading_csv") : t("download_csv")}
       </button>
       <button
-        className={`px-6 py-3 rounded-lg text-white font-semibold ${
+        className={`px-4 py-2 text-sm rounded-md font-medium text-white ${
           loading.pdf
-            ? "bg-gray-400"
+            ? "bg-gray-400 cursor-not-allowed"
             : "bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700"
         } shadow-md transition-transform transform hover:scale-105`}
         onClick={handleDownloadPDF}
         disabled={loading.pdf}
       >
-        {loading.pdf ? "Downloading PDF..." : "Download PDF"}
+        {loading.pdf ? t("downloading_pdf") : t("download_pdf")}
       </button>
     </div>
   );

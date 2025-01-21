@@ -117,5 +117,10 @@
     "access_logs": "Access logs and reports to track progress.",
     "get_started": "Get Started Now",
 
-    "view_operations" : "View Operations"
+    "view_operations" : "View Operations",
+
+    "download_csv": "Download CSV",
+    "downloading_csv": "Downloading CSV...",
+    "download_pdf": "Download PDF",
+    "downloading_pdf": "Downloading PDF..."
 }

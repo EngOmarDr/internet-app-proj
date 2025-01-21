@@ -25,11 +25,14 @@ export const getUsers = async (query = '') => {
 
 export const fetchUserOperations = async (groupId, userId) => {
   try {
-      const response = await axiosInstance.get(`/groups/${groupId}/users/${userId}/operations`);
-      return response.data;
+    const response = await axiosInstance.get(`/groups/${groupId}/users/${userId}/operations`);
+    if (!response.data || !response.data.data) {
+      throw new Error('Invalid data format from server');
+    }
+    return response.data; // تُعيد البيانات بالكامل للاستفادة منها لاحقًا
   } catch (error) {
-      console.error('Error fetching user operations:', error);
-      throw error;
+    console.error('Error fetching user operations:', error);
+    throw new Error(error.response?.data?.message || 'Failed to fetch user operations');
   }
 };
 
