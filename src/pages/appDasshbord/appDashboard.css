@@ -69,12 +69,26 @@
     text-align: center;
     transition: .3s;
 }
+.hide-nav.ar{
+    position: absolute;
+    right: 177px;
+    top: 50%;
+    padding: 10px;
+    background-color: #336290;
+    border-radius: 50%;
+    text-align: center;
+    transition: .3s;
+}
+.app-dashboard-nav.hide .hide-nav.ar{
+    right: 15px;
+}
 .appDashboard-menu-toggle{
     display: none;
 }
 .mobile-appDashboard-menue{
     display: none;
 }
+
 @media (max-width: 767px) {
     .appDashboard-menu-toggle{
         font-size: 22px;
@@ -82,6 +96,9 @@
         cursor: pointer;
         display: inline;
         margin: 2px;
+    }
+    .appDashboard-menu-toggle.light{
+        color: black;
     }
     .mobile-appDashboard-menue{
         width: 100%;
@@ -150,6 +167,12 @@ div::-webkit-scrollbar-thumb {
     font-size: 17px;
     font-weight: bold;
     color: #007BFF;
+}
+.stat h3{
+    font-size: 22px;
+    font-weight: bold;
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
 }
 /* All Groups  */
 .all-groups-continar{
