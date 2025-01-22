@@ -13,6 +13,7 @@ import { useTheme } from "../../utils/theme_provider";
 import { useTranslation } from "react-i18next";
 import { FaRegFilePdf } from "react-icons/fa6";
 import { MdOutlinePendingActions } from "react-icons/md";
+import useFiles from "./hooks/getFilesHook";
 
 
 const Files = () => {
@@ -20,7 +21,7 @@ const Files = () => {
     let location = useLocation();
     let { isAdmin } = location.state || { isAdmin: false };
     const theme = useTheme().theme
-    const { files, currentPage, lastPage, setFiles } = getFiles(groupId)
+    let { files, currentPage, lastPage, setFiles, getFiles } = useFiles(groupId)
     const [operationsModal, setOperationsModal] = useState(false);
 
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -89,22 +90,23 @@ const Files = () => {
         }
     };
 
-    const handleStoreFile = (data) => {
-        if (isAdmin) {
-            setFiles((prev) => [...prev, data]);
-            return;
-        }
-        toast.error('please wait until admin accept your file', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: theme,
-            // transition: Bounce,
-        });
+    const handleStoreFile = async (data) => {
+        // if (isAdmin) {
+        //     setFiles((prev) => [...prev, data]);
+        //     return;
+        // }
+        await getFiles()
+        // toast.error('please wait until admin accept your file', {
+        //     position: "top-right",
+        //     autoClose: 5000,
+        //     hideProgressBar: false,
+        //     closeOnClick: true,
+        //     pauseOnHover: true,
+        //     draggable: true,
+        //     progress: undefined,
+        //     theme: theme,
+        //     // transition: Bounce,
+        // });
     };
 
     const handleEditFile = (newFile) => {
@@ -226,8 +228,8 @@ const Files = () => {
         }
         try {
             const data = await downloadFile(groupId, fileId, fileName, version, showFile);
-            setModalOpen(true)
             if (showFile) {
+                setModalOpen(true)
                 setShowFile(data);
             }
         } catch (error) {
@@ -413,22 +415,23 @@ const Files = () => {
             <Modal
                 show={operationsModal}
                 dismissible
-                className="w-full"
+                className="w-full "
                 onClose={() => setOperationsModal(false)}
             >
                 <Modal.Header>{t('operations')}</Modal.Header>
                 <Modal.Body className="p-0 m-0">
                     <div className="overflow-x-auto">
-                        <table className="table-auto bg-white shadow-md rounded-md text-nowrap">
+                        <table className="table-auto bg-white shadow-md rounded-md ">
                             <thead className="bg-gray-200">
                                 <tr>
-                                    <th className="px-4 py-2">user id</th>
+                                    <th className="px-4 py-2 text-nowrap">user id</th>
                                     <th className="px-4 py-2">Type</th>
-                                    <th className="px-4 py-2">Size (KB)</th>
+                                    <th className="px-4 py-2 text-nowrap">Size (KB)</th>
+                                    <th className="px-4 py-2">Status</th>
                                     <th className="px-4 py-2">Version</th>
-                                    <th className="px-4 py-2">Change</th>
-                                    <th className="px-4 py-2">Created At</th>
-                                    <th className="px-4 py-2">Updated At</th>
+                                    <th className="px-4 py-2 max-w-32 text-wrap">Change</th>
+                                    <th className="px-4 py-2 text-nowrap">Created At</th>
+                                    <th className="px-4 py-2 text-nowrap">Updated At</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -437,10 +440,11 @@ const Files = () => {
                                         <td className="px-4 py-2">{operation.user_id || 'N/A'}</td>
                                         <td className="px-4 py-2">{operation.type || 'N/A'}</td>
                                         <td className="px-4 py-2">{(operation.size / 1024).toFixed(2)}</td>
+                                        <td className="px-4 py-2 text-nowrap">{(operation.status==0 ? 'check in' : 'check out')}</td>
                                         <td className="px-4 py-2">{operation.Version_number || 'N/A'}</td>
-                                        <td className="px-4 py-2 h-11">{operation.change || 'N/A'}</td>
-                                        <td className="px-4 py-2">{operation.created_at || 'N/A'}</td>
-                                        <td className="px-4 py-2">{operation.updated_at || 'N/A'}</td>
+                                        <td className="px-4 py-2 ">{operation.change || 'N/A'}</td>
+                                        <td className="px-4 py-2 text-nowrap">{operation.created_at || 'N/A'}</td>
+                                        <td className="px-4 py-2 text-nowrap">{operation.updated_at || 'N/A'}</td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -65,7 +65,7 @@ export default function Login() {
         <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
             <ToastContainer />
 
-            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl m-4 shadow-[0px_0px_5px_1px_rgba(93,96,127,0.9)] dark:shadow-white rounded-lg">
+            <div className="grid md:grid-cols-2 items-center dark:bg-slate-300 max-w-6xl m-4 shadow-lg rounded-lg">
 
                 {/* image */}
                 <div className="h-[200px] sm:h-[300px] md:h-full bg-[#000842] rounded-t-lg md:rounded-none md:rounded-s-lg lg:p-12 p-8">
@@ -73,7 +73,7 @@ export default function Login() {
                 </div>
 
                 {/* login form */}
-                <div className="flex items-center justify-center md:rounded-e-lg p-6 h-full w-full shadow-[2px_2px_22px_-4px_rgba(93,96,127,0.9)] max-md:mx-auto">
+                <div className="flex items-center justify-center md:rounded-e-lg p-6 h-full w-full bg-slate-50 max-md:mx-auto">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full" >
 
                         {/* title */}
