@@ -4,6 +4,8 @@ import { Tooltip } from 'react-tooltip'
 import './appDashboard.css'
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useTheme } from '../../utils/theme_provider'
+import { Statistics } from "./Statistics";
 
 export default function AppDashboard(){
     const { t } = useTranslation();
@@ -18,6 +20,12 @@ export default function AppDashboard(){
     function handelToggleMenue (){
         setMenutoggle(prev => !prev)
     }
+    const isArabic = localStorage.getItem('i18nextLng')
+    const { theme, toggleTheme } = useTheme();
+    console.log(theme);
+    
+    
+    
     return(
         <div className="app-dashboard-continar">
             <div className={`app-dashboard-nav ${hideNav ? 'hide' : ''}`}>
@@ -52,7 +60,7 @@ export default function AppDashboard(){
                     className="tooltip"
                     content={t('usersTip')}
                 />
-                <button className="hide-nav" onClick={()=>handelHideNav()}>
+                <button className={`hide-nav ${isArabic === 'ar' ? 'ar':''}`} onClick={()=>handelHideNav()}>
                     {
                         hideNav
                         ?<FaChevronRight className="icon-simple-arrow" />
@@ -61,7 +69,9 @@ export default function AppDashboard(){
                     }
                 </button>
             </div>
-            <FaBars className="appDashboard-menu-toggle" onClick={()=>handelToggleMenue()} />
+            <FaBars className={`appDashboard-menu-toggle ${theme === 'light' ? "light" : ''}`} 
+            onClick={()=>handelToggleMenue()} 
+            />
             {
                 menutoggle 
                 &&
@@ -99,20 +109,7 @@ export default function AppDashboard(){
             </div>
             }
             <div className="outlet">
-                <div className="statistics">
-                    <div className="stat">
-                        <h1>{t("topUsers")}</h1>
-                        <h3>Group Name</h3>
-                    </div>
-                    <div className="stat">
-                        <h1>{t("mostActive")}</h1>
-                        <h3>UserName</h3>
-                    </div>
-                    <div className="stat">
-                        <h1>{t("topFiles")}</h1>
-                        <h3>Group Name</h3>
-                    </div>
-                </div>
+                <Statistics/>
                 <Outlet/>
             </div>
         </div>

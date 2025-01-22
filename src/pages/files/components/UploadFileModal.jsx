@@ -45,7 +45,7 @@ export function UploadFileModal({ handlStoreFile, groupId }) {
             setIsLoad(false)
             setOpenModal(false)
         } catch (error) {
-            toast.error(error.response.data.message, {
+            toast.error(`${error.message}`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
