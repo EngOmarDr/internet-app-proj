@@ -113,3 +113,60 @@ export async function deleteFileFromSystem(fileId) {
         throw error.response ? error.response.data : new Error("Network Error");
     }
 }
+// Statistics
+export async function getMostActiveUser() {
+    let token = localStorage.getItem(accessToken);
+
+    try {
+        const response = await axios.get(`/most_joined_user`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+        if (response.status == 200) {
+        return response.data;
+    } else {
+        throw response.data.message;
+    }
+    } catch (error) {
+        throw error.response ? error.response.data : new Error("Network Error");
+    }
+}
+
+export async function groupWithMostUsers() {
+    let token = localStorage.getItem(accessToken);
+
+    try {
+        const response = await axios.get(`/group_with_most_users`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+        if (response.status == 200) {
+        return response.data;
+    } else {
+        throw response.data.message;
+    }
+    } catch (error) {
+        throw error.response ? error.response.data : new Error("Network Error");
+    }
+}
+
+export async function groupWithMostFiles() {
+    let token = localStorage.getItem(accessToken);
+
+    try {
+        const response = await axios.get(`/group_with_most_files`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+        if (response.status == 200) {
+        return response.data;
+    } else {
+        throw response.data.message;
+    }
+    } catch (error) {
+        throw error.response ? error.response.data : new Error("Network Error");
+    }
+}
