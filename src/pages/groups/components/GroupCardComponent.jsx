@@ -23,7 +23,8 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
           {t("group_id")}: {group?.id || t("not_available")}
         </p>
         <p className="text-gray-600">
-          {t("created_by")}: {adminUser ? adminUser.username : t("no_admin_assigned")}
+          {t("created_by")}:{" "}
+          {adminUser ? adminUser.username : t("no_admin_assigned")}
         </p>
         <p className="text-gray-600">
           {t("member_count")}: {group?.users?.length || 0}
@@ -31,22 +32,32 @@ const GroupCardComponent = ({ group, onViewFiles, onManageGroup }) => {
       </div>
 
       <div className="flex flex-col sm:flex-row justify-center gap-y-4 sm:gap-x-4 mt-4">
-      <button
-  className="flex items-center space-x-2 text-white font-semibold px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-md transform hover:scale-105 transition-all duration-200"
-  onClick={() =>
-    onViewFiles(group?.id, !!group?.users?.find((user) => user.role && user.role.includes("admin")))
-  }
->
-  <FaFolderOpen /> <span>{t("view_files")}</span>
-</button>
+        <button
+          className="flex items-center space-x-2 text-white font-semibold px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 shadow-md transform hover:scale-105 transition-all duration-200"
+          onClick={() =>{
+            onViewFiles(
+              group?.id,
+              !!group?.users?.find(
+                (user) => user.role && user.role.includes("admin")
+              )
+            )
+            console.log('====================================');
+            console.log(!!group?.users?.find(
+              (user) => user.role && user.role.includes("admin")
+            )
+          )
+            console.log('====================================');
+          }}
+        >
+          <FaFolderOpen /> <span>{t("view_files")}</span>
+        </button>
 
-          <button
-            className="flex items-center space-x-2 text-white font-semibold px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 shadow-md transform hover:scale-105 transition-all duration-200"
-            onClick={() => onManageGroup(group)}
-          >
-            <FaCog /> <span>{t("manage_group")}</span>
-          </button>
-        
+        <button
+          className="flex items-center space-x-2 text-white font-semibold px-4 py-2 w-full sm:w-auto rounded-lg bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 shadow-md transform hover:scale-105 transition-all duration-200"
+          onClick={() => onManageGroup(group)}
+        >
+          <FaCog /> <span>{t("manage_group")}</span>
+        </button>
       </div>
     </div>
   );

@@ -111,7 +111,7 @@ export async function checkIn(groupId, files) {
     catch (error) {
         console.log(error);
 
-        throw error.response ? error.response.data : new Error("Network Error");
+        throw error ?? new Error("Network Error");
     }
 
 }
@@ -140,9 +140,9 @@ export async function checkOut(groupId, fileId, file) {
         return response.data.data;
     }
     catch (error) {
-        console.log(error);
+        console.log(error.message);
         
-        throw error.response ? error.response.data : new Error("Network Error");
+        throw error ?? new Error("Network Error");
     }
 }
 

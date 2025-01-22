@@ -44,9 +44,9 @@ export function CheckOutModal({ groupId, fileId ,handleEditFile}) {
             setIsLoad(false)
             setOpenModal(false)
         } catch (error) {
-            console.error("Error uploading file:", error);
+            console.log("Error uploading file:", error);
             Toastify({
-                text: "Error uploading file: " + error.response,
+                text: `${error.message}`,
                 duration: 5000,
                 close: true,
                 gravity: "top",
