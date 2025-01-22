@@ -171,7 +171,7 @@ const Files = () => {
                 const item = selectedFiles.find((it) => it.file_id == file.id)
 
                 if (item) {
-                    return { id: file.id, name: file.name, is_locked: item.is_locked };
+                    return { id: file.id, name: file.name, is_locked: item.is_locked,active_status: true };
                 }
                 return file;
             })
