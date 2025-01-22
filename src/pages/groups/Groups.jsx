@@ -151,8 +151,8 @@ const Groups = () => {
     }
   };
 
-  const handleShowFiles = (groupId) => {
-    navigate(`${groupId}/files`);
+  const handleShowFiles = (groupId, isAdmin) => {
+    navigate(`${groupId}/files`, { state: { isAdmin } });
   };
 
   const handleManageGroup = (group) => {

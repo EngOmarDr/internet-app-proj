@@ -42,7 +42,7 @@ const AboutPage = () => {
       >
         <div className="p-5 text-gray-800 md:order-1">
           <motion.h2
-            className="text-2xl font-bold mb-2 text-left"
+            className="text-2xl font-bold mb-2 text-start"
             whileHover={{ color: "#4A90E2" }}
           >
             {t("how_to_use")} {/* استخدم الترجمة هنا */}
