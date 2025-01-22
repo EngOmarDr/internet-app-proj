@@ -40,7 +40,7 @@ export function UploadFileModal({ handlStoreFile, groupId }) {
             const result = await storeFile(groupId, newFile);
             console.log(result);
 
-            handlStoreFile({ id: result.data.id, name: result.data.name, active: result.data.active });
+            handlStoreFile({ id: result.data.id, name: result.data.name, active_status: result.data.active_status });
             setNewFile(null);
             setIsLoad(false)
             setOpenModal(false)
