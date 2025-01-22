@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const AboutPage = () => {
   const { t } = useTranslation();
@@ -70,9 +71,9 @@ const AboutPage = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.6, duration: 0.8 }}
       >
-        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg shadow-lg hover:bg-blue-700 transition duration-300">
-          {t("get_started")} {/* استخدم الترجمة هنا */}
-        </button>
+        <Link to="/groups" className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg shadow-lg hover:bg-blue-700 transition duration-300">
+  {t("get_started")}
+</Link>
       </motion.div>
     </motion.section>
   );

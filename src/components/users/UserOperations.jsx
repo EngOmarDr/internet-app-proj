@@ -39,37 +39,41 @@ const UserOperations = ({ groupId, userId }) => {
   }
 
   return (
-    <div className="p-6 bg-gray-100 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">User Operations</h2>
-      {operations.length === 0 ? (
-        <p className="text-gray-600 text-center">No operations found for this user.</p>
-      ) : (
-        <table className="table-auto w-full bg-white shadow-md rounded-md overflow-hidden">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="px-4 py-2">File</th>
-              <th className="px-4 py-2">Type</th>
-              <th className="px-4 py-2">Size (KB)</th>
-              <th className="px-4 py-2">Version</th>
-              <th className="px-4 py-2">Created At</th>
-              <th className="px-4 py-2">Updated At</th>
+<div className="p-6 bg-gray-100 rounded-lg shadow-lg">
+  <h2 className="text-2xl font-bold text-gray-800 mb-6">User Operations</h2>
+  {operations.length === 0 ? (
+    <p className="text-gray-600 text-center">No operations found for this user.</p>
+  ) : (
+    <div className="overflow-x-auto">
+      <table className="table-auto w-full bg-white shadow-md rounded-md overflow-hidden">
+        <thead className="bg-gray-200">
+          <tr>
+            <th className="px-4 py-2">File</th>
+            <th className="px-4 py-2">Type</th>
+            <th className="px-4 py-2">Size (KB)</th>
+            <th className="px-4 py-2">Version</th>
+            <th className="px-4 py-2">Change</th>
+            <th className="px-4 py-2">Created At</th>
+            <th className="px-4 py-2">Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {operations.map((operation) => (
+            <tr key={operation.id} className="text-center border-b">
+              <td className="px-4 py-2">{operation.file || 'N/A'}</td>
+              <td className="px-4 py-2">{operation.type || 'N/A'}</td>
+              <td className="px-4 py-2">{(operation.size / 1024).toFixed(2)}</td>
+              <td className="px-4 py-2">{operation.Version_number || 'N/A'}</td>
+              <td className="px-4 py-2">{operation.change || 'N/A'}</td>
+              <td className="px-4 py-2">{operation.created_at || 'N/A'}</td>
+              <td className="px-4 py-2">{operation.updated_at || 'N/A'}</td>
             </tr>
-          </thead>
-          <tbody>
-            {operations.map((operation) => (
-              <tr key={operation.id} className="text-center border-b">
-                <td className="px-4 py-2">{operation.file || 'N/A'}</td>
-                <td className="px-4 py-2">{operation.type || 'N/A'}</td>
-                <td className="px-4 py-2">{(operation.size / 1024).toFixed(2)}</td>
-                <td className="px-4 py-2">{operation.Version_number || 'N/A'}</td>
-                <td className="px-4 py-2">{operation.created_at || 'N/A'}</td>
-                <td className="px-4 py-2">{operation.updated_at || 'N/A'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+          ))}
+        </tbody>
+      </table>
     </div>
+  )}
+</div>
   );
 };
 
