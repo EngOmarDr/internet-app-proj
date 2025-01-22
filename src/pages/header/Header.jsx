@@ -47,9 +47,9 @@ const Header = () => {
             {t("appDashboard")}
           </Link>
         } 
-        <Link to="/users" className="nav-link">
+        {/* <Link to="/users" className="nav-link">
         {t("users")}
-        </Link>
+        </Link> */}
       </nav>
       {token ? (
         <div className="header-actions">
@@ -57,9 +57,9 @@ const Header = () => {
             <ToggleTheme />
             {/* <LanguageSelector className={`text-slate-900`} /> */}
           </div>
-          <Link to="/notifications" className="nav-link">
+          {/* <Link to="/notifications" className="nav-link">
             <FaBell className="icon notification-icon" title={t("notifications")} />
-          </Link>
+          </Link> */}
           <UserProfileMenu />
           <FaBars className="menu-toggle" onClick={toggleMenu} />
         </div>

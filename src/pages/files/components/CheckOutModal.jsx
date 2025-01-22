@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button, FileInput, Modal } from "flowbite-react";
 import { useState } from "react";
 import "toastify-js/src/toastify.css";

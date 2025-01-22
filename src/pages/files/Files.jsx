@@ -56,6 +56,7 @@ const Files = () => {
     const handleActivateFile = async (fileId) => {
         try {
             const data = await activateFile(groupId, fileId);
+            getFiles()
             toast.success(t('activated_file'), {
                 position: "top-right",
                 autoClose: 5000,
@@ -68,13 +69,13 @@ const Files = () => {
             });
             console.log(data);
             
-            let newFile = files.find(file => file.id === id)
-            newFile.active_status = true;
-            console.log(newFile);
+            // let newFile = files.find(file => file.id === id)
+            // newFile.active_status = true;
+            // console.log(newFile);
             
-            setFiles(prevFiles =>
-                prevFiles.map(file => (file.id === fileId ? newFile : file))
-            );
+            // setFiles(prevFiles =>
+            //     prevFiles.map(file => (file.id === fileId ? newFile : file))
+            // );
 
         } catch (err) {
             toast.error(err, {
