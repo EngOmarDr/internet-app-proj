@@ -118,8 +118,10 @@ export async function checkIn(groupId, files) {
 
 export async function checkOut(groupId, fileId, file) {
     const data = new FormData();
-    data.append('file', file);
-    data.append('file_id', fileId);
+    file? data.append('file', file):null;
+    console.log(file? data.append('file', file):null);
+    
+    data.append('file_id', fileId) ;
 
     try {
         const response = await axiosInstance.post(
@@ -134,9 +136,12 @@ export async function checkOut(groupId, fileId, file) {
             }
         );
 
+        console.log(response);
         return response.data.data;
     }
     catch (error) {
+        console.log(error);
+        
         throw error.response ? error.response.data : new Error("Network Error");
     }
 }
@@ -147,6 +152,9 @@ export async function fileVersions(groupId, fileId) {
             `/groups/${groupId}/files/${fileId}/versions`,
         );
         if (response.status == 200) {
+            if(response.data.data == null ||response.data.data==[]){
+                throw 'no version found'
+            }
             return response.data;
         } else {
             throw response.data.message
@@ -154,7 +162,7 @@ export async function fileVersions(groupId, fileId) {
     } catch (error) {
         console.log(error);
 
-        throw error.response ? error.response.data : new Error("Network Error");
+        throw error.response ? error.response.data : error;
     }
 }
 

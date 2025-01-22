@@ -117,7 +117,7 @@
     "access_logs": "Access logs and reports to track progress.",
     "get_started": "Get Started Now",
     "operations": "operations",
-
+    "activated_file": "file is activated",
     "view_operations" : "View Operations",
 
     "download_csv": "Download CSV",

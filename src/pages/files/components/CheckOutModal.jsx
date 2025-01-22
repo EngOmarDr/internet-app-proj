@@ -23,18 +23,18 @@ export function CheckOutModal({ groupId, fileId ,handleEditFile}) {
     const handleCheckOut = async (e) => {
         setIsLoad(true)
         e.preventDefault();
-        if (!newFile) {
-            Toastify({
-                text: "يرجى إدخال الملف المراد تحميله.",
-                duration: 5000,
-                close: true,
-                gravity: "top",
-                position: "center",
-                stopOnFocus: true,
-            }).showToast();
-            setIsLoad(false)
-            return
-        }
+        // if (!newFile) {
+        //     Toastify({
+        //         text: "يرجى إدخال الملف المراد تحميله.",
+        //         duration: 5000,
+        //         close: true,
+        //         gravity: "top",
+        //         position: "center",
+        //         stopOnFocus: true,
+        //     }).showToast();
+        //     setIsLoad(false)
+        //     return
+        // }
         try {
             const file = await checkOut(groupId, fileId, newFile);
             
@@ -74,7 +74,7 @@ export function CheckOutModal({ groupId, fileId ,handleEditFile}) {
                     <Button
                         className="mt-5"
                         isProcessing={isLoad}
-                        disabled={!newFile}
+                        
                         onClick={handleCheckOut}
                     >Upload</Button>
                 </Modal.Body>

@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaEye, FaRegFileExcel } from "react-icons/fa6";
-import { downloadFile, checkIn, fileVersions, fileOperationPdf, fileOperationCsv, fetchOperations } from "../../services/fileService";
-import { useParams } from "react-router-dom";
+import { downloadFile, checkIn, fileVersions, fileOperationPdf, fileOperationCsv, fetchOperations, activateFile } from "../../services/fileService";
+import { useLocation, useParams } from "react-router-dom";
 import { Slide, toast } from 'react-toastify';
 import { UploadFileModal } from "./components/UploadFileModal";
+import { VscFolderActive } from "react-icons/vsc";
 import { Button, Checkbox, Modal, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { AiOutlineDownload } from "react-icons/ai";
 import { CheckOutModal } from "./components/CheckOutModal";
@@ -16,6 +17,8 @@ import { MdOutlinePendingActions } from "react-icons/md";
 
 const Files = () => {
     let { groupId } = useParams();
+    let location = useLocation();
+    let { isAdmin } = location.state || { isAdmin: false };
     const theme = useTheme().theme
     const { files, currentPage, lastPage, setFiles } = getFiles(groupId)
     const [operationsModal, setOperationsModal] = useState(false);
@@ -30,10 +33,7 @@ const Files = () => {
 
     const loadOperations = async (fileId) => {
         try {
-            console.log('00000000000000000000');
-
             const data = await fetchOperations(groupId, fileId);
-            console.log('00000000000000000000');
             setOperations(data.data.data);
             setOperationsModal(true)
             console.log(operations);
@@ -52,8 +52,59 @@ const Files = () => {
         }
     };
 
+    const handleActivateFile = async (fileId) => {
+        try {
+            const data = await activateFile(groupId, fileId);
+            toast.success(t('activated_file'), {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme,
+                transition: Slide,
+            });
+            console.log(data);
+            
+            let newFile = files.find(file => file.id === id)
+            newFile.active_status = true;
+            console.log(newFile);
+            
+            setFiles(prevFiles =>
+                prevFiles.map(file => (file.id === fileId ? newFile : file))
+            );
+
+        } catch (err) {
+            toast.error(err, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme,
+                transition: Slide,
+            });
+        }
+    };
+
     const handleStoreFile = (data) => {
-        setFiles((prev) => [...prev, data]);
+        if (isAdmin) {
+            setFiles((prev) => [...prev, data]);
+            return;
+        }
+        toast.error('please wait until admin accept your file', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: theme,
+            // transition: Bounce,
+        });
     };
 
     const handleEditFile = (newFile) => {
@@ -77,7 +128,6 @@ const Files = () => {
                 draggable: true,
                 progress: undefined,
                 theme: theme,
-                // transition: Bounce,
             });
             return;
         }
@@ -147,8 +197,17 @@ const Files = () => {
     };
 
     const getVersions = async (fileId) => {
-        const res = await fileVersions(groupId, fileId);
-        setVersions(res.data)
+        try {
+
+            const res = await fileVersions(groupId, fileId);
+            setVersions(res.data)
+        } catch (error) {
+            console.log(error);
+
+            toast.error(`${error}`, {
+                theme: theme,
+            });
+        }
     };
 
     const handleDownload = async (fileId, fileName, version, showFile = false) => {
@@ -231,6 +290,7 @@ const Files = () => {
                         <TableHeadCell className="bg-slate-200">{t("name")}</TableHeadCell>
                         <TableHeadCell className="bg-slate-200">{t("version")}</TableHeadCell>
                         <TableHeadCell className="bg-slate-200">{t("status")}</TableHeadCell>
+                        {/* {files[0]?.active && <TableHeadCell className="bg-slate-200">{t("status")}</TableHeadCell>} */}
                         <TableHeadCell className="bg-slate-200">{t("actions")}</TableHeadCell>
                     </TableHead>
                     <TableBody className="divide-y">
@@ -245,7 +305,7 @@ const Files = () => {
                                 <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                     {file.name}
                                 </TableCell>
-                                <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white p-0">
                                     <select
                                         id="versions"
                                         // eslint-disable-next-line no-unused-vars
@@ -280,7 +340,8 @@ const Files = () => {
                                     <Button size="sm" title="download changed as pdf" onClick={() => fileOperationPdf(groupId, file.id, file.name)}><FaRegFilePdf className="h-5 w-5" /></Button>
                                     <Button size="sm" title="download changed as csv" onClick={() => fileOperationCsv(groupId, file.id, file.name)}><FaRegFileExcel className="h-5 w-5" /></Button>
                                     <Button size="sm" title="show file" onClick={() => handleDownload(file.id, file.name, file.version, true)}><FaEye className="h-5 w-5" /></Button>
-                                    <Button size="sm" title="show file" onClick={() => loadOperations(file.id)}><MdOutlinePendingActions className="h-5 w-5" /></Button>
+                                    <Button size="sm" title="file operations" onClick={() => loadOperations(file.id)}><MdOutlinePendingActions className="h-5 w-5" /></Button>
+                                    {(!file.active_status && isAdmin) && <Button size="sm" color="warning" title="activate file" onClick={() => handleActivateFile(file.id)}><VscFolderActive className="h-5 w-5" /></Button>}
                                     {/* <EditFileModal handlEditFile={handleEditFile} groupId={groupId} file={file} /> */}
                                 </TableCell>
                             </TableRow>
@@ -352,22 +413,39 @@ const Files = () => {
             <Modal
                 show={operationsModal}
                 dismissible
+                className="w-full"
                 onClose={() => setOperationsModal(false)}
             >
                 <Modal.Header>{t('operations')}</Modal.Header>
                 <Modal.Body className="p-0 m-0">
-                    <ul className="">
-                        {operations.map((operation, index) => (
-                            <li className={index % 2 == 0 ? "bg-slate-100 p-3" : "bg-blue-50 p-3"} key={operation.id}>
-                                <p>User ID: {operation.user_id}</p>
-                                <p>Type File: {operation.type}</p>
-                                <p>Status: {operation.status}</p>
-                                <p>Size: {operation.size}KB</p>
-                                <p>Created At: {operation.created_at}</p>
-                                <p>Updated At: {operation.updated_at}</p>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="overflow-x-auto">
+                        <table className="table-auto bg-white shadow-md rounded-md text-nowrap">
+                            <thead className="bg-gray-200">
+                                <tr>
+                                    <th className="px-4 py-2">user id</th>
+                                    <th className="px-4 py-2">Type</th>
+                                    <th className="px-4 py-2">Size (KB)</th>
+                                    <th className="px-4 py-2">Version</th>
+                                    <th className="px-4 py-2">Change</th>
+                                    <th className="px-4 py-2">Created At</th>
+                                    <th className="px-4 py-2">Updated At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {operations.map((operation) => (
+                                    <tr key={operation.id} className="text-center border-b">
+                                        <td className="px-4 py-2">{operation.user_id || 'N/A'}</td>
+                                        <td className="px-4 py-2">{operation.type || 'N/A'}</td>
+                                        <td className="px-4 py-2">{(operation.size / 1024).toFixed(2)}</td>
+                                        <td className="px-4 py-2">{operation.Version_number || 'N/A'}</td>
+                                        <td className="px-4 py-2 h-11">{operation.change || 'N/A'}</td>
+                                        <td className="px-4 py-2">{operation.created_at || 'N/A'}</td>
+                                        <td className="px-4 py-2">{operation.updated_at || 'N/A'}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </Modal.Body>
             </Modal>
             {/* <div>
