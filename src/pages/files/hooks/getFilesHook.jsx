@@ -3,7 +3,7 @@ import { indexFile } from '../../../services/fileService';
 import Toastify from "toastify-js";
 import "toastify-js/src/toastify.css";
 
-function getFiles(groupId) {
+function useFiles(groupId) {
   const [files, setFiles] = useState([]);
   const [lastPage, setLastPage] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,8 +52,8 @@ function getFiles(groupId) {
     }
   }, [groupId, currentPage]);
 
-  return { files, currentPage, lastPage, setFiles };
+  return { files, currentPage, lastPage, setFiles , getFiles };
 
 }
 
-export default getFiles
+export default useFiles
