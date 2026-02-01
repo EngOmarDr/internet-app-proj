@@ -1,0 +1,79 @@
+/* Reports.css */
+
+.reports-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-container input {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .filter-container button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .filter-container button:hover {
+    background-color: #45a049;
+  }
+  
+  .reports-table {
+    margin-top: 20px;
+  }
+  
+  .reports-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .reports-table th,
+  .reports-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .reports-table th {
+    background-color: #f4f4f4;
+    color: #333;
+  }
+  
+  .export-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .export-button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .export-button:hover {
+    background-color: #0056b3;
+  }
+  

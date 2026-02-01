@@ -1,0 +1,359 @@
+.app-dashboard-continar{
+    height: calc(100vh - 110px);
+    display: flex;
+}
+@media (max-width: 767px) {
+    .app-dashboard-continar{
+        display: block;
+    }
+}
+.app-dashboard-nav{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 15px;
+    background-color: #34495e;
+    color: #fff;
+    padding: 20px;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 10;
+    transition: .3s;
+}
+@media (max-width: 767px) {
+    .app-dashboard-nav{
+        display: none ;
+    }
+}
+.app-dashboard-nav.hide{
+    width: 0;
+}
+.nav-header{
+    color: white ;
+    font-weight: bold;
+    font-size: 18px;
+    transition: .3s;
+}
+.app-dashboard-nav .nav-header.hide{
+    display: none;
+}
+.nav-link.slide {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+    border-radius: 5px solid #333;
+    border-radius: 8px;
+    padding: 5px 15px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    width: 80%;
+    text-align: center;
+    transition: .3s;
+}
+.nav-link.slide.hide{
+    display: none;
+}
+.nav-link:hover {
+    color: #f39c12;
+}
+.hide-nav{
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    padding: 10px;
+    background-color: #336290;
+    border-radius: 50%;
+    text-align: center;
+    transition: .3s;
+}
+.hide-nav.ar{
+    position: absolute;
+    right: 177px;
+    top: 50%;
+    padding: 10px;
+    background-color: #336290;
+    border-radius: 50%;
+    text-align: center;
+    transition: .3s;
+}
+.app-dashboard-nav.hide .hide-nav.ar{
+    right: 15px;
+}
+.appDashboard-menu-toggle{
+    display: none;
+}
+.mobile-appDashboard-menue{
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .appDashboard-menu-toggle{
+        font-size: 22px;
+        color:  white;
+        cursor: pointer;
+        display: inline;
+        margin: 2px;
+    }
+    .appDashboard-menu-toggle.light{
+        color: black;
+    }
+    .mobile-appDashboard-menue{
+        width: 100%;
+        background-color: #34495e;
+        min-height: 150px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 8px;
+    }
+}
+.outlet{
+    flex: 1;
+    overflow-y: auto;
+    scrollbar-width: thin; /* Thinner scrollbar */
+    scrollbar-color: #888 transparent; /* Color for thumb and track */
+}
+@media (max-width: 767px) {
+    .outlet{
+        /* i had some error when i didnt do this (becase of  the footer postioning i guse) */
+        height: calc(100vh - 130px);
+    }
+}
+/* Styling the scrool bar  */
+div::-webkit-scrollbar {
+    width: 10px;
+}
+
+div::-webkit-scrollbar-track {
+    background: #f4f4f4;
+    border-radius: 10px;
+}
+
+div::-webkit-scrollbar-thumb {
+    background-color: #888; 
+    border-radius: 10px;
+    border: 3px solid transparent; /* Create space between scrollbar and edge */
+    background-clip: content-box; /* Ensure the border is transparent */
+}
+/**********/
+.outlet .statistics{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px 10px 0
+}
+.statistics .stat{
+    width: 300px;
+    height: 200px;
+    background-color: white;
+    border: 2px solid #eee;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    /* margin-bottom: 10px; */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+.stat h1{
+    font-size: 17px;
+    font-weight: bold;
+    color: #007BFF;
+}
+.stat h3{
+    font-size: 22px;
+    font-weight: bold;
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+}
+/* All Groups  */
+.all-groups-continar{
+    padding: 10px 20px;
+}
+.group-dash{
+    background-color: white;
+    border: 2px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+.group-dash h3{
+    color: black;
+    font-weight: bold;
+}
+.group-dash .options{
+    width: 25%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.icon-folder {
+    color: #FFC107; 
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s ;
+}
+
+.icon-users {
+    color: #007BFF; 
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s ;
+}
+
+.icon-trash {
+    color: #FF5252; 
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s ;
+}
+
+/* .icon-folder:hover,
+.icon-users:hover,
+.icon-user-friends,
+.icon-trash:hover {
+    font-size: 24px;
+} */
+
+.group-users-outlay{
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.group-users{
+    width: 500px;
+    height: 300px;
+    background-color: white;
+    padding: 10px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+}
+.group-users .info{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+.info h1{
+    font-weight: bold;
+    font-size: 25px;
+}
+.group-users .members{
+    overflow-y: auto;
+    padding: 5px;
+    height: 80%;
+}
+.members .member {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+.app-dashboard-continar table th.act{
+    border:  1px solid rgb(44 45 178 / 50%);
+}
+table th.act {
+    text-align: center;
+}
+/* All Users */
+.all-users-continar{
+    padding: 10px 20px;
+}
+.all-users-continar .user{
+    background-color: white;
+    border: 2px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+.user .options{
+    width: 25%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.icon-user-friends{
+    color: #38bdf8  ; /* Choose a matching color */
+    font-size: 20px;
+    cursor: pointer;
+    transition:  0.2s;
+}
+.group-users .groups-in{
+    overflow-y: auto;
+    padding: 5px;
+    height: 80%;
+}
+.groups-in .group-dash {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: black;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+}
+@media (max-width: 767px) {
+    .email-th,
+    .email-td,
+    .role-th,
+    .role-td{
+        display: none;
+    }
+}
+.info-td{
+    position: relative;
+}
+@media (min-width: 768px) {
+    .info-td{
+        display: none;
+    }
+}
+.show-info{
+    width: fit-content;
+    padding: 8px;
+    position: absolute;
+    right: 45px;
+    background-color: #eee;
+    border: 1px solid red;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 10;
+}
+/* Tooltips */
+.app-dashboard-nav .tooltip{
+    font-size: 13px;
+}
+.all-groups-continar .users-tooltip{
+    background-color: #007BFF;
+    color: white;
+    font-size: 12px;
+}
+.all-groups-continar .files-tooltip{
+    background-color:#f39c12 ;
+    color: black;
+    font-size: 12px;
+}

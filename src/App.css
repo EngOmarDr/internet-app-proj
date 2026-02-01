@@ -1,0 +1,18 @@
+.app {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fix-height {
+  min-height: calc(100vh - 110px);
+}
+
+/* .content { */
+  /* padding: 20px; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* gap: 20px; فراغ بين المكونات */
+/* } */
